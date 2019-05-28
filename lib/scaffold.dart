@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 import './dictionary.dart';
 import './globalSettings.dart';
-import './calendar.dart';
-import './deadlines.dart';
-import './schedule.dart';
-import './tasks.dart';
+import './calendar/calendar.dart';
+import './deadlines/deadlines.dart';
+import './schedule/schedule.dart';
+import './task/tasks.dart';
 
 class TaskminderTabScaffold extends StatefulWidget {
   TaskminderTabScaffold({Key key}) : super(key: key);
