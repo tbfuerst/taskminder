@@ -8,57 +8,51 @@ import './deadlines/deadlines.dart';
 import './schedule/schedule.dart';
 import './task/tasks.dart';
 
-class TaskminderTabScaffold extends StatefulWidget {
-  TaskminderTabScaffold({Key key}) : super(key: key);
+class TaskminderTabScaffold extends StatelessWidget {
+  final List<Map<String, Widget>> _tabs = [
+    {
+      'tabName': Text(Dictionary().display("tasks", Settings().language)),
+      'tabWidget': Tasks()
+    },
+    {
+      'tabName': Text(Dictionary().display("deadlines", Settings().language)),
+      'tabWidget': Deadlines()
+    },
+    {
+      'tabName': Text(Dictionary().display("calendar", Settings().language)),
+      'tabWidget': Calendar()
+    },
+    {
+      'tabName': Text(Dictionary().display("schedule", Settings().language)),
+      'tabWidget': Schedule()
+    },
+  ];
 
-  _TaskminderTabScaffoldState createState() => _TaskminderTabScaffoldState();
-}
-
-class _TaskminderTabScaffoldState extends State<TaskminderTabScaffold>
-    with SingleTickerProviderStateMixin {
-  final Map appTabs = {
-    'tabs': <Tab>[
-      Tab(
-        text: Dictionary().display("tasks", Settings().language),
-      ),
-      Tab(
-        text: Dictionary().display("deadlines", Settings().language),
-      ),
-      Tab(
-        text: Dictionary().display("calendar", Settings().language),
-      ),
-      Tab(
-        text: Dictionary().display("schedule", Settings().language),
-      ),
-    ],
-    'tabWidgets': <Widget>[Tasks(), Deadlines(), Calendar(), Schedule()]
-  };
-
-  TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(vsync: this, length: appTabs['tabs'].length);
+  List<Widget> _getTabWidgets(List<Map<String, Widget>> tabs) {
+    return _tabs.map((_tab) {
+      return _tab['tabWidget'];
+    }).toList();
   }
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+  List<Widget> _getTabs(List<Map<String, Widget>> tabs) {
+    return tabs.map((_tab) {
+      return Tab(
+        child: _tab['tabName'],
+      );
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      length: _tabs.length,
+      child: Scaffold(
         appBar: AppBar(
           title: Text("Taskminder"),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: appTabs['tabs'],
-          ),
+          bottom: TabBar(tabs: _getTabs(_tabs)),
         ),
-        body: TabBarView(
-            controller: _tabController, children: appTabs['tabWidgets']));
+        body: TabBarView(children: _getTabWidgets(_tabs)),
+      ),
+    );
   }
 }
