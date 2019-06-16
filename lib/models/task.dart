@@ -6,8 +6,14 @@ class Task {
   final String description;
   final int priority;
   final String deadline;
+  final bool onlyScheduled;
 
-  Task({this.name, this.description, this.priority, this.deadline});
+  Task(
+      {this.name,
+      this.description,
+      this.priority,
+      this.deadline,
+      this.onlyScheduled});
 
   Map<String, dynamic> toMap() {
     return {
@@ -15,7 +21,8 @@ class Task {
       "name": name,
       "description": description,
       "priority": priority,
-      "deadline": deadline
+      "deadline": deadline,
+      "onlyScheduled": onlyScheduled,
     };
   }
 }
