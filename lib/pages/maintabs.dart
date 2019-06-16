@@ -1,30 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import './dictionary.dart';
-import './globalSettings.dart';
-import './calendar/calendar.dart';
-import './deadlines/deadlines.dart';
-import './schedule/schedule.dart';
-import './task/tasks.dart';
+import '../dictionary.dart';
+import '../globalSettings.dart';
+import '../tabs/calendar.dart';
+import '../tabs/deadlines.dart';
+import '../tabs/schedule.dart';
+import '../tabs/tasks.dart';
 
-class TaskminderTabScaffold extends StatelessWidget {
+class MainTabs extends StatelessWidget {
   final List<Map<String, Widget>> _tabs = [
     {
       'tabName': Text(Dictionary().display("tasks", Settings().language)),
-      'tabWidget': Tasks()
+      'tabWidget': TasksTab()
     },
     {
       'tabName': Text(Dictionary().display("deadlines", Settings().language)),
-      'tabWidget': Deadlines()
+      'tabWidget': DeadlinesTab()
     },
     {
       'tabName': Text(Dictionary().display("calendar", Settings().language)),
-      'tabWidget': Calendar()
+      'tabWidget': CalendarTab()
     },
     {
       'tabName': Text(Dictionary().display("schedule", Settings().language)),
-      'tabWidget': Schedule()
+      'tabWidget': ScheduleTab()
     },
   ];
 
