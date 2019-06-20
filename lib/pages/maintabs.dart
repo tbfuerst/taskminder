@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../database/db-connection.dart';
 
 import '../dictionary.dart';
 import '../globalSettings.dart';
@@ -47,6 +48,11 @@ class MainTabs extends StatelessWidget {
     return DefaultTabController(
       length: _tabs.length,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () async {
+              await DBConnection.db.insertDummyTask();
+            }),
         appBar: AppBar(
           title: Text("Taskminder"),
           bottom: TabBar(tabs: _getTabs(_tabs)),

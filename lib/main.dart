@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
 
 import './pages/maintabs.dart';
-import './database/db-connection.dart';
+// import './database/db-connection.dart';
 
 void main() => runApp(Taskminder());
 
 class Taskminder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    DBConnection db = DBConnection();
+    // DBConnection db = DBConnection();
     // db.rebuildDB();
-    db.insertDummyTask().then((dere) {
-      db.insertDummyTask().then((dere) {
-        print(db.fetchAllTasks());
-      });
-    });
 
     return MaterialApp(
       title: 'Flutter Demo',

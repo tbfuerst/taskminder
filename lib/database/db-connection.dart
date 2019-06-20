@@ -1,91 +1,60 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'package:random_string/random_string.dart';
+
 import '../models/task.dart';
 
 class DBConnection {
-  Future<Database> _database;
+  String _path;
+  Database _database;
 
-  DBConnection();
+  DBConnection._();
 
-  Future<Database> get database {
+  static final DBConnection db = DBConnection._();
+
+  Future<Database> get database async {
+    if (_database != null) return _database;
+    _database = await initDB();
     return _database;
   }
 
-  Future<String> _initializePath() async {
-    var databasesPath = await getDatabasesPath();
-    String _path = join(databasesPath, 'taskminder.db');
-    return _path;
+  initDB() async {
+    String path = await getDatabasesPath();
+    path = join(path, 'taskminder.db');
+
+    return await openDatabase(
+      path,
+      onCreate: (Database db, int version) async {
+        await db.execute(
+            "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, deadline TEXT, onlyScheduled BOOLEAN)");
+      },
+      version: 1,
+    );
   }
 
-  Future rebuildDB() async {
-// Open the database and store the reference.
-    await _initializePath().then((path) async {
-      await dropTable().then((e) {
-        _database = openDatabase(
-          // Set the path to the database.
-          path,
-          // When the database is first created, create a table to store dogs.
-          onCreate: (Database db, int version) async {
-            // Run the CREATE TABLE statement on the database.
-            await db.execute(
-              "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, deadline TEXT, onlyScheduled BOOLEAN)",
-            );
-          },
-          version: 1,
-        );
-      });
-    });
+  deleteDB() async {
+    await deleteDatabase(_path);
   }
 
-  Future<Database> openDB() async {
-// Open the database and store the reference.
-    await _initializePath().then((path) {
-      _database = openDatabase(
-        // Set the path to the database.
-        path,
-        // When the database is first created, create a table to store dogs.
-        onCreate: (Database db, int version) async {
-          // Run the CREATE TABLE statement on the database.
-          await db.execute(
-            "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, deadline TEXT, onlyScheduled BOOLEAN)",
-          );
-        },
-        version: 1,
-      );
-    });
-    return database;
+  insertTask(Task task) async {
+    final db = await database;
+    await db.insert("tasks", task.toMap());
   }
 
-  Future dropTable() async {
-    await _initializePath().then((path) {
-      print(path);
-      deleteDatabase(path);
-      print("Database deleted");
-    });
+  insertDummyTask() async {
+    Task task = Task(
+      name: randomString(5),
+      description: randomString(25),
+      deadline: "31.12.2018",
+      priority: 5,
+      onlyScheduled: false,
+    );
+    await insertTask(task);
   }
 
-  Future<Database> insertDummyTask() async {
-    await openDB().then((db) {
-      Task task = Task(
-        name: "test",
-        description: "testdescription",
-        priority: 2,
-        deadline: "date",
-        onlyScheduled: false,
-      );
-      db.insert('tasks', task.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-      print(task);
-    });
-    return database;
-  }
-
-  Future<List<Map>> fetchAllTasks() async {
-    await openDB().then((db) async {
-      List<Map> list = await db.rawQuery('SELECT * FROM tasks');
-      return list;
-    });
-    return List();
+  fetchAllData() async {
+    final db = await database;
+    return await db.query("tasks");
   }
 }
