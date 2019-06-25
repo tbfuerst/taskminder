@@ -1,17 +1,18 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:math';
 
 import 'package:random_string/random_string.dart';
 
 import '../models/task.dart';
 
-class DBConnection {
+class LocalDB {
   String _path;
   Database _database;
 
-  DBConnection._();
+  LocalDB._();
 
-  static final DBConnection db = DBConnection._();
+  static final LocalDB db = LocalDB._();
 
   Future<Database> get database async {
     if (_database != null) return _database;
@@ -21,6 +22,7 @@ class DBConnection {
 
   initDB() async {
     String path = await getDatabasesPath();
+    _path = path;
     path = join(path, 'taskminder.db');
 
     return await openDatabase(
@@ -34,27 +36,43 @@ class DBConnection {
   }
 
   deleteDB() async {
-    await deleteDatabase(_path);
+    String path = await getDatabasesPath();
+    await deleteDatabase(path);
   }
 
-  insertTask(Task task) async {
+  Future<Task> insertTask(Task task) async {
     final db = await database;
     await db.insert("tasks", task.toMap());
+    return task;
   }
 
-  insertDummyTask() async {
-    Task task = Task(
+  Future<Task> insertDummyTask() async {
+    final int day = Random().nextInt(27) + 1;
+    final int month = Random().nextInt(2) + 6;
+    final int year = 2019;
+
+    final String dl = year.toString() +
+        month.toString().padLeft(2, "0") +
+        day.toString().padLeft(2, "0");
+
+    final Task task = Task(
       name: randomString(5),
       description: randomString(25),
-      deadline: "31.12.2018",
-      priority: 5,
+      deadline: dl,
+      priority: Random().nextInt(9) + 1,
       onlyScheduled: false,
     );
     await insertTask(task);
+    return task;
   }
 
-  fetchAllData() async {
+  Future<int> deleteTask(String id) async {
     final db = await database;
-    return await db.query("tasks");
+    return await db.delete("tasks", where: 'id = ?', whereArgs: ["$id"]);
+  }
+
+  Future<List<Map<String, dynamic>>> fetchAllTasks() async {
+    final db = await database;
+    return await db.query("tasks", orderBy: 'priority');
   }
 }

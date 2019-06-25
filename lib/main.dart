@@ -1,32 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:taskminder/scoped-models/mainmodel.dart';
 
 import './pages/maintabs.dart';
-// import './database/db-connection.dart';
+import './pages/task-details.dart';
+import './pages/task-edit.dart';
+import './database/local-db.dart';
 
 void main() => runApp(Taskminder());
 
 class Taskminder extends StatelessWidget {
+  final MainModel model = MainModel();
+
   @override
   Widget build(BuildContext context) {
+    LocalDB.db.deleteDB();
     // DBConnection db = DBConnection();
     // db.rebuildDB();
 
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.teal,
-        accentColor: Colors.tealAccent,
-      ),
-      home: MainTabs(),
+    return ScopedModel<MainModel>(
+      model: model,
+      child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            primarySwatch: Colors.teal,
+            accentColor: Colors.tealAccent,
+            errorColor: Colors.deepOrange[700],
+          ),
+          routes: {
+            '/': (BuildContext context) => MainTabs(model),
+            '/edittask': (BuildContext context) => TaskEdit(model),
+          },
+          onGenerateRoute: (RouteSettings settings) {
+            final List<String> pathElements = settings.name.split('/');
+            final String id = pathElements[2];
+
+            if (pathElements[1] == "task") {
+              return MaterialPageRoute(
+                  builder: (BuildContext context) => TaskDetails(id));
+            }
+          }),
     );
   }
 }
