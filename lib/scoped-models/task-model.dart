@@ -20,6 +20,13 @@ mixin TaskModel on Model {
     return _tasksCount;
   }
 
+  Task taskById(String id) {
+    Task task = _tasks.firstWhere((element) {
+      return element.id == id;
+    });
+    return task;
+  }
+
   getAllTasksLocal() async {
     _areTasksLoading = true;
     notifyListeners();

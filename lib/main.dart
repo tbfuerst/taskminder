@@ -46,13 +46,12 @@ class Taskminder extends StatelessWidget {
 
             if (pathElements[1] == "task") {
               return MaterialPageRoute(
-                  builder: (BuildContext context) => TaskDetails(id));
+                  builder: (BuildContext context) => TaskDetails(id, model));
             }
- if (pathElements[1] == "taskedit") {
+            if (pathElements[1] == "taskedit") {
               return MaterialPageRoute(
                   builder: (BuildContext context) => TaskEdit.edit(id));
             }
-
           }),
     );
   }
