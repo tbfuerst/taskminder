@@ -32,13 +32,16 @@ mixin TaskModel on Model {
     return task;
   }
 
-  getAllTasksLocal() async {
+  getAllTasksLocal({bool showIncompletedOnly}) async {
     _areTasksLoading = true;
     notifyListeners();
     _tasks = [];
     await LocalDB.db.initDB();
     List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
     rawTasksData.forEach((task) {
+      if (showIncompletedOnly == true && task['isCompleted'] == 1) {
+        return false;
+      }
       _tasks.add(Task(
         id: task['id'],
         name: task["name"],
@@ -46,11 +49,14 @@ mixin TaskModel on Model {
         priority: task['priority'],
         deadline: task['deadline'],
         onlyScheduled: task['onlyScheduled'] == 1 ? true : false,
+        isCompleted: task['isCompleted'] == 1 ? true : false,
       ));
     });
-    _tasks.sort((Task a, Task b) {
-      return b.calculatedPriority - a.calculatedPriority;
-    });
+    if (_tasks.length != 0) {
+      _tasks.sort((Task a, Task b) {
+        return b.calculatedPriority - a.calculatedPriority;
+      });
+    }
     _tasksCount = _tasks.length;
     _areTasksLoading = false;
     notifyListeners();
@@ -58,6 +64,15 @@ mixin TaskModel on Model {
 
   getLocalTasksByDeadline() async {
     _tasksByDeadline = await LocalDB.db.fetchTasksByDeadline();
+  }
+
+  Future<Null> updateTask(String _taskId, Task newTask) async {
+    _areTasksLoading = true;
+    notifyListeners();
+    await LocalDB.db.updateTask(_taskId, newTask);
+    _areTasksLoading = false;
+
+    notifyListeners();
   }
 
   void insertDummy() async {

@@ -17,11 +17,8 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
-  IconData _checkIcon;
-
   @override
   initState() {
-    _checkIcon = Icons.done_outline;
     super.initState();
   }
 
@@ -84,13 +81,14 @@ class _TasksListState extends State<TasksList> {
           isThreeLine: true,
           trailing: IconButton(
             onPressed: () => setState(() {
-                  // TODO: Replace with a done marker!
-                  _checkIcon = Icons.done;
-                  async.Timer(Duration(seconds: 3), () {
-                    model.deleteTaskLocal(_task.id);
+                  _task.isCompleted = true;
+                  async.Timer(Duration(seconds: 1), () async {
+                    model.updateTask(_task.id, _task).then((_) {
+                      model.getAllTasksLocal(showIncompletedOnly: true);
+                    });
                   });
                 }),
-            icon: Icon(_checkIcon),
+            icon: Icon(Icons.cloud_done),
           ),
           onTap: () {
             Navigator.pushNamed(

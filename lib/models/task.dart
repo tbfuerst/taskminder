@@ -10,6 +10,7 @@ class Task {
   final int priority;
   String deadline;
   final bool onlyScheduled;
+  bool isCompleted;
 
   double get timeToDeadline {
     DateTime now = DateTime.now();
@@ -22,15 +23,20 @@ class Task {
     return max<int>(dlPriority, priority);
   }
 
-  Task(
-      {this.id,
-      @required this.name,
-      @required this.description,
-      @required this.priority,
-      @required this.deadline,
-      @required this.onlyScheduled}) {
+  Task({
+    this.id,
+    @required this.name,
+    @required this.description,
+    @required this.priority,
+    @required this.deadline,
+    @required this.onlyScheduled,
+    this.isCompleted,
+  }) {
     if (id == null) {
       id = Uuid().v1();
+    }
+    if (isCompleted == null) {
+      isCompleted = false;
     }
   }
 
@@ -64,6 +70,7 @@ class Task {
       "priority": priority,
       "deadline": deadline,
       "onlyScheduled": onlyScheduled,
+      'isCompleted': isCompleted,
     };
   }
 }

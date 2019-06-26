@@ -23,7 +23,7 @@ class _TasksTabState extends State<TasksTab> {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return RefreshIndicator(
-          onRefresh: () => model.getAllTasksLocal(),
+          onRefresh: () => model.getAllTasksLocal(showIncompletedOnly: true),
           child: TasksList(model, model.tasks),
         );
       },

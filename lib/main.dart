@@ -5,7 +5,7 @@ import 'package:taskminder/scoped-models/mainmodel.dart';
 import './pages/maintabs.dart';
 import './pages/task-details.dart';
 import './pages/task-edit.dart';
-// import './database/local-db.dart';
+import './database/local-db.dart';
 
 void main() => runApp(Taskminder());
 
@@ -14,7 +14,7 @@ class Taskminder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // LocalDB.db.deleteDB();
+    LocalDB.db.deleteDB();
     // DBConnection db = DBConnection();
     // db.rebuildDB();
 
@@ -38,7 +38,7 @@ class Taskminder extends StatelessWidget {
           ),
           routes: {
             '/': (BuildContext context) => MainTabs(model),
-            '/taskedit': (BuildContext context) => TaskEdit.create(),
+            '/taskedit': (BuildContext context) => TaskEdit.create(model, ""),
           },
           onGenerateRoute: (RouteSettings settings) {
             final List<String> pathElements = settings.name.split('/');
@@ -50,7 +50,7 @@ class Taskminder extends StatelessWidget {
             }
             if (pathElements[1] == "taskedit") {
               return MaterialPageRoute(
-                  builder: (BuildContext context) => TaskEdit.edit(id));
+                  builder: (BuildContext context) => TaskEdit.edit(model, id));
             }
           }),
     );

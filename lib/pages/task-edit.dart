@@ -5,10 +5,11 @@ import '../helpers/date-time-helper.dart';
 import '../models/task.dart';
 
 class TaskEdit extends StatefulWidget {
-  TaskEdit.create();
-  TaskEdit.edit(id) {
-    //final String _taskId = id;
-  }
+  final MainModel _model;
+  final String _taskId;
+
+  TaskEdit.create(this._model, this._taskId);
+  TaskEdit.edit(this._model, this._taskId);
 
   _TaskEditState createState() => _TaskEditState();
 }
@@ -16,6 +17,14 @@ class TaskEdit extends StatefulWidget {
 class _TaskEditState extends State<TaskEdit> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final _dateController = TextEditingController();
+
+  bool get isEditMode {
+    return widget._taskId != "";
+  }
+
+  Task get editableTask {
+    return widget._model.taskById(widget._taskId);
+  }
 
   // Form Data
   String _name;
@@ -32,7 +41,7 @@ class _TaskEditState extends State<TaskEdit> {
 
   String _displayedDate =
       DateTimeHelper().datetimeToReadableString(DateTime.now());
-  double _sliderPriority = 50;
+  double _sliderPriority;
 
   String _textPrio;
   String _calculateTextPrio() {
@@ -51,12 +60,15 @@ class _TaskEditState extends State<TaskEdit> {
 
   @override
   initState() {
+    _sliderPriority = isEditMode ? (editableTask.priority * 10).toDouble() : 50;
+    _cbIsScheduled = isEditMode ? editableTask.onlyScheduled : false;
     _textPrio = _calculateTextPrio();
     super.initState();
   }
 
   _buildNameField() {
     return TextFormField(
+      initialValue: isEditMode ? editableTask.name : "",
       onSaved: (String value) {
         _name = value;
       },
@@ -72,6 +84,7 @@ class _TaskEditState extends State<TaskEdit> {
 
   _buildDescrField() {
     return TextFormField(
+      initialValue: isEditMode ? editableTask.description : "",
       onSaved: (String value) {
         _description = value;
       },
@@ -87,7 +100,9 @@ class _TaskEditState extends State<TaskEdit> {
   _datePicker() async {
     showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: isEditMode
+          ? DateTime.tryParse(editableTask.deadline)
+          : DateTime.now(),
       firstDate: DateTime(currentYear),
       lastDate: DateTime(currentYear + 12),
       builder: (BuildContext context, Widget child) {
@@ -197,16 +212,21 @@ class _TaskEditState extends State<TaskEdit> {
   Widget _buildSubmitButton(MainModel model) {
     return Container(
       child: RaisedButton(
-        child: Text("Speichern"),
+        child: model.areTasksLoading
+            ? Center(child: CircularProgressIndicator())
+            : Text("Speichern"),
         onPressed: () async {
           if (_formKey.currentState.validate() == false) {
             return;
           }
           _formKey.currentState.save();
           Task task = _buildTask();
-          await model.insertTask(task);
-          await model.getAllTasksLocal();
-          Navigator.pop(context);
+          isEditMode
+              ? await model.updateTask(widget._taskId, task)
+              : await model.insertTask(task);
+          model
+              .getAllTasksLocal(showIncompletedOnly: true)
+              .then((_) => Navigator.pushReplacementNamed(context, "/"));
         },
       ),
     );

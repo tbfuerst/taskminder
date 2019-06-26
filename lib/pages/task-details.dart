@@ -17,7 +17,6 @@ class _TaskDetailsState extends State<TaskDetails> {
   @override
   void initState() {
     _task = widget.model.taskById(widget._taskId);
-    print(_task.deadline);
     super.initState();
   }
 
@@ -57,9 +56,16 @@ class _TaskDetailsState extends State<TaskDetails> {
                 ),
                 Container(
                   alignment: Alignment.center,
+                  child: Text("isCompleted: ${_task.isCompleted.toString()}"),
+                ),
+                Container(
+                  alignment: Alignment.center,
                   child: RaisedButton(
                     child: Text("Edit"),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                          context, "/taskedit/${widget._taskId}");
+                    },
                   ),
                 ),
               ],

@@ -27,7 +27,7 @@ class LocalDB {
       path,
       onCreate: (Database db, int version) async {
         await db.execute(
-            "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, deadline TEXT, onlyScheduled BOOLEAN)");
+            "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, deadline TEXT, onlyScheduled BOOLEAN, isCompleted BOOLEAN)");
       },
       version: 1,
     );
@@ -42,6 +42,11 @@ class LocalDB {
     final db = await database;
     await db.insert("tasks", task.toMap());
     return task;
+  }
+
+  Future<Null> updateTask(String id, Task newTask) async {
+    final db = await database;
+    await db.update("tasks", newTask.toMap(), where: "id = ?", whereArgs: [id]);
   }
 
   Future<Task> insertDummyTask() async {
