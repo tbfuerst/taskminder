@@ -7,7 +7,7 @@ import '../models/task.dart';
 class TaskEdit extends StatefulWidget {
   TaskEdit.create();
   TaskEdit.edit(id) {
-    final String _taskId = id;
+    //final String _taskId = id;
   }
 
   _TaskEditState createState() => _TaskEditState();

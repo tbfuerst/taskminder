@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-models/mainmodel.dart';
+import 'dart:async' as async;
 import '../models/task.dart';
 import '../dictionary.dart';
 import '../globalSettings.dart';
@@ -16,6 +17,14 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
+  IconData _checkIcon;
+
+  @override
+  initState() {
+    _checkIcon = Icons.done_outline;
+    super.initState();
+  }
+
   Future<bool> _confirmationDialog() {
     return showDialog(
         context: context,
@@ -74,9 +83,14 @@ class _TasksListState extends State<TasksList> {
               "${_task.getFormattedDeadline()[0]} Tage und ${_task.getFormattedDeadline()[1]} Stunden\n_${_task.description}"),
           isThreeLine: true,
           trailing: IconButton(
-            onPressed: () =>
-                Navigator.pushNamed(context, '/taskedit/${_task.id}'),
-            icon: Icon(Icons.edit),
+            onPressed: () => setState(() {
+                  // TODO: Replace with a done marker!
+                  _checkIcon = Icons.done;
+                  async.Timer(Duration(seconds: 3), () {
+                    model.deleteTaskLocal(_task.id);
+                  });
+                }),
+            icon: Icon(_checkIcon),
           ),
           onTap: () {
             Navigator.pushNamed(
