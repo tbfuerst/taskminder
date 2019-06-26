@@ -26,9 +26,9 @@ class _TasksTabState extends State<TasksTab> {
         context: context,
         builder: (BuildContext context) => AlertDialog(
               title: Text(Dictionary()
-                  .displayPhrase("deleteTaskTitle", Settings().language)),
+                  .displayPhrase("discardTaskTitle", Settings().language)),
               content: Text(Dictionary()
-                  .displayPhrase("deleteTaskPrompt", Settings().language)),
+                  .displayPhrase("discardTaskPrompt", Settings().language)),
               actions: <Widget>[
                 FlatButton(
                   child: Text(
@@ -51,7 +51,7 @@ class _TasksTabState extends State<TasksTab> {
         padding: EdgeInsets.only(left: 10.0),
         child: Text(
           Dictionary().displayWord(
-            'delete',
+            'discard',
             Settings().language,
           ),
           style: TextStyle(fontSize: 14, color: Colors.white),
@@ -76,11 +76,13 @@ class _TasksTabState extends State<TasksTab> {
           leading: PriorityIndicator(_task.calculatedPriority),
           title: Text(_task.name),
           subtitle: Text(_task.description +
-              "|||" +
+              "   " +
+              _task.deadline + "   "+
+
               _task.timeToDeadline.round().toString() +
-              "|||" +
+              "   " +
               _task.priority.toString() +
-              "|||"),
+              "   "),
           onTap: () {
             Navigator.pushNamed(
               context,

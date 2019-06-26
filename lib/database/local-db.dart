@@ -7,7 +7,6 @@ import 'package:random_string/random_string.dart';
 import '../models/task.dart';
 
 class LocalDB {
-  String _path;
   Database _database;
 
   LocalDB._();
@@ -22,7 +21,6 @@ class LocalDB {
 
   initDB() async {
     String path = await getDatabasesPath();
-    _path = path;
     path = join(path, 'taskminder.db');
 
     return await openDatabase(

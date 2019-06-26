@@ -23,8 +23,9 @@ class MainTabs extends StatelessWidget {
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: () async {
-              await Navigator.pushNamed(context, '/edittask');
               model.insertDummy();
+              await Navigator.pushNamed(context, '/taskedit');
+              
             }),
         appBar: AppBar(
           title: Text("Taskminder"),

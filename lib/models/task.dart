@@ -18,14 +18,8 @@ class Task {
   }
 
   int get calculatedPriority {
-    int dlPriority = getDeadlinePriority();
-    if (dlPriority > 7) {
-      return dlPriority;
-    } else if (priority > 7) {
-      return priority;
-    } else {
-      return ((dlPriority + priority) / 2).round();
-    }
+    int dlPriority = deadlinePriority;
+    return max<int>(dlPriority, priority);
   }
 
   Task(
@@ -40,11 +34,11 @@ class Task {
     }
   }
 
-  int getDeadlinePriority() {
+  int get deadlinePriority {
     DateTime now = DateTime.now();
     DateTime dateDeadline = DateTime.tryParse(deadline);
     double timeToDeadline = dateDeadline.difference(now).inHours / 24;
-    if (timeToDeadline < 0.2) {
+    if (timeToDeadline < 0.8) {
       return 10;
     } else if (timeToDeadline < 21) {
       double deadlinePriority =

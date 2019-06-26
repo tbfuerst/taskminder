@@ -38,7 +38,7 @@ class Taskminder extends StatelessWidget {
           ),
           routes: {
             '/': (BuildContext context) => MainTabs(model),
-            '/edittask': (BuildContext context) => TaskEdit(model),
+            '/taskedit': (BuildContext context) => TaskEdit.create(),
           },
           onGenerateRoute: (RouteSettings settings) {
             final List<String> pathElements = settings.name.split('/');
@@ -48,6 +48,11 @@ class Taskminder extends StatelessWidget {
               return MaterialPageRoute(
                   builder: (BuildContext context) => TaskDetails(id));
             }
+ if (pathElements[1] == "taskedit") {
+              return MaterialPageRoute(
+                  builder: (BuildContext context) => TaskEdit.edit(id));
+            }
+
           }),
     );
   }

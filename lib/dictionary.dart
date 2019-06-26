@@ -1,6 +1,6 @@
 class Dictionary {
   Map _words = const {
-    'delete': {'de': 'Löschen', 'en': 'Delete'},
+    'discard': {'de': 'Verwerfen', 'en': 'Discard'},
     'yes': {'de': 'Ja', 'en': 'Yes'},
     'no': {'de': 'Nein', 'en': 'No'},
     'tasks': {'de': 'Aufgaben', 'en': 'Tasks'},
@@ -10,10 +10,11 @@ class Dictionary {
   };
 
   Map _phrases = const {
-    'deleteTaskTitle': {'de': 'Aufgabe löschen', 'en': 'Delete Task'},
-    'deleteTaskPrompt': {
-      'de': 'Sind Sie sicher, dass Sie diese Aufgabe löschen möchten?',
-      'en': 'Are you sure to delete this Task?'
+    'discardTaskTitle': {'de': 'Aufgabe verwerfen', 'en': 'Discard Task'},
+    'discardTaskPrompt': {
+      'de':
+          'Sind Sie sicher, dass Sie diese Aufgabe vor der Vollendung verwerfen möchten?',
+      'en': 'Are you sure to discard this Task without completion?'
     }
   };
 

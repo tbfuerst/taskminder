@@ -36,6 +36,9 @@ mixin TaskModel on Model {
         onlyScheduled: task['onlyScheduled'] == 1 ? true : false,
       ));
     });
+    _tasks.sort((Task a, Task b) {
+      return b.calculatedPriority - a.calculatedPriority;
+    });
     _tasksCount = _tasks.length;
     _areTasksLoading = false;
     notifyListeners();
@@ -44,6 +47,15 @@ mixin TaskModel on Model {
   void insertDummy() async {
     await LocalDB.db.insertDummyTask();
     notifyListeners();
+  }
+
+  Future<bool> insertTask(Task task) async {
+    _areTasksLoading = true;
+    notifyListeners();
+    await LocalDB.db.insertTask(task);
+    _areTasksLoading = false;
+    notifyListeners();
+    return true;
   }
 
   void deleteTaskLocal(String id) async {
