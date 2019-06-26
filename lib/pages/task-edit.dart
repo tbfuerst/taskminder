@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'dart:async';
 import '../scoped-models/mainmodel.dart';
 import '../helpers/date-time-helper.dart';
 import '../models/task.dart';
@@ -21,7 +20,8 @@ class _TaskEditState extends State<TaskEdit> {
   // Form Data
   String _name;
   String _description;
-  String _deadline;
+  String _pickedDate =
+      DateTimeHelper().datetimeToDatabaseString(DateTime.now());
   int get priority {
     return (_sliderPriority / 10).round();
   }
@@ -29,8 +29,7 @@ class _TaskEditState extends State<TaskEdit> {
   bool _cbIsScheduled = false;
 
   int currentYear = DateTime.now().year;
-  String _pickedDate =
-      DateTimeHelper().datetimeToDatabaseString(DateTime.now());
+
   String _displayedDate =
       DateTimeHelper().datetimeToReadableString(DateTime.now());
   double _sliderPriority = 50;
@@ -85,7 +84,7 @@ class _TaskEditState extends State<TaskEdit> {
     );
   }
 
-  Future<DateTime> _datePicker() async {
+  _datePicker() async {
     showDatePicker(
       context: context,
       initialDate: DateTime.now(),

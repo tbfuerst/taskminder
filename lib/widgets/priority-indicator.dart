@@ -5,12 +5,24 @@ class PriorityIndicator extends StatelessWidget {
 
   const PriorityIndicator(this.priority);
 
+  Color _determinePrioColor() {
+    if (priority < 2) {
+      return Colors.blueGrey;
+    } else if (priority < 6) {
+      return Colors.yellowAccent;
+    } else if (priority < 9) {
+      return Colors.orangeAccent;
+    } else if (priority < 10) {
+      return Colors.redAccent;
+    } else {
+      return Colors.black;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(
-        child: Text("$priority"),
-      ),
+      child: CircleAvatar(backgroundColor: _determinePrioColor()),
     );
   }
 }

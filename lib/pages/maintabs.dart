@@ -10,6 +10,8 @@ import '../tabs/deadlines.dart';
 import '../tabs/schedule.dart';
 import '../tabs/tasks.dart';
 
+import '../widgets/add-task-button.dart';
+
 class MainTabs extends StatelessWidget {
   final MainModel model;
 
@@ -20,13 +22,7 @@ class MainTabs extends StatelessWidget {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () async {
-              model.insertDummy();
-              await Navigator.pushNamed(context, '/taskedit');
-              
-            }),
+        floatingActionButton: AddTaskButton(model),
         appBar: AppBar(
           title: Text("Taskminder"),
           bottom: TabBar(

@@ -5,11 +5,16 @@ import '../models/task.dart';
 
 mixin TaskModel on Model {
   List<Task> _tasks = [];
+  List<Task> _tasksByDeadline = [];
   bool _areTasksLoading = false;
   int _tasksCount;
 
   List<Task> get tasks {
     return _tasks;
+  }
+
+  List<Task> get tasksByDeadline {
+    return _tasksByDeadline;
   }
 
   bool get areTasksLoading {
@@ -49,6 +54,10 @@ mixin TaskModel on Model {
     _tasksCount = _tasks.length;
     _areTasksLoading = false;
     notifyListeners();
+  }
+
+  getLocalTasksByDeadline() async {
+    _tasksByDeadline = await LocalDB.db.fetchTasksByDeadline();
   }
 
   void insertDummy() async {

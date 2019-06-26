@@ -51,6 +51,10 @@ class _TaskDetailsState extends State<TaskDetails> {
                   alignment: Alignment.center,
                   child: Text(_task.description),
                 ),
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(_task.priority.toString()),
+                ),
               ],
             ),
           ),

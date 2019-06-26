@@ -73,4 +73,9 @@ class LocalDB {
     final db = await database;
     return await db.query("tasks", orderBy: 'priority');
   }
+
+  Future fetchTasksByDeadline() async {
+    final db = await database;
+    return await db.query("tasks", groupBy: 'deadline');
+  }
 }
