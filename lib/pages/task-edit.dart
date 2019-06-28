@@ -139,17 +139,20 @@ class _TaskEditState extends State<TaskEdit> {
       },
       validator: (String value) {
         if (value.length == 0) {
-          return "Die Aufgabe braucht einen Namen";
+          return Dictionary()
+              .displayPhrase('nameFormFieldEmptyError', Settings().language);
         }
       },
       autofocus: true,
-      decoration: InputDecoration(labelText: "Name"),
+      decoration: InputDecoration(
+          labelText: Dictionary().displayWord('name', Settings().language)),
     );
   }
 
   Widget _buildPrioDropdown() {
     return DropdownButtonFormField(
-      decoration: InputDecoration(labelText: "Priorität"),
+      decoration: InputDecoration(
+          labelText: Dictionary().displayWord('priority', Settings().language)),
       value: _prioValue,
       onChanged: (newValue) {
         setState(() {
@@ -158,23 +161,28 @@ class _TaskEditState extends State<TaskEdit> {
       },
       items: [
         DropdownMenuItem(
-          child: Text("very low"),
+          child: Text(Dictionary().displayWord('very', Settings().language) +
+              " " +
+              Dictionary().displayWord('low', Settings().language)),
           value: 1,
         ),
         DropdownMenuItem(
-          child: Text("low"),
+          child: Text(Dictionary().displayWord('low', Settings().language)),
           value: 2,
         ),
         DropdownMenuItem(
-          child: Text("standard"),
+          child:
+              Text(Dictionary().displayWord('standard', Settings().language)),
           value: 3,
         ),
         DropdownMenuItem(
-          child: Text("high"),
+          child: Text(Dictionary().displayWord('high', Settings().language)),
           value: 4,
         ),
         DropdownMenuItem(
-          child: Text("very high"),
+          child: Text(Dictionary().displayWord('very', Settings().language) +
+              " " +
+              Dictionary().displayWord('high', Settings().language)),
           value: 5,
         ),
       ],
@@ -187,10 +195,13 @@ class _TaskEditState extends State<TaskEdit> {
       onSaved: (String value) {
         _description = value;
       },
-      decoration: InputDecoration(labelText: "Beschreibung"),
+      decoration: InputDecoration(
+          labelText:
+              Dictionary().displayWord('description', Settings().language)),
       validator: (String value) {
         if (value.length > 128) {
-          return "Drücke dich treffender aus! Maximal 128 Zeichen.";
+          return Dictionary()
+              .displayPhrase('descrFormFieldEmptyError', Settings().language);
         }
       },
     );
@@ -255,7 +266,8 @@ class _TaskEditState extends State<TaskEdit> {
           //initialValue: _displayedDate,
 
           decoration: InputDecoration(
-            labelText: "Deadline",
+            labelText:
+                Dictionary().displayWord('deadline', Settings().language),
           ),
         ),
       ),
@@ -273,7 +285,7 @@ class _TaskEditState extends State<TaskEdit> {
           //initialValue: _displayedDate,
 
           decoration: InputDecoration(
-            labelText: "Zeit",
+            labelText: Dictionary().displayWord('time', Settings().language),
           ),
         ),
       ),
@@ -306,7 +318,7 @@ class _TaskEditState extends State<TaskEdit> {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Zeitaufwand",
+                Dictionary().displayWord('timeInvestment', Settings().language),
                 style: TextStyle(fontSize: 14.0),
               ),
             ),
@@ -375,7 +387,7 @@ class _TaskEditState extends State<TaskEdit> {
       child: RaisedButton(
         child: model.areTasksLoading
             ? Center(child: CircularProgressIndicator())
-            : Text("Speichern"),
+            : Text(Dictionary().displayWord('save', Settings().language)),
         onPressed: () async {
           if (_formKey.currentState.validate() == false) {
             return;
@@ -417,7 +429,8 @@ class _TaskEditState extends State<TaskEdit> {
             children: <Widget>[
               Container(
                 alignment: Alignment.topCenter,
-                child: Text("Aufgabe erstellen"),
+                child: Text(Dictionary()
+                    .displayPhrase('createTask', Settings().language)),
                 margin: EdgeInsets.all(10.0),
               ),
               _buildFirstRow(),

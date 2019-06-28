@@ -33,7 +33,16 @@ class MainTabs extends StatelessWidget {
               model.getAllTasksLocal(showIncompleted: true);
             }),
             trailing: Icon(Icons.assignment_turned_in),
-            title: Text("Completed Tasks"),
+            title: Text(Dictionary()
+                .displayPhrase('completedTasks', Settings().language)),
+          ),
+          ListTile(
+            onTap: Settings().language == "en"
+                ? Settings().changeLanguage('de')
+                : Settings().changeLanguage('en'),
+            trailing: Text(Settings().language),
+            title:
+                Text(Dictionary().displayWord('language', Settings().language)),
           ),
         ],
       ),

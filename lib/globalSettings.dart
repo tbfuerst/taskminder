@@ -1,3 +1,7 @@
 class Settings {
-  String language = "de";
+  String language = "en";
+
+  changeLanguage(String languageCode) {
+    language = languageCode;
+  }
 }

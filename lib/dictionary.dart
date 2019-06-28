@@ -7,10 +7,12 @@ class Dictionary {
     'some': {'de': 'einige', 'en': 'some'},
     'many': {'de': 'viele', 'en': 'many'},
     'done': {'de': 'Erledigt', 'en': 'Done'},
+    'save': {'de': 'Speichern', 'en': 'Save'},
     'reassign': {'de': 'Reaktivieren', 'en': 'Reassign'},
     'tasks': {'de': 'Aufgaben', 'en': 'Tasks'},
     'task': {'de': 'Aufgabe', 'en': 'Task'},
     'edit': {'de': 'Bearbeiten', 'en': 'Edit'},
+    'language': {'de': 'Sprache', 'en': 'Language'},
     'deadline': {'de': 'Termin', 'en': 'Deadline'},
     'deadlines': {'de': 'Termine', 'en': 'Deadlines'},
     'calendar': {'de': 'Kalender', 'en': 'Calendar'},
@@ -19,15 +21,33 @@ class Dictionary {
     'day': {'de': 'Tag', 'en': 'day'},
     'days': {'de': 'Tage', 'en': 'days'},
     'and': {'de': 'und', 'en': 'and'},
+    'time': {'de': 'Zeit', 'en': 'Time'},
+    'timeInvestment': {'de': 'Zeitaufwand', 'en': 'Time Investment'},
     'minutes': {'de': 'Minuten', 'en': 'minutes'},
     'hour': {'de': 'Stunde', 'en': 'hour'},
     'hours': {'de': 'Stunden', 'en': 'hours'},
     'weeks': {'de': 'Wochen', 'en': 'weeks'},
     'month-s': {'de': 'Monat(e)', 'en': 'month(s)'},
     'remaining': {'de': 'übrig', 'en': 'remaining'},
+    'name': {'de': 'Name', 'en': 'Name'},
+    'description': {'de': 'Beschreibung', 'en': 'Description'},
+    'priority': {'de': 'Priorität', 'en': 'Priority'},
+    'low': {'de': 'Niedrig', 'en': 'low'},
+    'standard': {'de': 'Standard', 'en': 'Standard'},
+    'high': {'de': 'Hoch', 'en': 'high'},
+    'very': {'de': 'sehr', 'en': 'very'},
   };
 
   Map _phrases = const {
+    'nameFormFieldEmptyError': {
+      'de': 'Bitte Namen eingeben',
+      'en': 'Please enter name.'
+    },
+    'descrFormFieldEmptyError': {
+      'de': 'Bitte Beschreibung kürzen',
+      'en': 'Please shorten decription'
+    },
+    'createTask': {'de': 'Aufgabe erstellen', 'en': 'Create Task'},
     'completedTasks': {'de': 'Erledigte Aufgaben', 'en': 'Completed Tasks'},
     'discardTaskTitle': {'de': 'Aufgabe verwerfen', 'en': 'Discard Task'},
     'discardTaskPrompt': {
