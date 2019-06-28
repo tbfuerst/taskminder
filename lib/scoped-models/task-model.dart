@@ -45,10 +45,10 @@ mixin TaskModel on Model {
       _tasks.add(Task(
         id: task['id'],
         name: task["name"],
-        // TODO Deadline time
         description: task["description"],
         priority: task['priority'],
         deadline: task['deadline'],
+        deadlineTime: task['deadlineTime'],
         timeInvestment: task['timeInvestment'],
         onlyScheduled: task['onlyScheduled'] == 1 ? true : false,
         isCompleted: task['isCompleted'] == 1 ? true : false,

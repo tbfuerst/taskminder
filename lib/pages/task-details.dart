@@ -44,7 +44,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(bottom: 48.0),
                   child: Text(
-                      "Deadline: ${DateTimeHelper().databaseDateStringToReadable(_task.deadline)}"),
+                      "Deadline: ${DateTimeHelper().databaseDateStringToReadable(_task.deadline)} ${DateTimeHelper().databaseTimeStringToReadable(_task.deadlineTime)}"),
                 ),
                 Container(
                   alignment: Alignment.center,

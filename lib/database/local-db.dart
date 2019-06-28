@@ -24,8 +24,7 @@ class LocalDB {
       path,
       onCreate: (Database db, int version) async {
         await db.execute(
-            // TODO Deadline time
-            "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, timeInvestment INTEGER, deadline TEXT, onlyScheduled BOOLEAN, isCompleted BOOLEAN)");
+            "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, timeInvestment INTEGER, deadline TEXT, deadlineTime TEXT, onlyScheduled BOOLEAN, isCompleted BOOLEAN)");
       },
       version: 1,
     );

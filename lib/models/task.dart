@@ -10,12 +10,15 @@ class Task {
   final int timeInvestment;
   final int priority;
   String deadline;
+  String deadlineTime;
   final bool onlyScheduled;
   bool isCompleted;
 
   double get timeToDeadline {
     DateTime now = DateTime.now();
-    DateTime dateDeadline = DateTime.tryParse(deadline);
+
+    DateTime dateDeadline =
+        DateTime.tryParse(deadline + "T" + deadlineTime + "00");
     return dateDeadline.difference(now).inHours / 24;
   }
 
@@ -31,7 +34,7 @@ class Task {
     @required this.timeInvestment,
     @required this.priority,
     @required this.deadline,
-    // TODO Deadline time
+    @required this.deadlineTime,
     @required this.onlyScheduled,
     this.isCompleted,
   }) {
@@ -71,7 +74,7 @@ class Task {
       "name": name,
       "description": description,
       "priority": priority,
-      // TODO Deadline time
+      "deadlineTime": deadlineTime,
       "timeInvestment": timeInvestment,
       "deadline": deadline,
       "onlyScheduled": onlyScheduled,

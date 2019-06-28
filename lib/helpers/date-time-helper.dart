@@ -33,4 +33,10 @@ class DateTimeHelper {
     return _time.hour.toString().padLeft(2, "0") +
         _time.minute.toString().padLeft(2, "0");
   }
+
+  String databaseTimeStringToReadable(String databaseString) {
+    return databaseString.substring(0, 2) +
+        ":" +
+        databaseString.substring(2, 4);
+  }
 }

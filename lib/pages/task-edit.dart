@@ -364,6 +364,7 @@ class _TaskEditState extends State<TaskEdit> {
       name: _name,
       description: _description,
       deadline: _pickedDate,
+      deadlineTime: _pickedTime,
       timeInvestment: _timeInvestment,
       priority: priority,
       onlyScheduled: _cbIsScheduled,
