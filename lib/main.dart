@@ -19,40 +19,43 @@ class Taskminder extends StatelessWidget {
     return ScopedModel<MainModel>(
       model: model,
       child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            // This is the theme of your application.
-            //
-            // Try running your application with "flutter run". You'll see the
-            // application has a blue toolbar. Then, without quitting the app, try
-            // changing the primarySwatch below to Colors.green and then invoke
-            // "hot reload" (press "r" in the console where you ran "flutter run",
-            // or simply save your changes to "hot reload" in a Flutter IDE).
-            // Notice that the counter didn't reset back to zero; the application
-            // is not restarted.
-            primarySwatch: Colors.teal,
-            accentColor: Colors.tealAccent,
-            errorColor: Colors.deepOrange[700],
-          ),
-          routes: {
-            '/': (BuildContext context) => MainTabs(model),
-            '/taskedit': (BuildContext context) => TaskEdit.create(model, ""),
-            '/completedtasks': (BuildContext context) =>
-                CompletedTasksPage(model),
-          },
-          onGenerateRoute: (RouteSettings settings) {
-            final List<String> pathElements = settings.name.split('/');
-            final String id = pathElements[2];
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.teal,
+          accentColor: Colors.tealAccent,
+          errorColor: Colors.deepOrange[700],
+        ),
+        routes: {
+          '/': (BuildContext context) => MainTabs(model),
+          '/taskedit': (BuildContext context) => TaskEdit.create(model, ""),
+          '/completedtasks': (BuildContext context) =>
+              CompletedTasksPage(model),
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          final List<String> pathElements = settings.name.split('/');
+          final String id = pathElements[2];
 
-            if (pathElements[1] == "task") {
-              return MaterialPageRoute(
-                  builder: (BuildContext context) => TaskDetails(id, model));
-            }
-            if (pathElements[1] == "taskedit") {
-              return MaterialPageRoute(
-                  builder: (BuildContext context) => TaskEdit.edit(model, id));
-            }
-          }),
+          if (pathElements[1] == "task") {
+            return MaterialPageRoute(
+                builder: (BuildContext context) => TaskDetails(id, model));
+          }
+          if (pathElements[1] == "taskedit") {
+            return MaterialPageRoute(
+                builder: (BuildContext context) => TaskEdit.edit(model, id));
+          }
+          return MaterialPageRoute(
+              builder: (BuildContext context) => MainTabs(model));
+        },
+      ),
     );
   }
 }

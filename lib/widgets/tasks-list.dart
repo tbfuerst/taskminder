@@ -51,10 +51,7 @@ class _TasksListState extends State<TasksList> {
       child: Padding(
         padding: EdgeInsets.only(left: 10.0),
         child: Text(
-          Dictionary().displayWord(
-            'discard',
-            Settings().language,
-          ),
+          Dictionary().displayWord('discard', Settings().language),
           style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
@@ -68,45 +65,62 @@ class _TasksListState extends State<TasksList> {
     return model.updateTask(_task.id, _task);
   }
 
-  Widget _buildListTiles(BuildContext context, int index, MainModel model) {
+  Widget _buildTrailingButton(
+      BuildContext context, Task task, MainModel model) {
+    return FlatButton(
+      onPressed: () => setState(() {
+        widget.showCompletedTasksMode
+            ? updateCompletionStatus(task, model, false).then((_) {
+                model.getAllTasksLocal(showCompleted: true);
+              })
+            : updateCompletionStatus(task, model, true).then((_) {
+                model.getAllTasksLocal(showIncompleted: true);
+              });
+      }),
+      child: Wrap(
+        direction: Axis.horizontal,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 4,
+        children: <Widget>[
+          (widget.showCompletedTasksMode
+              ? Icon(Icons.undo)
+              : Icon(Icons.check_circle_outline)),
+          (widget.showCompletedTasksMode ? Text("Reassign") : Text("Done")),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildListTile(Task task, MainModel model) {
+    return ListTile(
+      leading: PriorityIndicator(task.calculatedPriority),
+      title: Text(task.name),
+      subtitle: Text(
+          "${task.getFormattedDeadline()[0]} Tage und ${task.getFormattedDeadline()[1]} Stunden\n_${task.description}"),
+      isThreeLine: true,
+      trailing: _buildTrailingButton(context, task, model),
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          "/task/${task.id}",
+        );
+      },
+    );
+  }
+
+  Widget _buildDismissible(BuildContext context, int index, MainModel model) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      Task _task = widget.tasks[index];
+      Task task = widget.tasks[index];
       return Card(
         child: Dismissible(
           background: _dismissibleBackgroundStyle(),
           dismissThresholds: {DismissDirection.startToEnd: 0.8},
           confirmDismiss: (direction) => _confirmationDialog(),
           direction: DismissDirection.startToEnd,
-          key: Key(_task.id),
-          onDismissed: (direction) => model.deleteTaskLocal(_task.id),
-          child: ListTile(
-            leading: PriorityIndicator(_task.calculatedPriority),
-            title: Text(_task.name),
-            subtitle: Text(
-                "${_task.getFormattedDeadline()[0]} Tage und ${_task.getFormattedDeadline()[1]} Stunden\n_${_task.description}"),
-            isThreeLine: true,
-            trailing: IconButton(
-              onPressed: () => setState(() {
-                    widget.showCompletedTasksMode
-                        ? updateCompletionStatus(_task, model, false).then((_) {
-                            model.getAllTasksLocal(showCompleted: true);
-                          })
-                        : updateCompletionStatus(_task, model, true).then((_) {
-                            model.getAllTasksLocal(showIncompleted: true);
-                          });
-                  }),
-              icon: widget.showCompletedTasksMode
-                  ? Icon(Icons.undo)
-                  : Icon(Icons.cloud_done),
-            ),
-            onTap: () {
-              Navigator.pushNamed(
-                context,
-                "/task/${_task.id}",
-              );
-            },
-          ),
+          key: Key(task.id),
+          onDismissed: (direction) => model.deleteTaskLocal(task.id),
+          child: _buildListTile(task, model),
         ),
       );
     });
@@ -122,7 +136,7 @@ class _TasksListState extends State<TasksList> {
           : ListView.builder(
               itemCount: widget.model.tasksCount,
               itemBuilder: (context, index) =>
-                  _buildListTiles(context, index, widget.model),
+                  _buildDismissible(context, index, widget.model),
             ),
     );
   }

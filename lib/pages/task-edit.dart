@@ -183,7 +183,7 @@ class _TaskEditState extends State<TaskEdit> {
     );
   }
 
-  _datePicker() async {
+  Future _datePicker() async {
     showDatePicker(
       context: context,
       initialDate: isEditMode
@@ -208,7 +208,7 @@ class _TaskEditState extends State<TaskEdit> {
     });
   }
 
-  _timePicker() async {
+  Future _timePicker() async {
     showTimePicker(
       context: context,
       initialTime: isEditMode
@@ -267,7 +267,7 @@ class _TaskEditState extends State<TaskEdit> {
     );
   }
 
-  _buildDeadlineRow() {
+  Widget _buildDeadlineRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -327,16 +327,16 @@ class _TaskEditState extends State<TaskEdit> {
   Widget _buildCheckBox() {
     return GestureDetector(
       onTap: () => setState(() {
-            _cbIsScheduled = !_cbIsScheduled;
-          }),
+        _cbIsScheduled = !_cbIsScheduled;
+      }),
       child: Container(
         child: Row(
           children: <Widget>[
             Checkbox(
               value: _cbIsScheduled,
               onChanged: (newValue) => setState(() {
-                    _cbIsScheduled = newValue;
-                  }),
+                _cbIsScheduled = newValue;
+              }),
             ),
             Text("nur geplante Aufgabe"),
             IconButton(
@@ -345,9 +345,9 @@ class _TaskEditState extends State<TaskEdit> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        title: Text("Geplante Aufgaben"),
-                        content: Text("Geplante Aufgaben sind...."),
-                      ),
+                    title: Text("Geplante Aufgaben"),
+                    content: Text("Geplante Aufgaben sind...."),
+                  ),
                 );
               },
             )

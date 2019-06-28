@@ -29,8 +29,8 @@ class MainTabs extends StatelessWidget {
           ListTile(
             onTap: () =>
                 Navigator.pushNamed(context, "/completedtasks").then((_) {
-                  model.getAllTasksLocal(showIncompleted: true);
                   Navigator.pop(context);
+                  model.getAllTasksLocal(showIncompleted: true);
                 }),
             trailing: Icon(Icons.assignment_turned_in),
             title: Text("Completed Tasks"),
