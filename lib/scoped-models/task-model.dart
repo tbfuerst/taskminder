@@ -32,27 +32,39 @@ mixin TaskModel on Model {
     return task;
   }
 
-  getAllTasksLocal({bool showIncompletedOnly}) async {
+  getAllTasksLocal({bool showIncompleted, bool showCompleted}) async {
     _areTasksLoading = true;
     notifyListeners();
     _tasks = [];
     await LocalDB.db.initDB();
     List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
     rawTasksData.forEach((task) {
-      if (showIncompletedOnly == true && task['isCompleted'] == 1) {
-        return false;
+      if (showIncompleted == true && task['isCompleted'] == 0) {
+        _tasks.add(Task(
+          id: task['id'],
+          name: task["name"],
+          description: task["description"],
+          priority: task['priority'],
+          deadline: task['deadline'],
+          deadlineTime: task['deadlineTime'],
+          timeInvestment: task['timeInvestment'],
+          onlyScheduled: task['onlyScheduled'] == 1 ? true : false,
+          isCompleted: task['isCompleted'] == 1 ? true : false,
+        ));
       }
-      _tasks.add(Task(
-        id: task['id'],
-        name: task["name"],
-        description: task["description"],
-        priority: task['priority'],
-        deadline: task['deadline'],
-        deadlineTime: task['deadlineTime'],
-        timeInvestment: task['timeInvestment'],
-        onlyScheduled: task['onlyScheduled'] == 1 ? true : false,
-        isCompleted: task['isCompleted'] == 1 ? true : false,
-      ));
+      if (showCompleted == true && task['isCompleted'] == 1) {
+        _tasks.add(Task(
+          id: task['id'],
+          name: task["name"],
+          description: task["description"],
+          priority: task['priority'],
+          deadline: task['deadline'],
+          deadlineTime: task['deadlineTime'],
+          timeInvestment: task['timeInvestment'],
+          onlyScheduled: task['onlyScheduled'] == 1 ? true : false,
+          isCompleted: task['isCompleted'] == 1 ? true : false,
+        ));
+      }
     });
     if (_tasks.length != 0) {
       _tasks.sort((Task a, Task b) {

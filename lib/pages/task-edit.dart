@@ -242,7 +242,7 @@ class _TaskEditState extends State<TaskEdit> {
           //initialValue: _displayedDate,
 
           decoration: InputDecoration(
-            labelText: "Datum",
+            labelText: "Deadline",
           ),
         ),
       ),
@@ -287,36 +287,39 @@ class _TaskEditState extends State<TaskEdit> {
 
   Widget _buildTimeInvestmentSlider() {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+        padding: EdgeInsets.only(top: 20.0, left: 2.0, right: 2.0),
         child: Column(
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
                 "Zeitaufwand",
-                style: TextStyle(fontSize: 16.0),
+                style: TextStyle(fontSize: 14.0),
               ),
             ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Flexible(
-                flex: 4,
-                child: Slider(
-                  value: _timeInvestmentSlider,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _timeInvestmentSlider = newValue;
-                      _textTimeInvestment = _calculateTextTimeInvest();
-                    });
-                  },
-                  min: 0,
-                  max: 100,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  flex: 4,
+                  child: Slider(
+                    value: _timeInvestmentSlider,
+                    onChanged: (newValue) {
+                      setState(() {
+                        _timeInvestmentSlider = newValue;
+                        _textTimeInvestment = _calculateTextTimeInvest();
+                      });
+                    },
+                    min: 0,
+                    max: 100,
+                  ),
                 ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Text(_textTimeInvestment),
-              ),
-            ])
+                Flexible(
+                  flex: 1,
+                  child: Text(_textTimeInvestment),
+                ),
+              ],
+            )
           ],
         ));
   }
@@ -370,7 +373,7 @@ class _TaskEditState extends State<TaskEdit> {
               ? await model.updateTask(widget._taskId, task)
               : await model.insertTask(task);
           model
-              .getAllTasksLocal(showIncompletedOnly: true)
+              .getAllTasksLocal(showIncompleted: true)
               .then((_) => Navigator.pushReplacementNamed(context, "/"));
         },
       ),
@@ -406,8 +409,8 @@ class _TaskEditState extends State<TaskEdit> {
               ),
               _buildFirstRow(),
               _buildDescrField(),
-              _buildDeadlineRow(),
               _buildTimeInvestmentSlider(),
+              _buildDeadlineRow(),
               _buildCheckBox(),
               ScopedModelDescendant<MainModel>(builder:
                   (BuildContext context, Widget child, MainModel model) {

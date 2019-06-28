@@ -17,11 +17,35 @@ class MainTabs extends StatelessWidget {
 
   MainTabs(this.model);
 
+  Widget _mainDrawer(BuildContext context, MainModel model) {
+    return Drawer(
+        child: Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text("Menu"),
+      ),
+      body: ListView(
+        children: <Widget>[
+          ListTile(
+            onTap: () =>
+                Navigator.pushNamed(context, "/completedtasks").then((_) {
+                  model.getAllTasksLocal(showIncompleted: true);
+                  Navigator.pop(context);
+                }),
+            trailing: Icon(Icons.assignment_turned_in),
+            title: Text("Completed Tasks"),
+          ),
+        ],
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
+        drawer: _mainDrawer(context, model),
         floatingActionButton: AddTaskButton(model),
         appBar: AppBar(
           title: Text("Taskminder"),

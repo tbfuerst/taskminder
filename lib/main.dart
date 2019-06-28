@@ -5,6 +5,7 @@ import 'package:taskminder/scoped-models/mainmodel.dart';
 import './pages/maintabs.dart';
 import './pages/task-details.dart';
 import './pages/task-edit.dart';
+import './pages/completed-tasks.dart';
 import './database/local-db.dart';
 
 void main() => runApp(Taskminder());
@@ -36,6 +37,8 @@ class Taskminder extends StatelessWidget {
           routes: {
             '/': (BuildContext context) => MainTabs(model),
             '/taskedit': (BuildContext context) => TaskEdit.create(model, ""),
+            '/completedtasks': (BuildContext context) =>
+                CompletedTasksPage(model),
           },
           onGenerateRoute: (RouteSettings settings) {
             final List<String> pathElements = settings.name.split('/');

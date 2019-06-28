@@ -14,7 +14,7 @@ class TasksTab extends StatefulWidget {
 class _TasksTabState extends State<TasksTab> {
   @override
   void initState() {
-    widget.model.getAllTasksLocal();
+    widget.model.getAllTasksLocal(showIncompleted: true);
     super.initState();
   }
 
@@ -23,8 +23,12 @@ class _TasksTabState extends State<TasksTab> {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return RefreshIndicator(
-          onRefresh: () => model.getAllTasksLocal(showIncompletedOnly: true),
-          child: TasksList(model, model.tasks),
+          onRefresh: () => model.getAllTasksLocal(showIncompleted: true),
+          child: TasksList(
+            model: model,
+            tasks: model.tasks,
+            showCompletedTasksMode: false,
+          ),
         );
       },
     );
