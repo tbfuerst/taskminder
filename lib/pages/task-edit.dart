@@ -1,6 +1,6 @@
-import "dart:math" as math;
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+
 import '../scoped-models/mainmodel.dart';
 import '../helpers/date-time-helper.dart';
 import '../models/task.dart';
@@ -31,7 +31,9 @@ class _TaskEditState extends State<TaskEdit> {
   // Form Data
   String _name;
   String _description;
+  int _prioValue = 3;
   String _pickedDate = DateTimeHelper().dateToDatabaseString(DateTime.now());
+  String _displayedDate = DateTimeHelper().dateToReadableString(DateTime.now());
   String _pickedTime = DateTimeHelper().timeToDatabaseString(TimeOfDay.now());
   String _displayedTime =
       DateTimeHelper().timeToReadableString(TimeOfDay.now());
@@ -42,63 +44,81 @@ class _TaskEditState extends State<TaskEdit> {
   double _timeInvestmentSlider;
 
   int get _timeInvestment {
-    // slider position will be between 0 and 100
-    double minSlider = 0;
-    double maxSlider = 100;
-
-    // The result should be between 100 an 10000000
-    double minv = math.log(1);
-    double maxv = math.log(43800);
-
-    // calculate adjustment factor
-    double scale = (maxv - minv) / (maxSlider - minSlider);
-
-// TODO: figure out correct function
-    return (math.pow(
-                math.e, (minv + scale * (_timeInvestmentSlider - minSlider))) /
-            60)
-        .round();
+    return _timeInvestmentSlider.round();
   }
 
   bool _cbIsScheduled = false;
 
   int currentYear = DateTime.now().year;
 
-  String _displayedDate = DateTimeHelper().dateToReadableString(DateTime.now());
   double _sliderPriority;
-
-  String _textPrio;
-  String _calculateTextPrio() {
-    if (_sliderPriority < 15) {
-      return "very low";
-    } else if (_sliderPriority < 40) {
-      return "low";
-    } else if (_sliderPriority < 60) {
-      return "standard";
-    } else if (_sliderPriority < 85) {
-      return "high";
-    } else {
-      return "very high";
-    }
-  }
 
   String _textTimeInvestment;
   String _calculateTextTimeInvest() {
-    return _timeInvestment.toString();
+    if (_timeInvestmentSlider < 10) {
+      return "minutes";
+    } else if (_timeInvestmentSlider < 25) {
+      return "few hours";
+    } else if (_timeInvestmentSlider < 40) {
+      return "some hours";
+    } else if (_timeInvestmentSlider < 60) {
+      return "many hours";
+    } else if (_timeInvestmentSlider < 75) {
+      return "few days";
+    } else if (_timeInvestmentSlider < 95) {
+      return "weeks";
+    } else {
+      return "month(s)";
+    }
   }
 
   @override
   initState() {
-    _sliderPriority = isEditMode ? (editableTask.priority * 10).toDouble() : 50;
+    _pickedDate = isEditMode
+        ? editableTask.deadline
+        : DateTimeHelper().dateToDatabaseString(DateTime.now());
+
+    _displayedDate = isEditMode
+        ? DateTimeHelper().databaseDateStringToReadable(editableTask.deadline)
+        : DateTimeHelper().dateToReadableString(DateTime.now());
+
+    _pickedTime = isEditMode
+        ? editableTask.deadlineTime
+        : DateTimeHelper().timeToDatabaseString(TimeOfDay.now());
+
+    _displayedTime = isEditMode
+        ? DateTimeHelper()
+            .databaseTimeStringToReadable(editableTask.deadlineTime)
+        : DateTimeHelper().timeToReadableString(TimeOfDay.now());
+
+    _dateController.text = _displayedDate;
+    _timeController.text = _displayedTime;
+
+    _prioValue = isEditMode ? (editableTask.priority / 2).round() : 3;
     _timeInvestmentSlider =
         isEditMode ? editableTask.timeInvestment.toDouble() : 100;
     _cbIsScheduled = isEditMode ? editableTask.onlyScheduled : false;
-    _textPrio = _calculateTextPrio();
     _textTimeInvestment = _calculateTextTimeInvest();
     super.initState();
   }
 
-  _buildNameField() {
+  _buildFirstRow() {
+    return Row(
+      children: <Widget>[
+        Flexible(
+          flex: 3,
+          child: _buildNameField(),
+        ),
+        SizedBox(width: 100.0),
+        Flexible(
+          flex: 2,
+          child: _buildPrioDropdown(),
+        )
+      ],
+    );
+  }
+
+  Widget _buildNameField() {
     return TextFormField(
       initialValue: isEditMode ? editableTask.name : "",
       onSaved: (String value) {
@@ -114,7 +134,41 @@ class _TaskEditState extends State<TaskEdit> {
     );
   }
 
-  _buildDescrField() {
+  Widget _buildPrioDropdown() {
+    return DropdownButtonFormField(
+      decoration: InputDecoration(labelText: "Priorität"),
+      value: _prioValue,
+      onChanged: (newValue) {
+        setState(() {
+          _prioValue = newValue;
+        });
+      },
+      items: [
+        DropdownMenuItem(
+          child: Text("very low"),
+          value: 1,
+        ),
+        DropdownMenuItem(
+          child: Text("low"),
+          value: 2,
+        ),
+        DropdownMenuItem(
+          child: Text("standard"),
+          value: 3,
+        ),
+        DropdownMenuItem(
+          child: Text("high"),
+          value: 4,
+        ),
+        DropdownMenuItem(
+          child: Text("very high"),
+          value: 5,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDescrField() {
     return TextFormField(
       initialValue: isEditMode ? editableTask.description : "",
       onSaved: (String value) {
@@ -267,42 +321,6 @@ class _TaskEditState extends State<TaskEdit> {
         ));
   }
 
-  Widget _buildPrioritySlider() {
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Priorität",
-                style: TextStyle(fontSize: 16.0),
-              ),
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Flexible(
-                flex: 4,
-                child: Slider(
-                  value: _sliderPriority,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _sliderPriority = newValue;
-                      _textPrio = _calculateTextPrio();
-                    });
-                  },
-                  min: 0,
-                  max: 100,
-                ),
-              ),
-              Flexible(
-                flex: 1,
-                child: Text(_textPrio),
-              ),
-            ])
-          ],
-        ));
-  }
-
   Widget _buildCheckBox() {
     return GestureDetector(
       onTap: () => setState(() {
@@ -366,7 +384,7 @@ class _TaskEditState extends State<TaskEdit> {
       deadline: _pickedDate,
       deadlineTime: _pickedTime,
       timeInvestment: _timeInvestment,
-      priority: priority,
+      priority: _prioValue * 2,
       onlyScheduled: _cbIsScheduled,
     );
     return task;
@@ -374,8 +392,6 @@ class _TaskEditState extends State<TaskEdit> {
 
   @override
   Widget build(BuildContext context) {
-    _dateController.text = _displayedDate;
-    _timeController.text = _displayedTime;
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
@@ -388,11 +404,10 @@ class _TaskEditState extends State<TaskEdit> {
                 child: Text("Aufgabe erstellen"),
                 margin: EdgeInsets.all(10.0),
               ),
-              _buildNameField(),
+              _buildFirstRow(),
               _buildDescrField(),
               _buildDeadlineRow(),
               _buildTimeInvestmentSlider(),
-              _buildPrioritySlider(),
               _buildCheckBox(),
               ScopedModelDescendant<MainModel>(builder:
                   (BuildContext context, Widget child, MainModel model) {
