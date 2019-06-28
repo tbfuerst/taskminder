@@ -85,7 +85,9 @@ class _TasksListState extends State<TasksList> {
           (widget.showCompletedTasksMode
               ? Icon(Icons.undo)
               : Icon(Icons.check_circle_outline)),
-          (widget.showCompletedTasksMode ? Text("Reassign") : Text("Done")),
+          (widget.showCompletedTasksMode
+              ? Text(Dictionary().displayWord('reassign', Settings().language))
+              : Text(Dictionary().displayWord('done', Settings().language))),
         ],
       ),
     );
@@ -95,8 +97,17 @@ class _TasksListState extends State<TasksList> {
     return ListTile(
       leading: PriorityIndicator(task.calculatedPriority),
       title: Text(task.name),
-      subtitle: Text(
-          "${task.getFormattedDeadline()[0]} Tage und ${task.getFormattedDeadline()[1]} Stunden\n_${task.description}"),
+      subtitle: Text(task.getFormattedDeadline()[0].toString() +
+          " " +
+          Dictionary().displayWord('days', Settings().language) +
+          ", " +
+          task.getFormattedDeadline()[1].toString() +
+          " " +
+          Dictionary().displayWord('hours', Settings().language) +
+          " " +
+          Dictionary().displayWord('remaining', Settings().language) +
+          "\n" +
+          task.description),
       isThreeLine: true,
       trailing: _buildTrailingButton(context, task, model),
       onTap: () {

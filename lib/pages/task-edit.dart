@@ -5,6 +5,9 @@ import '../scoped-models/mainmodel.dart';
 import '../helpers/date-time-helper.dart';
 import '../models/task.dart';
 
+import '../dictionary.dart';
+import '../globalSettings.dart';
+
 class TaskEdit extends StatefulWidget {
   final MainModel _model;
   final String _taskId;
@@ -56,19 +59,29 @@ class _TaskEditState extends State<TaskEdit> {
   String _textTimeInvestment;
   String _calculateTextTimeInvest() {
     if (_timeInvestmentSlider < 10) {
-      return "minutes";
+      return Dictionary().displayWord('minutes', Settings().language);
     } else if (_timeInvestmentSlider < 25) {
-      return "few hours";
+      return Dictionary().displayWord('few', Settings().language) +
+          " " +
+          Dictionary().displayWord('hours', Settings().language);
+      ;
+      ;
     } else if (_timeInvestmentSlider < 40) {
-      return "some hours";
+      return Dictionary().displayWord('some', Settings().language) +
+          " " +
+          Dictionary().displayWord('hours', Settings().language);
     } else if (_timeInvestmentSlider < 60) {
-      return "many hours";
+      return Dictionary().displayWord('many', Settings().language) +
+          " " +
+          Dictionary().displayWord('hours', Settings().language);
     } else if (_timeInvestmentSlider < 75) {
-      return "few days";
+      return Dictionary().displayWord('few', Settings().language) +
+          " " +
+          Dictionary().displayWord('days', Settings().language);
     } else if (_timeInvestmentSlider < 95) {
-      return "weeks";
+      return Dictionary().displayWord('weeks', Settings().language);
     } else {
-      return "month(s)";
+      return Dictionary().displayWord('month-s', Settings().language);
     }
   }
 
@@ -301,7 +314,7 @@ class _TaskEditState extends State<TaskEdit> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Flexible(
-                  flex: 4,
+                  flex: 2,
                   child: Slider(
                     value: _timeInvestmentSlider,
                     onChanged: (newValue) {

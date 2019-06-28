@@ -22,16 +22,16 @@ class MainTabs extends StatelessWidget {
         child: Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Menu"),
+        title: Text(Dictionary().displayWord('mainmenu', Settings().language)),
       ),
       body: ListView(
         children: <Widget>[
           ListTile(
             onTap: () =>
                 Navigator.pushNamed(context, "/completedtasks").then((_) {
-                  Navigator.pop(context);
-                  model.getAllTasksLocal(showIncompleted: true);
-                }),
+              Navigator.pop(context);
+              model.getAllTasksLocal(showIncompleted: true);
+            }),
             trailing: Icon(Icons.assignment_turned_in),
             title: Text("Completed Tasks"),
           ),

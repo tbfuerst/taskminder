@@ -1,3 +1,3 @@
 class Settings {
-  String language = "en";
+  String language = "de";
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../scoped-models/mainmodel.dart';
 import '../models/task.dart';
 import '../helpers/date-time-helper.dart';
+import '../dictionary.dart';
+import '../globalSettings.dart';
 
 class TaskDetails extends StatefulWidget {
   final String _taskId;
@@ -24,7 +26,8 @@ class _TaskDetailsState extends State<TaskDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Aufgabe: ${_task.name}"),
+          title: Text(
+              "${Dictionary().displayWord('task', Settings().language)}: ${_task.name}"),
         ),
         body: Container(
           alignment: Alignment.center,
@@ -43,8 +46,13 @@ class _TaskDetailsState extends State<TaskDetails> {
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(bottom: 48.0),
-                  child: Text(
-                      "Deadline: ${DateTimeHelper().databaseDateStringToReadable(_task.deadline)} ${DateTimeHelper().databaseTimeStringToReadable(_task.deadlineTime)}"),
+                  child: Text(Dictionary()
+                          .displayWord('deadline', Settings().language) +
+                      ": " +
+                      DateTimeHelper()
+                          .databaseDateStringToReadable(_task.deadline) +
+                      DateTimeHelper()
+                          .databaseTimeStringToReadable(_task.deadlineTime)),
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -61,7 +69,8 @@ class _TaskDetailsState extends State<TaskDetails> {
                 Container(
                   alignment: Alignment.center,
                   child: RaisedButton(
-                    child: Text("Edit"),
+                    child: Text(
+                        Dictionary().displayWord('edit', Settings().language)),
                     onPressed: () {
                       Navigator.pushNamed(
                           context, "/taskedit/${widget._taskId}");

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-
+import '../dictionary.dart';
+import '../globalSettings.dart';
 import '../scoped-models/mainmodel.dart';
 
 import '../widgets/tasks-list.dart';
@@ -28,7 +29,8 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
         appBar: AppBar(
-          title: Text("Completed Tasks"),
+          title: Text(Dictionary()
+              .displayPhrase('completedTasks', Settings().language)),
         ),
         body: TasksList(
           model: widget.model,
