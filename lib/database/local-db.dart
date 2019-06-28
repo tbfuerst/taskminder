@@ -1,8 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'dart:math';
-
-import 'package:random_string/random_string.dart';
 
 import '../models/task.dart';
 
@@ -27,7 +24,8 @@ class LocalDB {
       path,
       onCreate: (Database db, int version) async {
         await db.execute(
-            "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, deadline TEXT, onlyScheduled BOOLEAN, isCompleted BOOLEAN)");
+            // TODO Deadline time
+            "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, timeInvestment INTEGER, deadline TEXT, onlyScheduled BOOLEAN, isCompleted BOOLEAN)");
       },
       version: 1,
     );
@@ -47,26 +45,6 @@ class LocalDB {
   Future<Null> updateTask(String id, Task newTask) async {
     final db = await database;
     await db.update("tasks", newTask.toMap(), where: "id = ?", whereArgs: [id]);
-  }
-
-  Future<Task> insertDummyTask() async {
-    final int day = Random().nextInt(27) + 1;
-    final int month = Random().nextInt(2) + 6;
-    final int year = 2019;
-
-    final String dl = year.toString() +
-        month.toString().padLeft(2, "0") +
-        day.toString().padLeft(2, "0");
-
-    final Task task = Task(
-      name: randomString(5),
-      description: randomString(25),
-      deadline: dl,
-      priority: Random().nextInt(9) + 1,
-      onlyScheduled: false,
-    );
-    await insertTask(task);
-    return task;
   }
 
   Future<int> deleteTask(String id) async {

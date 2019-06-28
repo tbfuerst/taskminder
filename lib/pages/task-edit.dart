@@ -1,3 +1,4 @@
+import "dart:math" as math;
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-models/mainmodel.dart';
@@ -17,6 +18,7 @@ class TaskEdit extends StatefulWidget {
 class _TaskEditState extends State<TaskEdit> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final _dateController = TextEditingController();
+  final _timeController = TextEditingController();
 
   bool get isEditMode {
     return widget._taskId != "";
@@ -29,18 +31,40 @@ class _TaskEditState extends State<TaskEdit> {
   // Form Data
   String _name;
   String _description;
-  String _pickedDate =
-      DateTimeHelper().datetimeToDatabaseString(DateTime.now());
+  String _pickedDate = DateTimeHelper().dateToDatabaseString(DateTime.now());
+  String _pickedTime = DateTimeHelper().timeToDatabaseString(TimeOfDay.now());
+  String _displayedTime =
+      DateTimeHelper().timeToReadableString(TimeOfDay.now());
   int get priority {
     return (_sliderPriority / 10).round();
+  }
+
+  double _timeInvestmentSlider;
+
+  int get _timeInvestment {
+    // slider position will be between 0 and 100
+    double minSlider = 0;
+    double maxSlider = 100;
+
+    // The result should be between 100 an 10000000
+    double minv = math.log(1);
+    double maxv = math.log(43800);
+
+    // calculate adjustment factor
+    double scale = (maxv - minv) / (maxSlider - minSlider);
+
+// TODO: figure out correct function
+    return (math.pow(
+                math.e, (minv + scale * (_timeInvestmentSlider - minSlider))) /
+            60)
+        .round();
   }
 
   bool _cbIsScheduled = false;
 
   int currentYear = DateTime.now().year;
 
-  String _displayedDate =
-      DateTimeHelper().datetimeToReadableString(DateTime.now());
+  String _displayedDate = DateTimeHelper().dateToReadableString(DateTime.now());
   double _sliderPriority;
 
   String _textPrio;
@@ -58,11 +82,19 @@ class _TaskEditState extends State<TaskEdit> {
     }
   }
 
+  String _textTimeInvestment;
+  String _calculateTextTimeInvest() {
+    return _timeInvestment.toString();
+  }
+
   @override
   initState() {
     _sliderPriority = isEditMode ? (editableTask.priority * 10).toDouble() : 50;
+    _timeInvestmentSlider =
+        isEditMode ? editableTask.timeInvestment.toDouble() : 100;
     _cbIsScheduled = isEditMode ? editableTask.onlyScheduled : false;
     _textPrio = _calculateTextPrio();
+    _textTimeInvestment = _calculateTextTimeInvest();
     super.initState();
   }
 
@@ -115,9 +147,32 @@ class _TaskEditState extends State<TaskEdit> {
       },
     ).then((_date) {
       setState(() {
-        _pickedDate = DateTimeHelper().datetimeToDatabaseString(_date);
-        _displayedDate = DateTimeHelper().datetimeToReadableString(_date);
+        _pickedDate = DateTimeHelper().dateToDatabaseString(_date);
+        _displayedDate = DateTimeHelper().dateToReadableString(_date);
         _dateController.text = _displayedDate;
+      });
+    });
+  }
+
+  _timePicker() async {
+    showTimePicker(
+      context: context,
+      initialTime: isEditMode
+          ? TimeOfDay.fromDateTime(DateTime.tryParse(editableTask.deadline))
+          : TimeOfDay.now(),
+      builder: (BuildContext context, Widget child) {
+        return SingleChildScrollView(
+          child: Theme(
+            data: ThemeData.dark(),
+            child: child,
+          ),
+        );
+      },
+    ).then((_time) {
+      setState(() {
+        _pickedTime = DateTimeHelper().timeToDatabaseString(_time);
+        _displayedTime = DateTimeHelper().timeToReadableString(_time);
+        _timeController.text = _displayedTime;
       });
     });
   }
@@ -138,6 +193,78 @@ class _TaskEditState extends State<TaskEdit> {
         ),
       ),
     );
+  }
+
+  Widget _buildTimeField() {
+    return GestureDetector(
+      onTap: () {
+        _timePicker();
+      },
+      child: AbsorbPointer(
+        child: TextFormField(
+          controller: _timeController,
+          //initialValue: _displayedDate,
+
+          decoration: InputDecoration(
+            labelText: "Zeit",
+          ),
+        ),
+      ),
+    );
+  }
+
+  _buildDeadlineRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Flexible(
+          fit: FlexFit.tight,
+          flex: 3,
+          child: _buildDateField(),
+        ),
+        SizedBox(width: 100.0),
+        Flexible(
+          flex: 2,
+          child: _buildTimeField(),
+        )
+      ],
+    );
+  }
+
+  Widget _buildTimeInvestmentSlider() {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+        child: Column(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Zeitaufwand",
+                style: TextStyle(fontSize: 16.0),
+              ),
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Flexible(
+                flex: 4,
+                child: Slider(
+                  value: _timeInvestmentSlider,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _timeInvestmentSlider = newValue;
+                      _textTimeInvestment = _calculateTextTimeInvest();
+                    });
+                  },
+                  min: 0,
+                  max: 100,
+                ),
+              ),
+              Flexible(
+                flex: 1,
+                child: Text(_textTimeInvestment),
+              ),
+            ])
+          ],
+        ));
   }
 
   Widget _buildPrioritySlider() {
@@ -237,6 +364,7 @@ class _TaskEditState extends State<TaskEdit> {
       name: _name,
       description: _description,
       deadline: _pickedDate,
+      timeInvestment: _timeInvestment,
       priority: priority,
       onlyScheduled: _cbIsScheduled,
     );
@@ -246,6 +374,7 @@ class _TaskEditState extends State<TaskEdit> {
   @override
   Widget build(BuildContext context) {
     _dateController.text = _displayedDate;
+    _timeController.text = _displayedTime;
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
@@ -260,7 +389,8 @@ class _TaskEditState extends State<TaskEdit> {
               ),
               _buildNameField(),
               _buildDescrField(),
-              _buildDateField(),
+              _buildDeadlineRow(),
+              _buildTimeInvestmentSlider(),
               _buildPrioritySlider(),
               _buildCheckBox(),
               ScopedModelDescendant<MainModel>(builder:

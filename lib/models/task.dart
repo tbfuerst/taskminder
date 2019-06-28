@@ -7,6 +7,7 @@ class Task {
   String id;
   final String name;
   final String description;
+  final int timeInvestment;
   final int priority;
   String deadline;
   final bool onlyScheduled;
@@ -27,8 +28,10 @@ class Task {
     this.id,
     @required this.name,
     @required this.description,
+    @required this.timeInvestment,
     @required this.priority,
     @required this.deadline,
+    // TODO Deadline time
     @required this.onlyScheduled,
     this.isCompleted,
   }) {
@@ -68,6 +71,8 @@ class Task {
       "name": name,
       "description": description,
       "priority": priority,
+      // TODO Deadline time
+      "timeInvestment": timeInvestment,
       "deadline": deadline,
       "onlyScheduled": onlyScheduled,
       'isCompleted': isCompleted,

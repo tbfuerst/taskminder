@@ -15,9 +15,6 @@ class Taskminder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LocalDB.db.deleteDB();
-    // DBConnection db = DBConnection();
-    // db.rebuildDB();
-
     return ScopedModel<MainModel>(
       model: model,
       child: MaterialApp(
