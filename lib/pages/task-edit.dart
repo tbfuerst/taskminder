@@ -64,8 +64,6 @@ class _TaskEditState extends State<TaskEdit> {
       return Dictionary().displayWord('few', Settings().language) +
           " " +
           Dictionary().displayWord('hours', Settings().language);
-      ;
-      ;
     } else if (_timeInvestmentSlider < 40) {
       return Dictionary().displayWord('some', Settings().language) +
           " " +

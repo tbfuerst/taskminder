@@ -5,7 +5,7 @@ import '../models/task.dart';
 
 mixin TaskModel on Model {
   List<Task> _tasks = [];
-  List<Task> _tasksByDeadline = [];
+  Map<String, List<Task>> _tasksByDeadline = {};
   bool _areTasksLoading = false;
   int _tasksCount;
 
@@ -13,7 +13,7 @@ mixin TaskModel on Model {
     return _tasks;
   }
 
-  List<Task> get tasksByDeadline {
+  Map get tasksByDeadline {
     return _tasksByDeadline;
   }
 
@@ -23,6 +23,10 @@ mixin TaskModel on Model {
 
   int get tasksCount {
     return _tasksCount;
+  }
+
+  int get differentDeadlineCount {
+    return _tasksByDeadline.length;
   }
 
   Task taskById(String id) {
@@ -36,7 +40,6 @@ mixin TaskModel on Model {
     _areTasksLoading = true;
     notifyListeners();
     _tasks = [];
-    await LocalDB.db.initDB();
     List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
     rawTasksData.forEach((task) {
       if (showIncompleted == true && task['isCompleted'] == 0) {
@@ -77,7 +80,32 @@ mixin TaskModel on Model {
   }
 
   getLocalTasksByDeadline() async {
-    _tasksByDeadline = await LocalDB.db.fetchTasksByDeadline();
+    _areTasksLoading = true;
+    notifyListeners();
+    _tasksByDeadline = {};
+    List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
+
+    rawTasksData.forEach((rawTask) {
+      if (rawTask['isCompleted'] == 0) {
+        if (_tasksByDeadline[rawTask["deadline"]] == null) {
+          _tasksByDeadline[rawTask["deadline"]] = [];
+        }
+        _tasksByDeadline[rawTask["deadline"]].add(Task(
+          id: rawTask['id'],
+          name: rawTask["name"],
+          description: rawTask["description"],
+          priority: rawTask['priority'],
+          deadline: rawTask['deadline'],
+          deadlineTime: rawTask['deadlineTime'],
+          timeInvestment: rawTask['timeInvestment'],
+          onlyScheduled: rawTask['onlyScheduled'] == 1 ? true : false,
+          isCompleted: false,
+        ));
+      }
+    });
+    //print(_tasksByDeadline);
+    _areTasksLoading = false;
+    notifyListeners();
   }
 
   Future<Null> updateTask(String _taskId, Task newTask) async {
