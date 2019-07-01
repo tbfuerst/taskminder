@@ -70,13 +70,12 @@ class _TasksListState extends State<TasksList> {
 
   Widget _buildTrailingButton(
       BuildContext context, Task task, MainModel model) {
-    return FlatButton(
+    return RaisedButton(
       onPressed: () => setState(() {
         widget.showCompletedTasksMode
             ? updateCompletionStatus(task, model, false).then((_) {
-                widget.deadlineMode
-                    ? model.getLocalTasksByDeadline()
-                    : model.getAllTasksLocal(showCompleted: true);
+                model.getLocalTasksByDeadline();
+                model.getAllTasksLocal(showCompleted: true);
               })
             : updateCompletionStatus(task, model, true).then((_) {
                 widget.deadlineMode
