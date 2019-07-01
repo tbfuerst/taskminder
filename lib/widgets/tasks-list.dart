@@ -10,8 +10,10 @@ class TasksList extends StatefulWidget {
   final MainModel model;
   final List<Task> tasks;
   final bool showCompletedTasksMode;
+  final bool deadlineMode;
 
-  TasksList({this.model, this.tasks, this.showCompletedTasksMode});
+  TasksList(
+      {this.model, this.tasks, this.showCompletedTasksMode, this.deadlineMode});
 
   _TasksListState createState() => _TasksListState();
 }
@@ -72,10 +74,14 @@ class _TasksListState extends State<TasksList> {
       onPressed: () => setState(() {
         widget.showCompletedTasksMode
             ? updateCompletionStatus(task, model, false).then((_) {
-                model.getAllTasksLocal(showCompleted: true);
+                widget.deadlineMode
+                    ? model.getLocalTasksByDeadline()
+                    : model.getAllTasksLocal(showCompleted: true);
               })
             : updateCompletionStatus(task, model, true).then((_) {
-                model.getAllTasksLocal(showIncompleted: true);
+                widget.deadlineMode
+                    ? model.getLocalTasksByDeadline()
+                    : model.getAllTasksLocal(showIncompleted: true);
               });
       }),
       child: Wrap(

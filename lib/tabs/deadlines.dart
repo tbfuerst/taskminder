@@ -65,6 +65,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
             model: model,
             tasks: taskList,
             showCompletedTasksMode: false,
+            deadlineMode: true,
           )
         ],
       ));

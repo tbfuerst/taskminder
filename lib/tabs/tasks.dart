@@ -28,6 +28,7 @@ class _TasksTabState extends State<TasksTab> {
             model: model,
             tasks: model.tasks,
             showCompletedTasksMode: false,
+            deadlineMode: false,
           ),
         );
       },
