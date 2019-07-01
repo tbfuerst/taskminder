@@ -19,6 +19,9 @@ class TaskEdit extends StatefulWidget {
 }
 
 class _TaskEditState extends State<TaskEdit> {
+  final Dictionary dict = Dictionary();
+  final Settings settings = Settings();
+
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
@@ -59,27 +62,27 @@ class _TaskEditState extends State<TaskEdit> {
   String _textTimeInvestment;
   String _calculateTextTimeInvest() {
     if (_timeInvestmentSlider < 10) {
-      return Dictionary().displayWord('minutes', Settings().language);
+      return dict.displayWord('minutes', settings.language);
     } else if (_timeInvestmentSlider < 25) {
-      return Dictionary().displayWord('few', Settings().language) +
+      return dict.displayWord('few', settings.language) +
           " " +
-          Dictionary().displayWord('hours', Settings().language);
+          dict.displayWord('hours', settings.language);
     } else if (_timeInvestmentSlider < 40) {
-      return Dictionary().displayWord('some', Settings().language) +
+      return dict.displayWord('some', settings.language) +
           " " +
-          Dictionary().displayWord('hours', Settings().language);
+          dict.displayWord('hours', settings.language);
     } else if (_timeInvestmentSlider < 60) {
-      return Dictionary().displayWord('many', Settings().language) +
+      return dict.displayWord('many', settings.language) +
           " " +
-          Dictionary().displayWord('hours', Settings().language);
+          dict.displayWord('hours', settings.language);
     } else if (_timeInvestmentSlider < 75) {
-      return Dictionary().displayWord('few', Settings().language) +
+      return dict.displayWord('few', settings.language) +
           " " +
-          Dictionary().displayWord('days', Settings().language);
+          dict.displayWord('days', settings.language);
     } else if (_timeInvestmentSlider < 95) {
-      return Dictionary().displayWord('weeks', Settings().language);
+      return dict.displayWord('weeks', settings.language);
     } else {
-      return Dictionary().displayWord('month-s', Settings().language);
+      return dict.displayWord('month-s', settings.language);
     }
   }
 
@@ -137,20 +140,20 @@ class _TaskEditState extends State<TaskEdit> {
       },
       validator: (String value) {
         if (value.length == 0) {
-          return Dictionary()
-              .displayPhrase('nameFormFieldEmptyError', Settings().language);
+          return dict.displayPhrase(
+              'nameFormFieldEmptyError', settings.language);
         }
       },
       autofocus: true,
       decoration: InputDecoration(
-          labelText: Dictionary().displayWord('name', Settings().language)),
+          labelText: dict.displayWord('name', settings.language)),
     );
   }
 
   Widget _buildPrioDropdown() {
     return DropdownButtonFormField(
       decoration: InputDecoration(
-          labelText: Dictionary().displayWord('priority', Settings().language)),
+          labelText: dict.displayWord('priority', settings.language)),
       value: _prioValue,
       onChanged: (newValue) {
         setState(() {
@@ -159,28 +162,27 @@ class _TaskEditState extends State<TaskEdit> {
       },
       items: [
         DropdownMenuItem(
-          child: Text(Dictionary().displayWord('very', Settings().language) +
+          child: Text(dict.displayWord('very', settings.language) +
               " " +
-              Dictionary().displayWord('low', Settings().language)),
+              dict.displayWord('low', settings.language)),
           value: 1,
         ),
         DropdownMenuItem(
-          child: Text(Dictionary().displayWord('low', Settings().language)),
+          child: Text(dict.displayWord('low', settings.language)),
           value: 2,
         ),
         DropdownMenuItem(
-          child:
-              Text(Dictionary().displayWord('standard', Settings().language)),
+          child: Text(dict.displayWord('standard', settings.language)),
           value: 3,
         ),
         DropdownMenuItem(
-          child: Text(Dictionary().displayWord('high', Settings().language)),
+          child: Text(dict.displayWord('high', settings.language)),
           value: 4,
         ),
         DropdownMenuItem(
-          child: Text(Dictionary().displayWord('very', Settings().language) +
+          child: Text(dict.displayWord('very', settings.language) +
               " " +
-              Dictionary().displayWord('high', Settings().language)),
+              dict.displayWord('high', settings.language)),
           value: 5,
         ),
       ],
@@ -194,12 +196,11 @@ class _TaskEditState extends State<TaskEdit> {
         _description = value;
       },
       decoration: InputDecoration(
-          labelText:
-              Dictionary().displayWord('description', Settings().language)),
+          labelText: dict.displayWord('description', settings.language)),
       validator: (String value) {
         if (value.length > 128) {
-          return Dictionary()
-              .displayPhrase('descrFormFieldEmptyError', Settings().language);
+          return dict.displayPhrase(
+              'descrFormFieldEmptyError', settings.language);
         }
       },
     );
@@ -264,8 +265,7 @@ class _TaskEditState extends State<TaskEdit> {
           //initialValue: _displayedDate,
 
           decoration: InputDecoration(
-            labelText:
-                Dictionary().displayWord('deadline', Settings().language),
+            labelText: dict.displayWord('deadline', settings.language),
           ),
         ),
       ),
@@ -283,7 +283,7 @@ class _TaskEditState extends State<TaskEdit> {
           //initialValue: _displayedDate,
 
           decoration: InputDecoration(
-            labelText: Dictionary().displayWord('time', Settings().language),
+            labelText: dict.displayWord('time', settings.language),
           ),
         ),
       ),
@@ -316,7 +316,7 @@ class _TaskEditState extends State<TaskEdit> {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                Dictionary().displayWord('timeInvestment', Settings().language),
+                dict.displayWord('timeInvestment', settings.language),
                 style: TextStyle(fontSize: 14.0),
               ),
             ),
@@ -385,7 +385,7 @@ class _TaskEditState extends State<TaskEdit> {
       child: RaisedButton(
         child: model.areTasksLoading
             ? Center(child: CircularProgressIndicator())
-            : Text(Dictionary().displayWord('save', Settings().language)),
+            : Text(dict.displayWord('save', settings.language)),
         onPressed: () async {
           if (_formKey.currentState.validate() == false) {
             return;
@@ -427,8 +427,8 @@ class _TaskEditState extends State<TaskEdit> {
             children: <Widget>[
               Container(
                 alignment: Alignment.topCenter,
-                child: Text(Dictionary()
-                    .displayPhrase('createTask', Settings().language)),
+                child:
+                    Text(dict.displayPhrase('createTask', settings.language)),
                 margin: EdgeInsets.all(10.0),
               ),
               _buildFirstRow(),

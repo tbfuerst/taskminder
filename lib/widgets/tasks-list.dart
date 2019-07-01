@@ -17,6 +17,9 @@ class TasksList extends StatefulWidget {
 }
 
 class _TasksListState extends State<TasksList> {
+  final Dictionary dict = Dictionary();
+  final Settings settings = Settings();
+
   @override
   initState() {
     super.initState();
@@ -26,19 +29,17 @@ class _TasksListState extends State<TasksList> {
     return showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              title: Text(Dictionary()
-                  .displayPhrase("discardTaskTitle", Settings().language)),
-              content: Text(Dictionary()
-                  .displayPhrase("discardTaskPrompt", Settings().language)),
+              title: Text(
+                  dict.displayPhrase("discardTaskTitle", settings.language)),
+              content: Text(
+                  dict.displayPhrase("discardTaskPrompt", settings.language)),
               actions: <Widget>[
                 FlatButton(
-                  child: Text(
-                      Dictionary().displayWord('yes', Settings().language)),
+                  child: Text(dict.displayWord('yes', settings.language)),
                   onPressed: () => Navigator.pop(context, true),
                 ),
                 FlatButton(
-                  child:
-                      Text(Dictionary().displayWord('no', Settings().language)),
+                  child: Text(dict.displayWord('no', settings.language)),
                   onPressed: () => Navigator.pop(context, false),
                 )
               ],
@@ -51,7 +52,7 @@ class _TasksListState extends State<TasksList> {
       child: Padding(
         padding: EdgeInsets.only(left: 10.0),
         child: Text(
-          Dictionary().displayWord('discard', Settings().language),
+          dict.displayWord('discard', settings.language),
           style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
@@ -86,26 +87,26 @@ class _TasksListState extends State<TasksList> {
               ? Icon(Icons.undo)
               : Icon(Icons.check_circle_outline)),
           (widget.showCompletedTasksMode
-              ? Text(Dictionary().displayWord('reassign', Settings().language))
-              : Text(Dictionary().displayWord('done', Settings().language))),
+              ? Text(dict.displayWord('reassign', settings.language))
+              : Text(dict.displayWord('done', settings.language))),
         ],
       ),
     );
   }
 
-  Widget _buildListTile(Task task, MainModel model) {
+  Widget buildListTile(Task task, MainModel model) {
     return ListTile(
       leading: PriorityIndicator(task.calculatedPriority),
       title: Text(task.name),
       subtitle: Text(task.getFormattedDeadline()[0].toString() +
           " " +
-          Dictionary().displayWord('days', Settings().language) +
+          dict.displayWord('days', settings.language) +
           ", " +
           task.getFormattedDeadline()[1].toString() +
           " " +
-          Dictionary().displayWord('hours', Settings().language) +
+          dict.displayWord('hours', settings.language) +
           " " +
-          Dictionary().displayWord('remaining', Settings().language) +
+          dict.displayWord('remaining', settings.language) +
           "\n" +
           task.description),
       isThreeLine: true,
@@ -131,7 +132,7 @@ class _TasksListState extends State<TasksList> {
           direction: DismissDirection.startToEnd,
           key: Key(task.id),
           onDismissed: (direction) => model.deleteTaskLocal(task.id),
-          child: _buildListTile(task, model),
+          child: buildListTile(task, model),
         ),
       );
     });
@@ -145,7 +146,9 @@ class _TasksListState extends State<TasksList> {
               child: CircularProgressIndicator(),
             )
           : ListView.builder(
-              itemCount: widget.model.tasksCount,
+              itemCount: widget.tasks.length,
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
               itemBuilder: (context, index) =>
                   _buildDismissible(context, index, widget.model),
             ),

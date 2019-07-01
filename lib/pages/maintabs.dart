@@ -14,6 +14,8 @@ import '../widgets/add-task-button.dart';
 
 class MainTabs extends StatelessWidget {
   final MainModel model;
+  final Dictionary dict = Dictionary();
+  final Settings settings = Settings();
 
   MainTabs(this.model);
 
@@ -22,7 +24,7 @@ class MainTabs extends StatelessWidget {
         child: Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(Dictionary().displayWord('mainmenu', Settings().language)),
+        title: Text(dict.displayWord('mainmenu', settings.language)),
       ),
       body: ListView(
         children: <Widget>[
@@ -33,16 +35,13 @@ class MainTabs extends StatelessWidget {
               model.getAllTasksLocal(showIncompleted: true);
             }),
             trailing: Icon(Icons.assignment_turned_in),
-            title: Text(Dictionary()
-                .displayPhrase('completedTasks', Settings().language)),
+            title:
+                Text(dict.displayPhrase('completedTasks', settings.language)),
           ),
           ListTile(
-            onTap: Settings().language == "en"
-                ? Settings().changeLanguage('de')
-                : Settings().changeLanguage('en'),
-            trailing: Text(Settings().language),
-            title:
-                Text(Dictionary().displayWord('language', Settings().language)),
+            onTap: () => print("lel"),
+            trailing: Text(settings.language),
+            title: Text(dict.displayWord('language', settings.language)),
           ),
         ],
       ),
@@ -61,10 +60,10 @@ class MainTabs extends StatelessWidget {
           bottom: TabBar(
             labelPadding: EdgeInsets.all(15),
             tabs: [
-              Text(Dictionary().displayWord("tasks", Settings().language)),
-              Text(Dictionary().displayWord("deadlines", Settings().language)),
-              Text(Dictionary().displayWord("calendar", Settings().language)),
-              Text(Dictionary().displayWord("schedule", Settings().language)),
+              Text(dict.displayWord("tasks", settings.language)),
+              Text(dict.displayWord("deadlines", settings.language)),
+              Text(dict.displayWord("calendar", settings.language)),
+              Text(dict.displayWord("schedule", settings.language)),
             ],
           ),
         ),

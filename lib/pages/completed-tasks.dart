@@ -17,6 +17,8 @@ class CompletedTasksPage extends StatefulWidget {
 }
 
 class _CompletedTasksPageState extends State<CompletedTasksPage> {
+  final Dictionary dict = Dictionary();
+  final Settings settings = Settings();
   @override
   void initState() {
     widget.model.getAllTasksLocal(showCompleted: true);
@@ -29,8 +31,7 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
         appBar: AppBar(
-          title: Text(Dictionary()
-              .displayPhrase('completedTasks', Settings().language)),
+          title: Text(dict.displayPhrase('completedTasks', settings.language)),
         ),
         body: TasksList(
           model: widget.model,

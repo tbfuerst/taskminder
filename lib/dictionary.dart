@@ -18,6 +18,8 @@ class Dictionary {
     'calendar': {'de': 'Kalender', 'en': 'Calendar'},
     'schedule': {'de': 'Planung', 'en': 'Schedule'},
     'mainmenu': {'de': 'Hauptmenü', 'en': 'Main Menu'},
+    'today': {'de': 'Heute', 'en': 'Today'},
+    'tomorrow': {'de': 'Morgen', 'en': 'Tomorrow'},
     'day': {'de': 'Tag', 'en': 'day'},
     'days': {'de': 'Tage', 'en': 'days'},
     'and': {'de': 'und', 'en': 'and'},
@@ -39,6 +41,7 @@ class Dictionary {
   };
 
   Map _phrases = const {
+    'deadlineMissed': {'de': 'Termin verpasst', 'en': 'Deadline exceeded'},
     'nameFormFieldEmptyError': {
       'de': 'Bitte Namen eingeben',
       'en': 'Please enter name.'

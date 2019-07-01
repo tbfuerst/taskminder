@@ -39,4 +39,34 @@ class DateTimeHelper {
         ":" +
         databaseString.substring(2, 4);
   }
+
+  int calculateDateTimeDifference(
+    DateTime dtEarly,
+    DateTime dtLater, {
+    bool inDays,
+    bool inHours,
+    bool inWeeks,
+  }) {
+    if (inHours == null) inHours = false;
+    if (inDays == null) inDays = false;
+
+    if (inWeeks == null) inWeeks = false;
+
+    if (inDays == false && inHours == false && inWeeks == false) {
+      throw new Exception();
+    }
+
+    Duration difference = dtLater.difference(dtEarly);
+    if (inDays == true) {
+      return difference.inDays;
+    }
+    if (inHours == true) {
+      return difference.inHours;
+    }
+    if (inWeeks == true) {
+      return ((difference.inDays) / 7).round();
+    }
+
+    return 0;
+  }
 }

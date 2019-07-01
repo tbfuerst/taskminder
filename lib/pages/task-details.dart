@@ -15,7 +15,10 @@ class TaskDetails extends StatefulWidget {
 }
 
 class _TaskDetailsState extends State<TaskDetails> {
+  final Dictionary dict = Dictionary();
+  final Settings settings = Settings();
   Task _task;
+
   @override
   void initState() {
     _task = widget.model.taskById(widget._taskId);
@@ -27,7 +30,7 @@ class _TaskDetailsState extends State<TaskDetails> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-              "${Dictionary().displayWord('task', Settings().language)}: ${_task.name}"),
+              "${dict.displayWord('task', settings.language)}: ${_task.name}"),
         ),
         body: Container(
           alignment: Alignment.center,
@@ -46,8 +49,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(bottom: 48.0),
-                  child: Text(Dictionary()
-                          .displayWord('deadline', Settings().language) +
+                  child: Text(dict.displayWord('deadline', settings.language) +
                       ": " +
                       DateTimeHelper()
                           .databaseDateStringToReadable(_task.deadline) +
@@ -69,8 +71,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                 Container(
                   alignment: Alignment.center,
                   child: RaisedButton(
-                    child: Text(
-                        Dictionary().displayWord('edit', Settings().language)),
+                    child: Text(dict.displayWord('edit', settings.language)),
                     onPressed: () {
                       Navigator.pushNamed(
                           context, "/taskedit/${widget._taskId}");
