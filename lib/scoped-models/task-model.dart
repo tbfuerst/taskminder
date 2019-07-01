@@ -1,3 +1,4 @@
+import "dart:collection";
 import 'package:scoped_model/scoped_model.dart';
 
 import '../database/local-db.dart';
@@ -5,7 +6,9 @@ import '../models/task.dart';
 
 mixin TaskModel on Model {
   List<Task> _tasks = [];
-  Map<String, List<Task>> _tasksByDeadline = {};
+
+  // SplayTreeMap to proviede a sorted Map
+  SplayTreeMap<String, List<Task>> _tasksByDeadline = SplayTreeMap.from({});
   bool _areTasksLoading = false;
   int _tasksCount;
 
@@ -82,7 +85,7 @@ mixin TaskModel on Model {
   getLocalTasksByDeadline() async {
     _areTasksLoading = true;
     notifyListeners();
-    _tasksByDeadline = {};
+    _tasksByDeadline = SplayTreeMap.from({});
     List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
 
     rawTasksData.forEach((rawTask) {
@@ -90,6 +93,7 @@ mixin TaskModel on Model {
         if (_tasksByDeadline[rawTask["deadline"]] == null) {
           _tasksByDeadline[rawTask["deadline"]] = [];
         }
+
         _tasksByDeadline[rawTask["deadline"]].add(Task(
           id: rawTask['id'],
           name: rawTask["name"],
@@ -103,7 +107,7 @@ mixin TaskModel on Model {
         ));
       }
     });
-    //print(_tasksByDeadline);
+
     _areTasksLoading = false;
     notifyListeners();
   }

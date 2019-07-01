@@ -30,13 +30,12 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     DateTime deadlineDateTime = DateTime.tryParse(deadline);
     DateTime today =
         DateTime.tryParse(dthelper.dateToDatabaseString(DateTime.now()));
-    print(deadline);
+
     int differenceInDays = dthelper
         .calculateDateTimeDifference(today, deadlineDateTime, inDays: true);
     int differenceInWeeks = dthelper
         .calculateDateTimeDifference(today, deadlineDateTime, inWeeks: true);
     int moduloDays = differenceInDays % 7;
-    print(differenceInDays);
 
     if (differenceInDays < 0) {
       return dict.displayPhrase('deadlineMissed', settings.language);
