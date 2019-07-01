@@ -13,6 +13,7 @@ class Dictionary {
     'task': {'de': 'Aufgabe', 'en': 'Task'},
     'edit': {'de': 'Bearbeiten', 'en': 'Edit'},
     'language': {'de': 'Sprache', 'en': 'Language'},
+    'list': {'de': 'Liste', 'en': 'List'},
     'deadline': {'de': 'Termin', 'en': 'Deadline'},
     'deadlines': {'de': 'Termine', 'en': 'Deadlines'},
     'calendar': {'de': 'Kalender', 'en': 'Calendar'},

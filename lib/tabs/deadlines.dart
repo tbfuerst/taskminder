@@ -59,7 +59,8 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     List<ExpansionTile> panelList = [];
     model.tasksByDeadline.forEach((deadline, taskList) {
       panelList.add(ExpansionTile(
-        title: Text(_displayDeadlineTime(deadline)),
+        title: Text(
+            "${_displayDeadlineTime(deadline)} (${taskList.length.toString()})"),
         children: [
           TasksList(
             model: model,

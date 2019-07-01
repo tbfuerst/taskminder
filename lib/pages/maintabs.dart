@@ -61,15 +61,15 @@ class MainTabs extends StatelessWidget {
             labelPadding: EdgeInsets.all(15),
             tabs: [
               Text(dict.displayWord("tasks", settings.language)),
-              Text(dict.displayWord("deadlines", settings.language)),
+              Text(dict.displayWord("list", settings.language)),
               Text(dict.displayWord("calendar", settings.language)),
               Text(dict.displayWord("schedule", settings.language)),
             ],
           ),
         ),
         body: TabBarView(children: [
-          TasksTab(model),
           DeadlinesTab(model),
+          TasksTab(model),
           CalendarTab(),
           ScheduleTab(),
         ]),
