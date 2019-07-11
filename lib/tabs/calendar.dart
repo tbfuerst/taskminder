@@ -22,6 +22,15 @@ class _CalendarTabState extends State<CalendarTab> {
     return weekdays;
   }
 
+  List<Widget> _determineWeekDayPlaceholders() {
+    final List<Widget> placeholders = [];
+    DateTime date = new DateTime(currentYear, currentMonth, 1);
+    for (var i = 0; i < date.weekday - 1; i++) {
+      placeholders.add(Container());
+    }
+    return placeholders;
+  }
+
   void _buildDays() {
     setState(() {
       int dayOne = 1;
@@ -50,13 +59,26 @@ class _CalendarTabState extends State<CalendarTab> {
     });
   }
 
-  List<Widget> _determineWeekDayPlaceholders() {
-    final List<Widget> placeholders = [];
-    DateTime date = new DateTime(currentYear, currentMonth, 1);
-    for (var i = 0; i < date.weekday - 1; i++) {
-      placeholders.add(Container());
-    }
-    return placeholders;
+  // rework!
+  _changeMonth({@required int changeBy}) {
+    setState(() {
+      if (changeBy >= 0) {
+        if ((currentMonth + changeBy % 12) > 12) {
+          currentMonth = (currentMonth + changeBy) % 12;
+          currentYear += 1;
+        } else {
+          currentMonth += changeBy;
+        }
+      } else {
+        changeBy = -changeBy;
+        if ((currentMonth - changeBy % 12) <= 0) {
+          currentMonth = 12 - changeBy + 1;
+          currentYear -= 1;
+        } else {
+          currentMonth -= changeBy;
+        }
+      }
+    });
   }
 
   @override
@@ -68,12 +90,7 @@ class _CalendarTabState extends State<CalendarTab> {
           color: Colors.white,
           icon: Icon(Icons.chevron_left),
           onPressed: () => setState(() {
-            if (currentMonth == 1) {
-              currentMonth = 12;
-              currentYear--;
-            } else {
-              currentMonth--;
-            }
+            _changeMonth(changeBy: -1);
           }),
         ),
         title: Text("$currentMonth-$currentYear"),
@@ -83,12 +100,7 @@ class _CalendarTabState extends State<CalendarTab> {
             color: Colors.white,
             icon: Icon(Icons.chevron_right),
             onPressed: () => setState(() {
-              if (currentMonth == 12) {
-                currentMonth = 1;
-                currentYear++;
-              } else {
-                currentMonth++;
-              }
+              _changeMonth(changeBy: 1);
             }),
           ),
         ],
