@@ -109,19 +109,22 @@ class _CalendarTabState extends State<CalendarTab> {
                   ? Theme.of(context).accentColor
                   : Colors.white,
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Card(
-                          child: Column(
-                            children: _dayElement.tasks.map((task) {
-                              return Text(task.name);
-                            }).toList(),
-                          ),
-                        ),
-                      );
-                    });
+                {
+                  if (_dayElement.hasTasks)
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Card(
+                              child: Column(
+                                children: _dayElement.tasks.map((task) {
+                                  return Text(task.name);
+                                }).toList(),
+                              ),
+                            ),
+                          );
+                        });
+                }
               },
             ),
           ),
