@@ -38,6 +38,7 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
           tasks: widget.model.tasks,
           showCompletedTasksMode: true,
           deadlineMode: false,
+          dense: false,
         ),
       );
     });
