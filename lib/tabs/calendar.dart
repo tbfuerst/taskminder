@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../scoped-models/mainmodel.dart';
 import '../models/calendarday.dart';
 import '../models/task.dart';
+import '../widgets/tasks-list.dart';
 
 import '../helpers/date-time-helper.dart';
 
@@ -109,21 +110,25 @@ class _CalendarTabState extends State<CalendarTab> {
                   ? Theme.of(context).accentColor
                   : Colors.white,
               onPressed: () {
-                {
-                  if (_dayElement.hasTasks)
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Card(
-                              child: Column(
-                                children: _dayElement.tasks.map((task) {
-                                  return Text(task.name);
-                                }).toList(),
-                              ),
-                            ),
-                          );
-                        });
+                if (_dayElement.hasTasks) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      widget.model.navigatorPopsAfterTaskEdited = 3;
+                      return AlertDialog(
+                        content: Container(
+                          width: double
+                              .maxFinite, // Dialog needs a max width, which is the max 64bit number here
+                          child: TasksList(
+                            tasks: _dayElement.tasks,
+                            model: widget.model,
+                            showCompletedTasksMode: false,
+                            dense: true,
+                          ),
+                        ),
+                      );
+                    },
+                  );
                 }
               },
             ),

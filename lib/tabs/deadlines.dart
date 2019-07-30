@@ -57,6 +57,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
 
   _buildDeadlineTiles(MainModel model) {
     List<ExpansionTile> panelList = [];
+    model.navigatorPopsAfterTaskEdited = 2;
     model.tasksByDeadline.forEach((deadline, taskList) {
       panelList.add(ExpansionTile(
         title: Text(
@@ -67,6 +68,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
             tasks: taskList,
             showCompletedTasksMode: false,
             deadlineMode: true,
+            dense: false,
           )
         ],
       ));

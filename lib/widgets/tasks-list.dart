@@ -11,9 +11,15 @@ class TasksList extends StatefulWidget {
   final List<Task> tasks;
   final bool showCompletedTasksMode;
   final bool deadlineMode;
+  final bool dense;
 
-  TasksList(
-      {this.model, this.tasks, this.showCompletedTasksMode, this.deadlineMode});
+  TasksList({
+    this.model,
+    this.tasks,
+    this.showCompletedTasksMode,
+    this.deadlineMode,
+    this.dense,
+  });
 
   _TasksListState createState() => _TasksListState();
 }
@@ -103,19 +109,25 @@ class _TasksListState extends State<TasksList> {
     return ListTile(
       leading: PriorityIndicator(task.calculatedPriority),
       title: Text(task.name),
-      subtitle: Text(task.getFormattedDeadline()[0].toString() +
-          " " +
-          dict.displayWord('days', settings.language) +
-          ", " +
-          task.getFormattedDeadline()[1].toString() +
-          " " +
-          dict.displayWord('hours', settings.language) +
-          " " +
-          dict.displayWord('remaining', settings.language) +
-          "\n" +
-          task.description),
+      subtitle: widget.dense
+          ? Container()
+          : Text(task.getFormattedDeadline()[0].toString() +
+              " " +
+              dict.displayWord('days', settings.language) +
+              ", " +
+              task.getFormattedDeadline()[1].toString() +
+              " " +
+              dict.displayWord('hours', settings.language) +
+              " " +
+              dict.displayWord('remaining', settings.language) +
+              "\n" +
+              task.description),
       isThreeLine: true,
-      trailing: _buildTrailingButton(context, task, model),
+      trailing: widget.dense
+          ? Container(
+              width: 0.01,
+            )
+          : _buildTrailingButton(context, task, model),
       onTap: () {
         Navigator.pushNamed(
           context,
