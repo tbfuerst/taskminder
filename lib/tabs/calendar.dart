@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
 
+import '../scoped-models/mainmodel.dart';
+import '../models/calendarday.dart';
+import '../models/task.dart';
+
+import '../helpers/date-time-helper.dart';
+
 class CalendarTab extends StatefulWidget {
-  CalendarTab({Key key}) : super(key: key);
+  final MainModel model;
+
+  CalendarTab(this.model);
 
   _CalendarTabState createState() => _CalendarTabState();
 }
 
 class _CalendarTabState extends State<CalendarTab> {
+  DateTimeHelper dthelper = new DateTimeHelper();
+
   int currentYear = DateTime.now().year;
   int currentMonth = DateTime.now().month;
   int currentDay = DateTime.now().day;
   int dayOne = 1;
-  List<Widget> days = [];
+  List<Widget> dayTiles = [];
 
   List<Widget> _buildWeekdayHeadlines() {
     List<Widget> weekdays = [];
-    List<String> days = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
-    days.forEach((day) => weekdays.add(
-          Container(child: Text(day)),
+    List<String> dayTiles = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+    dayTiles.forEach((day) => weekdays.add(
+          Container(
+            child: Text(
+              day,
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            alignment: Alignment.center,
+          ),
         ));
     return weekdays;
   }
@@ -31,31 +47,86 @@ class _CalendarTabState extends State<CalendarTab> {
     return placeholders;
   }
 
+  List<Task> _getTasksOfCurrentMonth() {
+    List<Task> _tasks = widget.model.tasks;
+    List<Task> _monthlyTasks = _tasks.where((taskelement) {
+      DateTime deadline = DateTime.parse(taskelement.deadline);
+      int month = deadline.month;
+      return month == currentMonth;
+    }).toList();
+    return _monthlyTasks;
+  }
+
+  List<CalendarDay> _calendarDays() {
+    List<Task> _monthlyTasks = _getTasksOfCurrentMonth();
+    List<CalendarDay> _dayTilesData = [];
+    for (var i = 0; i < lastDayOfMonth(); i++) {
+      _dayTilesData.add(CalendarDay(day: i + 1));
+    }
+
+    _monthlyTasks.forEach((task) {
+      int day = DateTime.parse(task.deadline).day;
+      if (currentYear == DateTime.now().year) {
+        _dayTilesData[day - 1].hasTasks = true;
+        _dayTilesData[day - 1].tasks.add(task);
+      }
+    });
+
+    if (currentMonth == DateTime.now().month &&
+        currentYear == DateTime.now().year) {
+      _dayTilesData[currentDay - 1].isToday = true;
+    }
+
+    return _dayTilesData;
+  }
+
+  int lastDayOfMonth() {
+    DateTime date = new DateTime(currentYear, currentMonth + 1, 0);
+    return date.day;
+  }
+
   void _buildDays() {
     setState(() {
-      int dayOne = 1;
-      days = [];
-      days.addAll(_buildWeekdayHeadlines());
-      days.addAll(_determineWeekDayPlaceholders());
-      DateTime date = new DateTime(currentYear, currentMonth + 1, 0);
-      int lastDayOfMonth = date.day;
-      for (var i = 0; i < lastDayOfMonth; i++) {
-        days.add(
+      dayTiles = [];
+      dayTiles.addAll(_buildWeekdayHeadlines());
+      dayTiles.addAll(_determineWeekDayPlaceholders());
+      List<CalendarDay> _daysData = _calendarDays();
+
+      _daysData.forEach((_dayElement) {
+        dayTiles.add(
           Container(
+            padding: EdgeInsets.all(2.0),
+            decoration: BoxDecoration(
+              border: Border.all(
+                  width: 2.0,
+                  color: _dayElement.isToday
+                      ? Theme.of(context).errorColor
+                      : Colors.white),
+            ),
             child: FlatButton(
-              child: Text("$dayOne"),
+              child: Text(_dayElement.day.toString()),
+              color: _dayElement.hasTasks
+                  ? Theme.of(context).accentColor
+                  : Colors.white,
               onPressed: () {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog();
+                      return AlertDialog(
+                        content: Card(
+                          child: Column(
+                            children: _dayElement.tasks.map((task) {
+                              return Text(task.name);
+                            }).toList(),
+                          ),
+                        ),
+                      );
                     });
               },
             ),
           ),
         );
-        dayOne++;
-      }
+      });
     });
   }
 
@@ -107,7 +178,7 @@ class _CalendarTabState extends State<CalendarTab> {
       ),
       body: GridView.count(
         crossAxisCount: 7,
-        children: days,
+        children: dayTiles,
       ),
     );
   }

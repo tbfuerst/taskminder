@@ -7,7 +7,7 @@ import '../models/task.dart';
 mixin TaskModel on Model {
   List<Task> _tasks = [];
 
-  // SplayTreeMap to proviede a sorted Map
+  // SplayTreeMap to provide a sorted Map
   SplayTreeMap<String, List<Task>> _tasksByDeadline = SplayTreeMap.from({});
   bool _areTasksLoading = false;
   int _tasksCount;

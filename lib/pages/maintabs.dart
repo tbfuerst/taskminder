@@ -70,7 +70,7 @@ class MainTabs extends StatelessWidget {
         body: TabBarView(children: [
           DeadlinesTab(model),
           TasksTab(model),
-          CalendarTab(),
+          CalendarTab(model),
           ScheduleTab(),
         ]),
       ),

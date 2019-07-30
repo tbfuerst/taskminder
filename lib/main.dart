@@ -32,7 +32,8 @@ class Taskminder extends StatelessWidget {
           // is not restarted.
           primarySwatch: Colors.teal,
           accentColor: Colors.tealAccent,
-          errorColor: Colors.deepOrange[700],
+
+          errorColor: Colors.brown[900],
         ),
         routes: {
           '/': (BuildContext context) => MainTabs(model),
