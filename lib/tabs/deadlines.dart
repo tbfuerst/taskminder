@@ -22,6 +22,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
 
   @override
   void initState() {
+    widget.model.setActiveTab(calendar: false, deadlines: true, tasks: false);
     widget.model.getLocalTasksByDeadline();
     super.initState();
   }
@@ -57,7 +58,6 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
 
   _buildDeadlineTiles(MainModel model) {
     List<ExpansionTile> panelList = [];
-    model.navigatorPopsAfterTaskEdited = 2;
     model.tasksByDeadline.forEach((deadline, taskList) {
       panelList.add(ExpansionTile(
         title: Text(

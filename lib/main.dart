@@ -36,10 +36,13 @@ class Taskminder extends StatelessWidget {
           errorColor: Colors.brown[900],
         ),
         routes: {
-          '/': (BuildContext context) => MainTabs(model),
+          '/': (BuildContext context) => MainTabs(model, 0),
           '/taskedit': (BuildContext context) => TaskEdit.create(model, ""),
           '/completedtasks': (BuildContext context) =>
               CompletedTasksPage(model),
+          '/deadlines': (BuildContext context) => MainTabs(model, 0),
+          '/tasks': (BuildContext context) => MainTabs(model, 1),
+          '/calendar': (BuildContext context) => MainTabs(model, 2),
         },
         onGenerateRoute: (RouteSettings settings) {
           final List<String> pathElements = settings.name.split('/');
@@ -54,7 +57,7 @@ class Taskminder extends StatelessWidget {
                 builder: (BuildContext context) => TaskEdit.edit(model, id));
           }
           return MaterialPageRoute(
-              builder: (BuildContext context) => MainTabs(model));
+              builder: (BuildContext context) => MainTabs(model, 1));
         },
       ),
     );

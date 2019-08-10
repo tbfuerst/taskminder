@@ -1,13 +1,20 @@
 import 'package:scoped_model/scoped_model.dart';
 
 mixin HelperModel on Model {
-  int _navigatorPopsAfterTaskEdited;
-
-  int get navigatorPopsAfterTaskEdited {
-    return _navigatorPopsAfterTaskEdited;
+  String _activeTabRoute = "";
+  String get activeTabRoute {
+    return _activeTabRoute;
   }
 
-  set navigatorPopsAfterTaskEdited(int pops) {
-    _navigatorPopsAfterTaskEdited = pops;
+  void setActiveTab({bool calendar, bool deadlines, bool tasks}) {
+    if (calendar) {
+      _activeTabRoute = "/calendar";
+    }
+    if (deadlines) {
+      _activeTabRoute = "/deadlines";
+    }
+    if (tasks) {
+      _activeTabRoute = "/tasks";
+    }
   }
 }

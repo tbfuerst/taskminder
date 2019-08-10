@@ -397,9 +397,7 @@ class _TaskEditState extends State<TaskEdit> {
               : await model.insertTask(task);
           model.getAllTasksLocal(showIncompleted: true);
           model.getLocalTasksByDeadline().then((_) {
-            for (var i = 0; i < model.navigatorPopsAfterTaskEdited; i++) {
-              Navigator.pop(context);
-            }
+            Navigator.pushReplacementNamed(context, model.activeTabRoute);
           });
         },
       ),

@@ -14,6 +14,7 @@ class TasksTab extends StatefulWidget {
 class _TasksTabState extends State<TasksTab> {
   @override
   void initState() {
+    widget.model.setActiveTab(calendar: false, deadlines: false, tasks: true);
     widget.model.getAllTasksLocal(showIncompleted: true);
     super.initState();
   }
@@ -22,7 +23,6 @@ class _TasksTabState extends State<TasksTab> {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
-        model.navigatorPopsAfterTaskEdited = 2;
         return RefreshIndicator(
           onRefresh: () => model.getAllTasksLocal(showIncompleted: true),
           child: TasksList(

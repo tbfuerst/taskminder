@@ -16,6 +16,12 @@ class CalendarTab extends StatefulWidget {
 }
 
 class _CalendarTabState extends State<CalendarTab> {
+  @override
+  void initState() {
+    super.initState();
+    widget.model.setActiveTab(calendar: true, deadlines: false, tasks: false);
+  }
+
   DateTimeHelper dthelper = new DateTimeHelper();
 
   int currentYear = DateTime.now().year;
@@ -114,7 +120,6 @@ class _CalendarTabState extends State<CalendarTab> {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      widget.model.navigatorPopsAfterTaskEdited = 3;
                       return AlertDialog(
                         content: Container(
                           width: double
@@ -129,7 +134,7 @@ class _CalendarTabState extends State<CalendarTab> {
                       );
                     },
                   );
-                }
+                } else {}
               },
             ),
           ),

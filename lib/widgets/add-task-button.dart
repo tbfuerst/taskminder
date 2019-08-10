@@ -10,7 +10,6 @@ class AddTaskButton extends StatelessWidget {
     return FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
-          model.navigatorPopsAfterTaskEdited = 1;
           await Navigator.pushNamed(context, '/taskedit');
         });
   }

@@ -12,12 +12,30 @@ import '../tabs/tasks.dart';
 
 import '../widgets/add-task-button.dart';
 
-class MainTabs extends StatelessWidget {
+class MainTabs extends StatefulWidget {
   final MainModel model;
+  final _activeTab;
+
+  MainTabs(this.model, this._activeTab);
+
+  @override
+  _MainTabsState createState() => _MainTabsState();
+}
+
+class _MainTabsState extends State<MainTabs>
+    with SingleTickerProviderStateMixin {
   final Dictionary dict = Dictionary();
+
   final Settings settings = Settings();
 
-  MainTabs(this.model);
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController =
+        TabController(length: 4, initialIndex: widget._activeTab, vsync: this);
+  }
 
   Widget _mainDrawer(BuildContext context, MainModel model) {
     return Drawer(
@@ -53,26 +71,30 @@ class MainTabs extends StatelessWidget {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-        drawer: _mainDrawer(context, model),
-        floatingActionButton: AddTaskButton(model),
+        drawer: _mainDrawer(context, widget.model),
+        floatingActionButton: AddTaskButton(widget.model),
         appBar: AppBar(
           title: Text("Taskminder"),
           bottom: TabBar(
+            controller: _tabController,
             labelPadding: EdgeInsets.all(15),
             tabs: [
+              Text(dict.displayWord("deadlines", settings.language)),
               Text(dict.displayWord("tasks", settings.language)),
-              Text(dict.displayWord("list", settings.language)),
               Text(dict.displayWord("calendar", settings.language)),
               Text(dict.displayWord("schedule", settings.language)),
             ],
           ),
         ),
-        body: TabBarView(children: [
-          DeadlinesTab(model),
-          TasksTab(model),
-          CalendarTab(model),
-          ScheduleTab(),
-        ]),
+        body: TabBarView(
+          controller: _tabController,
+          children: [
+            DeadlinesTab(widget.model),
+            TasksTab(widget.model),
+            CalendarTab(widget.model),
+            ScheduleTab(),
+          ],
+        ),
       ),
     );
   }
