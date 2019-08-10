@@ -189,9 +189,12 @@ class _CalendarTabState extends State<CalendarTab> {
           ),
         ],
       ),
-      body: GridView.count(
-        crossAxisCount: 7,
-        children: dayTiles,
+      body: RefreshIndicator(
+        onRefresh: () => widget.model.getAllTasksLocal(showIncompleted: true),
+        child: GridView.count(
+          crossAxisCount: 7,
+          children: dayTiles,
+        ),
       ),
     );
   }

@@ -111,7 +111,7 @@ class _TaskEditState extends State<TaskEdit> {
     _prioValue = isEditMode ? (editableTask.priority / 2).round() : 3;
     _timeInvestmentSlider =
         isEditMode ? editableTask.timeInvestment.toDouble() : 100;
-    _cbIsScheduled = isEditMode ? editableTask.onlyScheduled : false;
+    _cbIsScheduled = isEditMode ? editableTask.hasDeadline : false;
     _textTimeInvestment = _calculateTextTimeInvest();
     super.initState();
   }
@@ -412,7 +412,7 @@ class _TaskEditState extends State<TaskEdit> {
       deadlineTime: _pickedTime,
       timeInvestment: _timeInvestment,
       priority: _prioValue * 2,
-      onlyScheduled: _cbIsScheduled,
+      hasDeadline: _cbIsScheduled,
     );
     return task;
   }

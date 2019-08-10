@@ -9,9 +9,9 @@ class Task {
   final String description;
   final int timeInvestment;
   final int priority;
+  final bool hasDeadline;
   String deadline;
   String deadlineTime;
-  final bool onlyScheduled;
   bool isCompleted;
 
   double get timeToDeadline {
@@ -33,9 +33,9 @@ class Task {
     @required this.description,
     @required this.timeInvestment,
     @required this.priority,
+    @required this.hasDeadline,
     @required this.deadline,
     @required this.deadlineTime,
-    @required this.onlyScheduled,
     this.isCompleted,
   }) {
     if (id == null) {
@@ -77,7 +77,7 @@ class Task {
       "deadlineTime": deadlineTime,
       "timeInvestment": timeInvestment,
       "deadline": deadline,
-      "onlyScheduled": onlyScheduled,
+      "hasDeadline": hasDeadline,
       'isCompleted': isCompleted,
     };
   }

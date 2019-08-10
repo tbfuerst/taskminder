@@ -54,7 +54,7 @@ mixin TaskModel on Model {
           deadline: task['deadline'],
           deadlineTime: task['deadlineTime'],
           timeInvestment: task['timeInvestment'],
-          onlyScheduled: task['onlyScheduled'] == 1 ? true : false,
+          hasDeadline: task['hasDeadline'] == 1 ? true : false,
           isCompleted: task['isCompleted'] == 1 ? true : false,
         ));
       }
@@ -67,7 +67,7 @@ mixin TaskModel on Model {
           deadline: task['deadline'],
           deadlineTime: task['deadlineTime'],
           timeInvestment: task['timeInvestment'],
-          onlyScheduled: task['onlyScheduled'] == 1 ? true : false,
+          hasDeadline: task['hasDeadline'] == 1 ? true : false,
           isCompleted: task['isCompleted'] == 1 ? true : false,
         ));
       }
@@ -102,7 +102,7 @@ mixin TaskModel on Model {
           deadline: rawTask['deadline'],
           deadlineTime: rawTask['deadlineTime'],
           timeInvestment: rawTask['timeInvestment'],
-          onlyScheduled: rawTask['onlyScheduled'] == 1 ? true : false,
+          hasDeadline: rawTask['hasDeadline'] == 1 ? true : false,
           isCompleted: false,
         ));
       }
