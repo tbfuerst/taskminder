@@ -5,6 +5,8 @@ import '../database/local-db.dart';
 import '../models/task.dart';
 
 mixin TaskModel on Model {
+  //TODO: adjust to new datastructure
+
   List<Task> _tasks = [];
 
   // SplayTreeMap to provide a sorted Map

@@ -75,6 +75,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     });
     return ListView.builder(
         itemCount: panelList.length,
+        shrinkWrap: true,
         itemBuilder: (context, index) {
           return panelList[index];
         });

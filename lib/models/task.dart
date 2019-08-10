@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'dart:math';
 
+//TODO: write new datastructure, maybe abstract classes for simpletasks and regular tasks?
+
 class Task {
   String id;
   final String name;

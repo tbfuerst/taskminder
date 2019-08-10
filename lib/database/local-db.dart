@@ -23,6 +23,7 @@ class LocalDB {
     return await openDatabase(
       path,
       onCreate: (Database db, int version) async {
+        //TODO: create second table for simple tasks
         await db.execute(
             "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, timeInvestment INTEGER, hasDeadline BOOLEAN, deadline TEXT, deadlineTime TEXT, isCompleted BOOLEAN)");
       },

@@ -10,6 +10,7 @@ class Dictionary {
     'save': {'de': 'Speichern', 'en': 'Save'},
     'reassign': {'de': 'Reaktivieren', 'en': 'Reassign'},
     'tasks': {'de': 'Aufgaben', 'en': 'Tasks'},
+    'addTask': {'de': 'Neue Aufgabe', 'en': 'Add Task'},
     'task': {'de': 'Aufgabe', 'en': 'Task'},
     'edit': {'de': 'Bearbeiten', 'en': 'Edit'},
     'language': {'de': 'Sprache', 'en': 'Language'},

@@ -405,6 +405,7 @@ class _TaskEditState extends State<TaskEdit> {
   }
 
   Task _buildTask() {
+    //TODO: adjust to new datastructure
     Task task = Task(
       name: _name,
       description: _description,

@@ -35,6 +35,12 @@ class _MainTabsState extends State<MainTabs>
     super.initState();
     _tabController =
         TabController(length: 4, initialIndex: widget._activeTab, vsync: this);
+    _tabController.addListener(_handleTabChange);
+  }
+
+  void _handleTabChange() {
+    // updating app state on tab change
+    setState(() {});
   }
 
   Widget _mainDrawer(BuildContext context, MainModel model) {
@@ -72,7 +78,9 @@ class _MainTabsState extends State<MainTabs>
       length: 4,
       child: Scaffold(
         drawer: _mainDrawer(context, widget.model),
-        floatingActionButton: AddTaskButton(widget.model),
+        floatingActionButton:
+            // TODO: update state properly
+            _tabController.index == 1 ? null : AddTaskButton(widget.model),
         appBar: AppBar(
           title: Text("Taskminder"),
           bottom: TabBar(
