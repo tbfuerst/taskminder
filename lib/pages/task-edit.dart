@@ -3,7 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 
 import '../scoped-models/mainmodel.dart';
 import '../helpers/date-time-helper.dart';
-import '../models/task.dart';
+import '../models/deadline.dart';
 
 import '../dictionary.dart';
 import '../globalSettings.dart';
@@ -30,7 +30,7 @@ class _TaskEditState extends State<TaskEdit> {
     return widget._taskId != "";
   }
 
-  Task get editableTask {
+  Deadline get editableTask {
     return widget._model.taskById(widget._taskId);
   }
 
@@ -391,7 +391,7 @@ class _TaskEditState extends State<TaskEdit> {
             return;
           }
           _formKey.currentState.save();
-          Task task = _buildTask();
+          Deadline task = _buildTask();
           isEditMode
               ? await model.updateTask(widget._taskId, task)
               : await model.insertTask(task);
@@ -404,9 +404,9 @@ class _TaskEditState extends State<TaskEdit> {
     );
   }
 
-  Task _buildTask() {
+  Deadline _buildTask() {
     //TODO: adjust to new datastructure
-    Task task = Task(
+    Deadline task = Deadline(
       name: _name,
       description: _description,
       deadline: _pickedDate,

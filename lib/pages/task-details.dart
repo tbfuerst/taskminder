@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../scoped-models/mainmodel.dart';
+import '../models/job.dart';
 import '../models/task.dart';
+import '../models/deadline.dart';
 import '../helpers/date-time-helper.dart';
 import '../dictionary.dart';
 import '../globalSettings.dart';
@@ -17,7 +19,7 @@ class TaskDetails extends StatefulWidget {
 class _TaskDetailsState extends State<TaskDetails> {
   final Dictionary dict = Dictionary();
   final Settings settings = Settings();
-  Task _task;
+  Deadline _task;
 
   @override
   void initState() {

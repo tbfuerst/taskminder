@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../scoped-models/mainmodel.dart';
 import '../models/calendarday.dart';
-import '../models/task.dart';
+import '../models/deadline.dart';
 import '../widgets/tasks-list.dart';
 
 import '../helpers/date-time-helper.dart';
@@ -54,9 +54,9 @@ class _CalendarTabState extends State<CalendarTab> {
     return placeholders;
   }
 
-  List<Task> _getTasksOfCurrentMonth() {
-    List<Task> _tasks = widget.model.tasks;
-    List<Task> _monthlyTasks = _tasks.where((taskelement) {
+  List<Deadline> _getTasksOfCurrentMonth() {
+    List<Deadline> _tasks = widget.model.tasks;
+    List<Deadline> _monthlyTasks = _tasks.where((taskelement) {
       DateTime deadline = DateTime.parse(taskelement.deadline);
       int month = deadline.month;
       return month == currentMonth;
@@ -65,7 +65,7 @@ class _CalendarTabState extends State<CalendarTab> {
   }
 
   List<CalendarDay> _calendarDays() {
-    List<Task> _monthlyTasks = _getTasksOfCurrentMonth();
+    List<Deadline> _monthlyTasks = _getTasksOfCurrentMonth();
     List<CalendarDay> _dayTilesData = [];
     for (var i = 0; i < lastDayOfMonth(); i++) {
       _dayTilesData.add(CalendarDay(day: i + 1));

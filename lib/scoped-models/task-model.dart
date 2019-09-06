@@ -1,24 +1,25 @@
 import "dart:collection";
 import 'package:scoped_model/scoped_model.dart';
-
+import '../models/deadline.dart';
+import '../models/job.dart';
 import '../database/local-db.dart';
 import '../models/task.dart';
 
 mixin TaskModel on Model {
   //TODO: adjust to new datastructure
 
-  List<Task> _tasks = [];
+  List<Deadline> _tasks = [];
 
   // SplayTreeMap to provide a sorted Map
-  SplayTreeMap<String, List<Task>> _tasksByDeadline = SplayTreeMap.from({});
+  SplayTreeMap<String, List<Deadline>> _tasksByDeadline = SplayTreeMap.from({});
   bool _areTasksLoading = false;
   int _tasksCount;
 
-  List<Task> get tasks {
+  List<Deadline> get tasks {
     return _tasks;
   }
 
-  Map<String, List<Task>> get tasksByDeadline {
+  Map<String, List<Deadline>> get tasksByDeadline {
     return _tasksByDeadline;
   }
 
@@ -34,8 +35,8 @@ mixin TaskModel on Model {
     return _tasksByDeadline.length;
   }
 
-  Task taskById(String id) {
-    Task task = _tasks.firstWhere((element) {
+  Deadline taskById(String id) {
+    Deadline task = _tasks.firstWhere((element) {
       return element.id == id;
     });
     return task;
@@ -48,7 +49,7 @@ mixin TaskModel on Model {
     List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
     rawTasksData.forEach((task) {
       if (showIncompleted == true && task['isCompleted'] == 0) {
-        _tasks.add(Task(
+        _tasks.add(Deadline(
           id: task['id'],
           name: task["name"],
           description: task["description"],
@@ -61,7 +62,7 @@ mixin TaskModel on Model {
         ));
       }
       if (showCompleted == true && task['isCompleted'] == 1) {
-        _tasks.add(Task(
+        _tasks.add(Deadline(
           id: task['id'],
           name: task["name"],
           description: task["description"],
@@ -75,7 +76,7 @@ mixin TaskModel on Model {
       }
     });
     if (_tasks.length != 0) {
-      _tasks.sort((Task a, Task b) {
+      _tasks.sort((Deadline a, Deadline b) {
         return b.calculatedPriority - a.calculatedPriority;
       });
     }
@@ -96,7 +97,7 @@ mixin TaskModel on Model {
           _tasksByDeadline[rawTask["deadline"]] = [];
         }
 
-        _tasksByDeadline[rawTask["deadline"]].add(Task(
+        _tasksByDeadline[rawTask["deadline"]].add(Deadline(
           id: rawTask['id'],
           name: rawTask["name"],
           description: rawTask["description"],
@@ -114,7 +115,7 @@ mixin TaskModel on Model {
     notifyListeners();
   }
 
-  Future<Null> updateTask(String _taskId, Task newTask) async {
+  Future<Null> updateTask(String _taskId, Deadline newTask) async {
     _areTasksLoading = true;
     notifyListeners();
     await LocalDB.db.updateTask(_taskId, newTask);
@@ -123,7 +124,7 @@ mixin TaskModel on Model {
     notifyListeners();
   }
 
-  Future<bool> insertTask(Task task) async {
+  Future<bool> insertTask(Deadline task) async {
     _areTasksLoading = true;
     notifyListeners();
     await LocalDB.db.insertTask(task);

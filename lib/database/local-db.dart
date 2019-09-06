@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../models/task.dart';
+import '../models/deadline.dart';
 
 class LocalDB {
   Database _database;
@@ -36,13 +36,13 @@ class LocalDB {
     await deleteDatabase(path);
   }
 
-  Future<Task> insertTask(Task task) async {
+  Future<Deadline> insertTask(Deadline task) async {
     final db = await database;
     await db.insert("tasks", task.toMap());
     return task;
   }
 
-  Future<Null> updateTask(String id, Task newTask) async {
+  Future<Null> updateTask(String id, Deadline newTask) async {
     final db = await database;
     await db.update("tasks", newTask.toMap(), where: "id = ?", whereArgs: [id]);
   }

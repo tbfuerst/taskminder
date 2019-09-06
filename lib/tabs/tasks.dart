@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
 import 'package:taskminder/globalSettings.dart';
-import '../models/task.dart';
+import '../models/deadline.dart';
 import '../scoped-models/mainmodel.dart';
 import '../widgets/tasks-list.dart';
 
@@ -31,7 +31,7 @@ class _TasksTabState extends State<TasksTab> {
   }
 
   Future<bool> _addSimpleTask(taskName) {
-    Task newTask = Task(
+    Deadline newTask = Deadline(
       //TODO: adjust to new datastructure
       name: taskName,
       hasDeadline: false,

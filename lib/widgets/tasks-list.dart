@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-models/mainmodel.dart';
-import '../models/task.dart';
+import '../models/deadline.dart';
 import '../dictionary.dart';
 import '../globalSettings.dart';
 import '../widgets/priority-indicator.dart';
 
 class TasksList extends StatefulWidget {
   final MainModel model;
-  final List<Task> tasks;
+  final List<Deadline> tasks;
   final bool showCompletedTasksMode;
   final bool deadlineMode;
   final bool dense;
@@ -72,13 +72,13 @@ class _TasksListState extends State<TasksList> {
   }
 
   Future<Null> updateCompletionStatus(
-      Task _task, MainModel model, bool completedStatus) {
+      Deadline _task, MainModel model, bool completedStatus) {
     _task.isCompleted = completedStatus;
     return model.updateTask(_task.id, _task);
   }
 
   Widget _buildTrailingButton(
-      BuildContext context, Task task, MainModel model) {
+      BuildContext context, Deadline task, MainModel model) {
     return RaisedButton(
       onPressed: () => setState(() {
         widget.showCompletedTasksMode
@@ -108,7 +108,7 @@ class _TasksListState extends State<TasksList> {
     );
   }
 
-  Widget buildListTile(Task task, MainModel model) {
+  Widget buildListTile(Deadline task, MainModel model) {
     return ListTile(
       leading: PriorityIndicator(task.calculatedPriority),
       title: Text(task.name),
@@ -143,7 +143,7 @@ class _TasksListState extends State<TasksList> {
   Widget _buildDismissible(BuildContext context, int index, MainModel model) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      Task task = widget.tasks[index];
+      Deadline task = widget.tasks[index];
       return Card(
         child: Dismissible(
           background: _dismissibleBackgroundStyle(),
