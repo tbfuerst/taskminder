@@ -53,10 +53,7 @@ class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
         children: <Widget>[
           ListTile(
             onTap: () =>
-                Navigator.pushNamed(context, "/completedtasks").then((_) {
-              Navigator.pop(context);
-              model.getAllTasksLocal(showIncompleted: true);
-            }),
+                Navigator.pushReplacementNamed(context, "/completedtasks"),
             trailing: Icon(Icons.assignment_turned_in),
             title:
                 Text(dict.displayPhrase('completedTasks', settings.language)),

@@ -31,6 +31,15 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
         builder: (BuildContext context, Widget child, MainModel model) {
       return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, model.activeTabRoute);
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
           title: Text(dict.displayPhrase('completedTasks', settings.language)),
         ),
         body: TasksList(
@@ -39,6 +48,7 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
           showCompletedTasksMode: true,
           deadlineMode: false,
           dense: false,
+          isWithinInfiniteWidget: true,
         ),
       );
     });
