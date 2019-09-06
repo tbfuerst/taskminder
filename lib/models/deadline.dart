@@ -6,7 +6,7 @@ import 'dart:math';
 
 //TODO: write new datastructure, maybe abstract classes for simpletasks and regular tasks?
 
-class Task implements Job {
+class Deadline implements Job {
   String id;
   final String name;
   final String description;
@@ -30,7 +30,7 @@ class Task implements Job {
     return max<int>(dlPriority, priority);
   }
 
-  Task({
+  Deadline({
     this.id,
     @required this.name,
     @required this.description,

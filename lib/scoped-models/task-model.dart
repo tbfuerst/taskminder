@@ -18,7 +18,7 @@ mixin TaskModel on Model {
     return _tasks;
   }
 
-  Map get tasksByDeadline {
+  Map<String, List<Task>> get tasksByDeadline {
     return _tasksByDeadline;
   }
 

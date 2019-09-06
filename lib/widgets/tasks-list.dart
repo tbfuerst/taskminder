@@ -12,6 +12,7 @@ class TasksList extends StatefulWidget {
   final bool showCompletedTasksMode;
   final bool deadlineMode;
   final bool dense;
+  final bool isWithinExpanded;
 
   TasksList({
     this.model,
@@ -19,6 +20,7 @@ class TasksList extends StatefulWidget {
     this.showCompletedTasksMode,
     this.deadlineMode,
     this.dense,
+    this.isWithinExpanded,
   });
 
   _TasksListState createState() => _TasksListState();
@@ -27,6 +29,7 @@ class TasksList extends StatefulWidget {
 class _TasksListState extends State<TasksList> {
   final Dictionary dict = Dictionary();
   final Settings settings = Settings();
+  final ScrollController _scroll2Controller = ScrollController();
 
   @override
   initState() {
@@ -157,18 +160,45 @@ class _TasksListState extends State<TasksList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: widget.model.areTasksLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: widget.tasks.length,
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (context, index) =>
-                  _buildDismissible(context, index, widget.model),
-            ),
-    );
+    /**
+     * Task List
+     * If the TaskList is generated within an Expanded Tile,
+     * a scrollController is needed to be scrollable.
+     * Because the Expanded needs to constrain the height of the List View.
+     * Otherwise there would be two infinite Widgets nested in each other
+     */
+    return widget.isWithinExpanded
+        ? SingleChildScrollView(
+            controller: _scroll2Controller,
+            child: widget.model.areTasksLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: widget.tasks.length,
+                    controller: _scroll2Controller,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) =>
+                        _buildDismissible(context, index, widget.model),
+                  ))
+
+        /**
+         * Task List
+         * If the TaskList gets rendered just as list
+         * It has to be wrapped inside a Scrollable Widget
+         * It has to take the whole remaining space to be scrollable
+         * This is realized by the Expanded widget
+         */
+        : Expanded(
+            child: widget.model.areTasksLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    itemCount: widget.tasks.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) =>
+                        _buildDismissible(context, index, widget.model),
+                  ));
   }
 }

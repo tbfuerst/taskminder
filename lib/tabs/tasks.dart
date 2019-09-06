@@ -30,7 +30,7 @@ class _TasksTabState extends State<TasksTab> {
     super.initState();
   }
 
-  Future<void> _addSimpleTask(taskName) {
+  Future<bool> _addSimpleTask(taskName) {
     Task newTask = Task(
       //TODO: adjust to new datastructure
       name: taskName,
@@ -116,6 +116,7 @@ class _TasksTabState extends State<TasksTab> {
                       showCompletedTasksMode: false,
                       deadlineMode: false,
                       dense: true,
+                      isWithinExpanded: false,
                     ),
             ],
           ),

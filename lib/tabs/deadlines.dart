@@ -20,6 +20,9 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
   DateTimeHelper dthelper = DateTimeHelper();
   Settings settings = Settings();
 
+  double previousOffset;
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     widget.model.setActiveTab(calendar: false, deadlines: true, tasks: false);
@@ -56,29 +59,49 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     return "error";
   }
 
-  _buildDeadlineTiles(MainModel model) {
+  void _scrollToSelectedContent(
+      bool isExpanded, double previousOffset, int index, GlobalKey myKey) {
+    final keyContext = myKey.currentContext;
+
+    if (keyContext != null) {
+      // make sure that your widget is visible
+      final box = keyContext.findRenderObject() as RenderBox;
+      _scrollController.animateTo(
+          isExpanded ? (box.size.height * index) : previousOffset,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.linear);
+    }
+  }
+
+  _buildDeadlineTiles(MainModel model, int index) {
     List<ExpansionTile> panelList = [];
+    final GlobalKey expansionTileKey = GlobalKey();
     model.tasksByDeadline.forEach((deadline, taskList) {
       panelList.add(ExpansionTile(
+        key: expansionTileKey,
+        onExpansionChanged: (isExpanded) {
+          if (isExpanded) previousOffset = _scrollController.offset;
+          _scrollToSelectedContent(
+              isExpanded, previousOffset, index, expansionTileKey);
+        },
         title: Text(
             "${_displayDeadlineTime(deadline)} (${taskList.length.toString()})"),
         children: [
-          TasksList(
-            model: model,
-            tasks: taskList,
-            showCompletedTasksMode: false,
-            deadlineMode: true,
-            dense: false,
+          Container(
+            height: taskList.length.toDouble() * 100,
+            child: TasksList(
+              model: model,
+              tasks: taskList,
+              showCompletedTasksMode: false,
+              deadlineMode: true,
+              dense: false,
+              isWithinExpanded: true,
+            ),
           )
         ],
       ));
     });
-    return ListView.builder(
-        itemCount: panelList.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return panelList[index];
-        });
+    return panelList[index];
   }
 
   @override
@@ -86,13 +109,21 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return RefreshIndicator(
-          onRefresh: () => model.getLocalTasksByDeadline(),
-          child: Container(
-              child: model.areTasksLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : _buildDeadlineTiles(model)));
+        onRefresh: () => model.getLocalTasksByDeadline(),
+        child: Container(
+          child: model.areTasksLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.builder(
+                  controller: _scrollController,
+                  itemCount: model.tasksByDeadline.length,
+                  shrinkWrap: true,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _buildDeadlineTiles(model, index);
+                  }),
+        ),
+      );
     });
   }
 }
