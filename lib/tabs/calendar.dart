@@ -129,6 +129,7 @@ class _CalendarTabState extends State<CalendarTab> {
                             model: widget.model,
                             showCompletedTasksMode: false,
                             dense: true,
+                            isWithinInfiniteWidget: true,
                           ),
                         ),
                       );

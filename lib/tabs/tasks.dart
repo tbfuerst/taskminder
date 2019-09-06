@@ -60,6 +60,7 @@ class _TasksTabState extends State<TasksTab> {
             child: Form(
               key: _formKey,
               child: TextFormField(
+                autofocus: true,
                 controller: _textcontroller,
                 onSaved: (String value) {
                   newTaskName = value;
@@ -116,7 +117,7 @@ class _TasksTabState extends State<TasksTab> {
                       showCompletedTasksMode: false,
                       deadlineMode: false,
                       dense: true,
-                      isWithinExpanded: false,
+                      isWithinInfiniteWidget: false,
                     ),
             ],
           ),

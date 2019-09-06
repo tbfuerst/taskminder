@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/scoped-models/mainmodel.dart';
 
-import './pages/maintabs.dart';
+import './pages/app-view.dart';
 import './pages/task-details.dart';
 import './pages/task-edit.dart';
+import './pages/simple-task-edit.dart';
+import './pages/block-edit.dart';
 import './pages/completed-tasks.dart';
 // import './database/local-db.dart';
 
@@ -36,13 +38,15 @@ class Taskminder extends StatelessWidget {
           errorColor: Colors.brown[900],
         ),
         routes: {
-          '/': (BuildContext context) => MainTabs(model, 0),
-          '/taskedit': (BuildContext context) => TaskEdit.create(model, ""),
+          '/': (BuildContext context) => AppView(model, 0),
+          '/deadlineedit': (BuildContext context) => TaskEdit.create(model, ""),
+          '/taskedit': (BuildContext context) => AppView(model, 1),
+          '/blockedit': (BuildContext context) => BlockEdit(),
           '/completedtasks': (BuildContext context) =>
               CompletedTasksPage(model),
-          '/deadlines': (BuildContext context) => MainTabs(model, 0),
-          '/tasks': (BuildContext context) => MainTabs(model, 1),
-          '/calendar': (BuildContext context) => MainTabs(model, 2),
+          '/deadlines': (BuildContext context) => AppView(model, 0),
+          '/tasks': (BuildContext context) => AppView(model, 1),
+          '/calendar': (BuildContext context) => AppView(model, 2),
         },
         onGenerateRoute: (RouteSettings settings) {
           final List<String> pathElements = settings.name.split('/');
@@ -57,7 +61,7 @@ class Taskminder extends StatelessWidget {
                 builder: (BuildContext context) => TaskEdit.edit(model, id));
           }
           return MaterialPageRoute(
-              builder: (BuildContext context) => MainTabs(model, 1));
+              builder: (BuildContext context) => AppView(model, 1));
         },
       ),
     );

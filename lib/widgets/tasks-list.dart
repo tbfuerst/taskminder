@@ -12,7 +12,7 @@ class TasksList extends StatefulWidget {
   final bool showCompletedTasksMode;
   final bool deadlineMode;
   final bool dense;
-  final bool isWithinExpanded;
+  final bool isWithinInfiniteWidget;
 
   TasksList({
     this.model,
@@ -20,7 +20,7 @@ class TasksList extends StatefulWidget {
     this.showCompletedTasksMode,
     this.deadlineMode,
     this.dense,
-    this.isWithinExpanded,
+    this.isWithinInfiniteWidget,
   });
 
   _TasksListState createState() => _TasksListState();
@@ -167,7 +167,7 @@ class _TasksListState extends State<TasksList> {
      * Because the Expanded needs to constrain the height of the List View.
      * Otherwise there would be two infinite Widgets nested in each other
      */
-    return widget.isWithinExpanded
+    return widget.isWithinInfiniteWidget
         ? SingleChildScrollView(
             controller: _scroll2Controller,
             child: widget.model.areTasksLoading

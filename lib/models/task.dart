@@ -11,14 +11,12 @@ class Task implements Job {
   final String name;
   final type = jobType.task;
   final String description;
-  final int priority;
   bool isCompleted;
 
   Task({
     this.id,
     @required this.name,
     @required this.description,
-    @required this.priority,
     this.isCompleted,
   }) {
     if (id == null) {
@@ -34,7 +32,6 @@ class Task implements Job {
       "id": id,
       "name": name,
       "description": description,
-      "priority": priority,
       'isCompleted': isCompleted,
     };
   }

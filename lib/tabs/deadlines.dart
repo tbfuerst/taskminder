@@ -95,7 +95,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
               showCompletedTasksMode: false,
               deadlineMode: true,
               dense: false,
-              isWithinExpanded: true,
+              isWithinInfiniteWidget: true,
             ),
           )
         ],

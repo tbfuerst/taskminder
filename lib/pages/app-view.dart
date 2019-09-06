@@ -12,18 +12,17 @@ import '../tabs/tasks.dart';
 
 import '../widgets/add-task-button.dart';
 
-class MainTabs extends StatefulWidget {
+class AppView extends StatefulWidget {
   final MainModel model;
   final _activeTab;
 
-  MainTabs(this.model, this._activeTab);
+  AppView(this.model, this._activeTab);
 
   @override
-  _MainTabsState createState() => _MainTabsState();
+  _AppViewState createState() => _AppViewState();
 }
 
-class _MainTabsState extends State<MainTabs>
-    with SingleTickerProviderStateMixin {
+class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
   final Dictionary dict = Dictionary();
 
   final Settings settings = Settings();

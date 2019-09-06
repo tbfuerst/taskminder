@@ -23,6 +23,7 @@ dependencies:
   path:
   scoped_model: ^1.0.1
   random_string: ^0.0.2
+  unicorndial: ^1.1.5
   uuid: 2.0.1
 
   # The following adds the Cupertino Icons font to your application.
