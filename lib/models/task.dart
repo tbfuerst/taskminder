@@ -2,8 +2,6 @@ import 'package:taskminder/models/job.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 
-import 'dart:math';
-
 //TODO: write new datastructure, maybe abstract classes for simpletasks and regular tasks?
 
 class Task implements Job {

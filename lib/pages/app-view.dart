@@ -75,7 +75,6 @@ class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
       child: Scaffold(
         drawer: _mainDrawer(context, widget.model),
         floatingActionButton:
-            // TODO: update state properly
             _tabController.index == 1 ? null : AddTaskButton(widget.model),
         appBar: AppBar(
           title: Text("Taskminder"),

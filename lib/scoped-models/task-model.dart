@@ -1,9 +1,7 @@
 import "dart:collection";
 import 'package:scoped_model/scoped_model.dart';
 import '../models/deadline.dart';
-import '../models/job.dart';
 import '../database/local-db.dart';
-import '../models/task.dart';
 
 mixin TaskModel on Model {
   //TODO: adjust to new datastructure

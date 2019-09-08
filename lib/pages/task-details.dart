@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import '../scoped-models/mainmodel.dart';
-import '../models/job.dart';
-import '../models/task.dart';
 import '../models/deadline.dart';
 import '../helpers/date-time-helper.dart';
 import '../dictionary.dart';

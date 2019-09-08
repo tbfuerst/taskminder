@@ -7,14 +7,12 @@ enum jobType {
   block,
 }
 
-/**
-   * The id will be a unique id
-   * The name has no requirements (except being String)
-   * Possible types:
-   * deadline
-   * block
-   * 
-   */
+/// The id will be a unique id.
+/// The name has no requirements (except being String).
+/// Possible types (== subclasses):
+/// deadline
+/// task
+/// block
 abstract class Job {
   String id;
   final String name;

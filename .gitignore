@@ -8,7 +8,9 @@
 .buildlog/
 .history
 .svn/
-.der
+*.der
+**/android/key.properties
+**/android/keytluderer.jks
 
 # IntelliJ related
 *.iml

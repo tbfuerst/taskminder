@@ -5,7 +5,6 @@ import 'package:taskminder/scoped-models/mainmodel.dart';
 import './pages/app-view.dart';
 import './pages/task-details.dart';
 import './pages/task-edit.dart';
-import './pages/simple-task-edit.dart';
 import './pages/block-edit.dart';
 import './pages/completed-tasks.dart';
 // import './database/local-db.dart';

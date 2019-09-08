@@ -46,6 +46,7 @@ class _TasksTabState extends State<TasksTab> {
         widget.model.getAllTasksLocal(showIncompleted: true);
       });
     });
+    return Future<bool>.value(true);
   }
 
   Widget _addTaskInputField() {
