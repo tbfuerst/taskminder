@@ -143,6 +143,7 @@ class _TaskEditState extends State<TaskEdit> {
           return dict.displayPhrase(
               'nameFormFieldEmptyError', settings.language);
         }
+        return null;
       },
       autofocus: true,
       decoration: InputDecoration(
@@ -202,6 +203,7 @@ class _TaskEditState extends State<TaskEdit> {
           return dict.displayPhrase(
               'descrFormFieldEmptyError', settings.language);
         }
+        return null;
       },
     );
   }

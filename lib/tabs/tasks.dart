@@ -71,6 +71,7 @@ class _TasksTabState extends State<TasksTab> {
                     return dict.displayPhrase(
                         'nameFormFieldEmptyError', settings.language);
                   }
+                  return null;
                 },
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(

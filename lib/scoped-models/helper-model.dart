@@ -16,7 +16,6 @@ mixin HelperModel on Model {
     if (tasks) {
       _activeTabRoute = "/tasks";
     }
-    print(_activeTabRoute);
     notifyListeners();
   }
 }
