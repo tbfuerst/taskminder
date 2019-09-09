@@ -9,8 +9,9 @@ import '../helpers/date-time-helper.dart';
 
 class CalendarTab extends StatefulWidget {
   final MainModel model;
+  final bool blockMode;
 
-  CalendarTab(this.model);
+  CalendarTab(this.model, {this.blockMode});
 
   _CalendarTabState createState() => _CalendarTabState();
 }
@@ -19,6 +20,7 @@ class _CalendarTabState extends State<CalendarTab> {
   @override
   void initState() {
     super.initState();
+    print(widget.blockMode);
     widget.model.setActiveTab(calendar: true, deadlines: false, tasks: false);
   }
 
