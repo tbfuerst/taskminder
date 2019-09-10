@@ -4,7 +4,7 @@ import '../dictionary.dart';
 import '../globalSettings.dart';
 import '../scoped-models/mainmodel.dart';
 
-import '../widgets/tasks-list.dart';
+import '../widgets/jobslist.dart';
 
 class CompletedTasksPage extends StatefulWidget {
   final MainModel model;
@@ -42,7 +42,7 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
           ),
           title: Text(dict.displayPhrase('completedTasks', settings.language)),
         ),
-        body: TasksList(
+        body: Jobslist(
           model: widget.model,
           tasks: widget.model.tasks,
           showCompletedTasksMode: true,

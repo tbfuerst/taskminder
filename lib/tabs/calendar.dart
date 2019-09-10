@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../scoped-models/mainmodel.dart';
 import '../models/calendarday.dart';
 import '../models/deadline.dart';
-import '../widgets/tasks-list.dart';
+import '../widgets/jobslist.dart';
 
 import '../helpers/date-time-helper.dart';
 
@@ -126,7 +126,7 @@ class _CalendarTabState extends State<CalendarTab> {
                         content: Container(
                           width: double
                               .maxFinite, // Dialog needs a max width, which is the max 64bit number here
-                          child: TasksList(
+                          child: Jobslist(
                             tasks: _dayElement.tasks,
                             model: widget.model,
                             showCompletedTasksMode: false,

@@ -6,7 +6,7 @@ import '../dictionary.dart';
 import '../globalSettings.dart';
 import '../widgets/priority-indicator.dart';
 
-class TasksList extends StatefulWidget {
+class Jobslist extends StatefulWidget {
   final MainModel model;
   final List<Deadline> tasks;
   final bool showCompletedTasksMode;
@@ -14,7 +14,7 @@ class TasksList extends StatefulWidget {
   final bool dense;
   final bool isWithinInfiniteWidget;
 
-  TasksList({
+  Jobslist({
     this.model,
     this.tasks,
     this.showCompletedTasksMode,
@@ -23,10 +23,10 @@ class TasksList extends StatefulWidget {
     this.isWithinInfiniteWidget,
   });
 
-  _TasksListState createState() => _TasksListState();
+  _JobslistState createState() => _JobslistState();
 }
 
-class _TasksListState extends State<TasksList> {
+class _JobslistState extends State<Jobslist> {
   final Dictionary dict = Dictionary();
   final Settings settings = Settings();
   final ScrollController _scroll2Controller = ScrollController();

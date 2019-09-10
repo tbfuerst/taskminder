@@ -6,7 +6,7 @@ import 'package:taskminder/globalSettings.dart';
 import 'package:taskminder/helpers/date-time-helper.dart';
 import '../scoped-models/mainmodel.dart';
 
-import '../widgets/tasks-list.dart';
+import '../widgets/jobslist.dart';
 
 class DeadlinesTab extends StatefulWidget {
   final MainModel model;
@@ -89,7 +89,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
         children: [
           Container(
             height: taskList.length.toDouble() * 100,
-            child: TasksList(
+            child: Jobslist(
               model: model,
               tasks: taskList,
               showCompletedTasksMode: false,
