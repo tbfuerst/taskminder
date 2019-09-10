@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../scoped-models/mainmodel.dart';
-import '../models/deadline.dart';
-import '../dictionary.dart';
-import '../globalSettings.dart';
-import '../widgets/priority-indicator.dart';
+import '../../scoped-models/mainmodel.dart';
+import '../../models/deadline.dart';
+import '../../dictionary.dart';
+import '../../globalSettings.dart';
+import '../../widgets/priority-indicator.dart';
 
-class Jobslist extends StatefulWidget {
+class JobslistTask extends StatefulWidget {
   final MainModel model;
   final List<Deadline> tasks;
   final bool showCompletedTasksMode;
@@ -14,7 +14,7 @@ class Jobslist extends StatefulWidget {
   final bool dense;
   final bool isWithinInfiniteWidget;
 
-  Jobslist({
+  JobslistTask({
     this.model,
     this.tasks,
     this.showCompletedTasksMode,
@@ -23,10 +23,10 @@ class Jobslist extends StatefulWidget {
     this.isWithinInfiniteWidget,
   });
 
-  _JobslistState createState() => _JobslistState();
+  _JobslistTaskState createState() => _JobslistTaskState();
 }
 
-class _JobslistState extends State<Jobslist> {
+class _JobslistTaskState extends State<JobslistTask> {
   final Dictionary dict = Dictionary();
   final Settings settings = Settings();
   final ScrollController _scroll2Controller = ScrollController();
@@ -55,20 +55,6 @@ class _JobslistState extends State<Jobslist> {
                 )
               ],
             ));
-  }
-
-  Widget _dismissibleBackgroundStyle() {
-    return Container(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: EdgeInsets.only(left: 10.0),
-        child: Text(
-          dict.displayWord('discard', settings.language),
-          style: TextStyle(fontSize: 14, color: Colors.white),
-        ),
-      ),
-      color: Theme.of(context).errorColor,
-    );
   }
 
   Future<Null> updateCompletionStatus(
@@ -146,7 +132,7 @@ class _JobslistState extends State<Jobslist> {
       Deadline task = widget.tasks[index];
       return Card(
         child: Dismissible(
-          background: _dismissibleBackgroundStyle(),
+          //background: _dismissibleBackgroundStyle(),
           dismissThresholds: {DismissDirection.startToEnd: 0.8},
           confirmDismiss: (direction) => _confirmationDialog(),
           direction: DismissDirection.startToEnd,

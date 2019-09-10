@@ -4,7 +4,7 @@ import '../dictionary.dart';
 import '../globalSettings.dart';
 import '../scoped-models/mainmodel.dart';
 
-import '../widgets/jobslist.dart';
+import '../widgets/jobslist/jobslist-deadline.dart';
 
 class CompletedTasksPage extends StatefulWidget {
   final MainModel model;
@@ -42,13 +42,10 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
           ),
           title: Text(dict.displayPhrase('completedTasks', settings.language)),
         ),
-        body: Jobslist(
+        body: JobslistDeadline(
           model: widget.model,
-          tasks: widget.model.tasks,
-          showCompletedTasksMode: true,
-          deadlineMode: false,
-          dense: false,
-          isWithinInfiniteWidget: true,
+          deadlines: widget.model.tasks,
+          showCompletedOnly: true,
         ),
       );
     });

@@ -4,7 +4,7 @@ import 'package:taskminder/dictionary.dart';
 import 'package:taskminder/globalSettings.dart';
 import '../models/deadline.dart';
 import '../scoped-models/mainmodel.dart';
-import '../widgets/jobslist.dart';
+import '../widgets/jobslist/jobslist-task.dart';
 
 class TasksTab extends StatefulWidget {
   final MainModel model;
@@ -113,13 +113,10 @@ class _TasksTabState extends State<TasksTab> {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : Jobslist(
+                  : JobslistTask(
                       model: model,
                       tasks: model.tasks,
-                      showCompletedTasksMode: false,
-                      deadlineMode: false,
-                      dense: true,
-                      isWithinInfiniteWidget: false,
+                      showCompletedOnly: false,
                     ),
             ],
           ),

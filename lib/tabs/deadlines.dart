@@ -6,7 +6,7 @@ import 'package:taskminder/globalSettings.dart';
 import 'package:taskminder/helpers/date-time-helper.dart';
 import '../scoped-models/mainmodel.dart';
 
-import '../widgets/jobslist.dart';
+import '../widgets/jobslist/jobslist-deadline.dart';
 
 class DeadlinesTab extends StatefulWidget {
   final MainModel model;
@@ -19,6 +19,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
   Dictionary dict = Dictionary();
   DateTimeHelper dthelper = DateTimeHelper();
   Settings settings = Settings();
+  Function reference;
 
   double previousOffset;
   final ScrollController _scrollController = ScrollController();
@@ -76,6 +77,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
   _buildDeadlineTiles(MainModel model, int index) {
     List<ExpansionTile> panelList = [];
     final GlobalKey expansionTileKey = GlobalKey();
+
     model.tasksByDeadline.forEach((deadline, taskList) {
       panelList.add(ExpansionTile(
         key: expansionTileKey,
@@ -89,13 +91,10 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
         children: [
           Container(
             height: taskList.length.toDouble() * 100,
-            child: Jobslist(
+            child: JobslistDeadline(
               model: model,
-              tasks: taskList,
-              showCompletedTasksMode: false,
-              deadlineMode: true,
-              dense: false,
-              isWithinInfiniteWidget: true,
+              deadlines: taskList,
+              showCompletedOnly: false,
             ),
           )
         ],
