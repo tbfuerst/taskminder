@@ -32,7 +32,7 @@ class _TasksTabState extends State<TasksTab> {
 
   Future<bool> _addSimpleTask(taskName) {
     Deadline newTask = Deadline(
-      //TODO: adjust to new datastructure
+      //TODO: 4) adjust to new datastructure
       name: taskName,
       hasDeadline: false,
       deadline: "19700101",

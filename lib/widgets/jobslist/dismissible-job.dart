@@ -57,6 +57,7 @@ class DismissibleJob extends StatelessWidget {
         builder: (BuildContext context, Widget child, MainModel model) {
       Deadline task = deadlines[index];
       return Card(
+        //TODO 8) Dismiss not working on Deadlines (state update not working correctly)
         child: Dismissible(
           background: _dismissibleBackgroundStyle(context),
           dismissThresholds: {DismissDirection.startToEnd: 0.8},

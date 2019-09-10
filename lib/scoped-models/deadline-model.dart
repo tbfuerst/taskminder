@@ -3,9 +3,7 @@ import 'package:scoped_model/scoped_model.dart';
 import '../models/deadline.dart';
 import '../database/local-db.dart';
 
-//TODO: 2) Implement a Taskmodel
-
-mixin TaskModel on Model {
+mixin DeadlineModel on Model {
   List<Deadline> _tasks = [];
 
   // SplayTreeMap to provide a sorted Map
@@ -132,11 +130,14 @@ mixin TaskModel on Model {
   }
 
   void deleteTaskLocal(String id) async {
+    _areTasksLoading = true;
+    notifyListeners();
     await LocalDB.db.deleteTask(id);
     _tasks.removeWhere((task) {
       return task.id == id;
     });
     _tasksCount = _tasks.length;
+    _areTasksLoading = false;
     notifyListeners();
   }
 }

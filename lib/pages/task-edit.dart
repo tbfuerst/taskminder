@@ -8,6 +8,8 @@ import '../models/deadline.dart';
 import '../dictionary.dart';
 import '../globalSettings.dart';
 
+//TODO 7) fix and refactor edit page!!
+
 class TaskEdit extends StatefulWidget {
   final MainModel _model;
   final String _taskId;
@@ -407,7 +409,7 @@ class _TaskEditState extends State<TaskEdit> {
   }
 
   Deadline _buildTask() {
-    //TODO: adjust to new datastructure
+    //TODO: 3) adjust variable names to new datastructure
     Deadline task = Deadline(
       name: _name,
       description: _description,

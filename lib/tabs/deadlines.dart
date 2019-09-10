@@ -21,9 +21,6 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
   Settings settings = Settings();
   Function reference;
 
-  double previousOffset;
-  final ScrollController _scrollController = ScrollController();
-
   @override
   void initState() {
     widget.model.setActiveTab(calendar: false, deadlines: true, tasks: false);
@@ -60,20 +57,6 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     return "error";
   }
 
-  void _scrollToSelectedContent(
-      bool isExpanded, double previousOffset, int index, GlobalKey myKey) {
-    final keyContext = myKey.currentContext;
-
-    if (keyContext != null) {
-      // make sure that your widget is visible
-      final box = keyContext.findRenderObject() as RenderBox;
-      _scrollController.animateTo(
-          isExpanded ? (box.size.height * index) : previousOffset,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.linear);
-    }
-  }
-
   _buildDeadlineTiles(MainModel model, int index) {
     List<ExpansionTile> panelList = [];
     final GlobalKey expansionTileKey = GlobalKey();
@@ -81,11 +64,6 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     model.tasksByDeadline.forEach((deadline, taskList) {
       panelList.add(ExpansionTile(
         key: expansionTileKey,
-        onExpansionChanged: (isExpanded) {
-          if (isExpanded) previousOffset = _scrollController.offset;
-          _scrollToSelectedContent(
-              isExpanded, previousOffset, index, expansionTileKey);
-        },
         title: Text(
             "${_displayDeadlineTime(deadline)} (${taskList.length.toString()})"),
         children: [
@@ -115,7 +93,6 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
                   child: CircularProgressIndicator(),
                 )
               : ListView.builder(
-                  controller: _scrollController,
                   itemCount: model.tasksByDeadline.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {

@@ -2,7 +2,7 @@ import 'package:taskminder/models/job.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 
-//TODO: write new datastructure, maybe abstract classes for simpletasks and regular tasks?
+//TODO: 6) implement priority?
 
 class Task implements Job {
   String id;

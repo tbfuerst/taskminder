@@ -4,6 +4,8 @@ import 'package:path/path.dart';
 import '../models/deadline.dart';
 
 class LocalDB {
+  //TODO 1) rename Deadlines and add Tasks to database Structure
+
   Database _database;
 
   LocalDB._();
