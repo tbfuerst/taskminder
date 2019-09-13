@@ -12,10 +12,10 @@ import '../globalSettings.dart';
 
 class TaskEdit extends StatefulWidget {
   final MainModel _model;
-  final String _taskId;
+  final String _deadlineId;
 
-  TaskEdit.create(this._model, this._taskId);
-  TaskEdit.edit(this._model, this._taskId);
+  TaskEdit.create(this._model, this._deadlineId);
+  TaskEdit.edit(this._model, this._deadlineId);
 
   _TaskEditState createState() => _TaskEditState();
 }
@@ -29,11 +29,11 @@ class _TaskEditState extends State<TaskEdit> {
   final _timeController = TextEditingController();
 
   bool get isEditMode {
-    return widget._taskId != "";
+    return widget._deadlineId != "";
   }
 
   Deadline get editableTask {
-    return widget._model.taskById(widget._taskId);
+    return widget._model.deadlineById(widget._deadlineId);
   }
 
   // Form Data
@@ -113,7 +113,7 @@ class _TaskEditState extends State<TaskEdit> {
     _prioValue = isEditMode ? (editableTask.priority / 2).round() : 3;
     _timeInvestmentSlider =
         isEditMode ? editableTask.timeInvestment.toDouble() : 100;
-    _cbIsScheduled = isEditMode ? editableTask.hasDeadline : false;
+    // _cbIsScheduled = isEditMode ? editableTask.hasDeadline : false;
     _textTimeInvestment = _calculateTextTimeInvest();
     super.initState();
   }
@@ -351,39 +351,6 @@ class _TaskEditState extends State<TaskEdit> {
         ));
   }
 
-  Widget _buildCheckBox() {
-    return GestureDetector(
-      onTap: () => setState(() {
-        _cbIsScheduled = !_cbIsScheduled;
-      }),
-      child: Container(
-        child: Row(
-          children: <Widget>[
-            Checkbox(
-              value: _cbIsScheduled,
-              onChanged: (newValue) => setState(() {
-                _cbIsScheduled = newValue;
-              }),
-            ),
-            Text("nur geplante Aufgabe"),
-            IconButton(
-              icon: Icon(Icons.info),
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text("Geplante Aufgaben"),
-                    content: Text("Geplante Aufgaben sind...."),
-                  ),
-                );
-              },
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildSubmitButton(MainModel model) {
     return Container(
       child: RaisedButton(
@@ -395,12 +362,12 @@ class _TaskEditState extends State<TaskEdit> {
             return;
           }
           _formKey.currentState.save();
-          Deadline task = _buildTask();
+          Deadline task = _buildDeadline();
           isEditMode
-              ? await model.updateTask(widget._taskId, task)
-              : await model.insertTask(task);
-          model.getAllTasksLocal(showIncompleted: true);
-          model.getLocalTasksByDeadline().then((_) {
+              ? await model.updateDeadline(widget._deadlineId, task)
+              : await model.insertDeadline(task);
+          model.getAllDeadlinesLocal(showIncompleted: true);
+          model.getLocalDeadlinesByDeadline().then((_) {
             Navigator.pushReplacementNamed(context, model.activeTabRoute);
           });
         },
@@ -408,18 +375,17 @@ class _TaskEditState extends State<TaskEdit> {
     );
   }
 
-  Deadline _buildTask() {
+  Deadline _buildDeadline() {
     //TODO: 3) adjust variable names to new datastructure
-    Deadline task = Deadline(
+    Deadline deadline = Deadline(
       name: _name,
       description: _description,
       deadline: _pickedDate,
       deadlineTime: _pickedTime,
       timeInvestment: _timeInvestment,
       priority: _prioValue * 2,
-      hasDeadline: _cbIsScheduled,
     );
-    return task;
+    return deadline;
   }
 
   @override
@@ -441,7 +407,6 @@ class _TaskEditState extends State<TaskEdit> {
               _buildDescrField(),
               _buildTimeInvestmentSlider(),
               _buildDeadlineRow(),
-              _buildCheckBox(),
               ScopedModelDescendant<MainModel>(builder:
                   (BuildContext context, Widget child, MainModel model) {
                 return _buildSubmitButton(model);

@@ -26,7 +26,7 @@ class _TasksTabState extends State<TasksTab> {
   @override
   void initState() {
     widget.model.setActiveTab(calendar: false, deadlines: false, tasks: true);
-    widget.model.getAllTasksLocal(showIncompleted: true);
+    widget.model.getAllDeadlinesLocal(showIncompleted: true);
     super.initState();
   }
 
@@ -34,16 +34,15 @@ class _TasksTabState extends State<TasksTab> {
     Deadline newTask = Deadline(
       //TODO: 4) adjust to new datastructure
       name: taskName,
-      hasDeadline: false,
       deadline: "19700101",
       deadlineTime: "0000",
       description: "",
       priority: 0,
       timeInvestment: 0,
     );
-    widget.model.insertTask(newTask).then((value) {
+    widget.model.insertDeadline(newTask).then((value) {
       setState(() {
-        widget.model.getAllTasksLocal(showIncompleted: true);
+        widget.model.getAllDeadlinesLocal(showIncompleted: true);
       });
     });
     return Future<bool>.value(true);
@@ -105,7 +104,7 @@ class _TasksTabState extends State<TasksTab> {
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return RefreshIndicator(
-          onRefresh: () => model.getAllTasksLocal(showIncompleted: true),
+          onRefresh: () => model.getAllDeadlinesLocal(showIncompleted: true),
           child: Column(
             children: <Widget>[
               _addTaskInputField(),
@@ -115,7 +114,7 @@ class _TasksTabState extends State<TasksTab> {
                     )
                   : JobslistTask(
                       model: model,
-                      tasks: model.tasks,
+                      tasks: model.deadlines,
                       showCompletedOnly: false,
                     ),
             ],

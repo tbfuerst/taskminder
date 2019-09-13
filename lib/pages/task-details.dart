@@ -6,10 +6,10 @@ import '../dictionary.dart';
 import '../globalSettings.dart';
 
 class TaskDetails extends StatefulWidget {
-  final String _taskId;
+  final String _deadlineId;
   final MainModel model;
 
-  TaskDetails(this._taskId, this.model);
+  TaskDetails(this._deadlineId, this.model);
 
   _TaskDetailsState createState() => _TaskDetailsState();
 }
@@ -17,11 +17,11 @@ class TaskDetails extends StatefulWidget {
 class _TaskDetailsState extends State<TaskDetails> {
   final Dictionary dict = Dictionary();
   final Settings settings = Settings();
-  Deadline _task;
+  Deadline _deadline;
 
   @override
   void initState() {
-    _task = widget.model.taskById(widget._taskId);
+    _deadline = widget.model.deadlineById(widget._deadlineId);
     super.initState();
   }
 
@@ -30,7 +30,7 @@ class _TaskDetailsState extends State<TaskDetails> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-              "${dict.displayWord('task', settings.language)}: ${_task.name}"),
+              "${dict.displayWord('task', settings.language)}: ${_deadline.name}"),
         ),
         body: Container(
           alignment: Alignment.center,
@@ -42,7 +42,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                       top: 32.0, left: 16.0, right: 16.0, bottom: 8.0),
                   alignment: Alignment.center,
                   child: Text(
-                    _task.name,
+                    _deadline.name,
                     style: TextStyle(fontSize: 28.0),
                   ),
                 ),
@@ -52,21 +52,22 @@ class _TaskDetailsState extends State<TaskDetails> {
                   child: Text(dict.displayWord('deadline', settings.language) +
                       ": " +
                       DateTimeHelper()
-                          .databaseDateStringToReadable(_task.deadline) +
-                      DateTimeHelper()
-                          .databaseTimeStringToReadable(_task.deadlineTime)),
+                          .databaseDateStringToReadable(_deadline.deadline) +
+                      DateTimeHelper().databaseTimeStringToReadable(
+                          _deadline.deadlineTime)),
                 ),
                 Container(
                   alignment: Alignment.center,
-                  child: Text(_task.description),
+                  child: Text(_deadline.description),
                 ),
                 Container(
                   alignment: Alignment.center,
-                  child: Text(_task.priority.toString()),
+                  child: Text(_deadline.priority.toString()),
                 ),
                 Container(
                   alignment: Alignment.center,
-                  child: Text("isCompleted: ${_task.isCompleted.toString()}"),
+                  child:
+                      Text("isCompleted: ${_deadline.isCompleted.toString()}"),
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -74,7 +75,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     child: Text(dict.displayWord('edit', settings.language)),
                     onPressed: () {
                       Navigator.pushNamed(
-                          context, "/taskedit/${widget._taskId}");
+                          context, "/taskedit/${widget._deadlineId}");
                     },
                   ),
                 ),

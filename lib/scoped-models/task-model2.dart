@@ -44,7 +44,8 @@ mixin TaskModel on Model {
     _areTasksLoading = true;
     notifyListeners();
     _tasks = [];
-    List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
+    List<Map<String, dynamic>> rawTasksData =
+        await LocalDB.db.fetchAllDeadlines();
     rawTasksData.forEach((task) {
       if (showIncompleted == true && task['isCompleted'] == 0) {
         _tasks.add(Deadline(
@@ -55,7 +56,6 @@ mixin TaskModel on Model {
           deadline: task['deadline'],
           deadlineTime: task['deadlineTime'],
           timeInvestment: task['timeInvestment'],
-          hasDeadline: task['hasDeadline'] == 1 ? true : false,
           isCompleted: task['isCompleted'] == 1 ? true : false,
         ));
       }
@@ -68,7 +68,6 @@ mixin TaskModel on Model {
           deadline: task['deadline'],
           deadlineTime: task['deadlineTime'],
           timeInvestment: task['timeInvestment'],
-          hasDeadline: task['hasDeadline'] == 1 ? true : false,
           isCompleted: task['isCompleted'] == 1 ? true : false,
         ));
       }
@@ -87,7 +86,8 @@ mixin TaskModel on Model {
     _areTasksLoading = true;
     notifyListeners();
     _tasksByDeadline = SplayTreeMap.from({});
-    List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
+    List<Map<String, dynamic>> rawTasksData =
+        await LocalDB.db.fetchAllDeadlines();
 
     rawTasksData.forEach((rawTask) {
       if (rawTask['isCompleted'] == 0) {
@@ -103,7 +103,6 @@ mixin TaskModel on Model {
           deadline: rawTask['deadline'],
           deadlineTime: rawTask['deadlineTime'],
           timeInvestment: rawTask['timeInvestment'],
-          hasDeadline: rawTask['hasDeadline'] == 1 ? true : false,
           isCompleted: false,
         ));
       }
@@ -116,7 +115,7 @@ mixin TaskModel on Model {
   Future<Null> updateTask(String _taskId, Deadline newTask) async {
     _areTasksLoading = true;
     notifyListeners();
-    await LocalDB.db.updateTask(_taskId, newTask);
+    await LocalDB.db.updateDeadline(_taskId, newTask);
     _areTasksLoading = false;
 
     notifyListeners();
@@ -125,14 +124,14 @@ mixin TaskModel on Model {
   Future<bool> insertTask(Deadline task) async {
     _areTasksLoading = true;
     notifyListeners();
-    await LocalDB.db.insertTask(task);
+    await LocalDB.db.insertDeadline(task);
     _areTasksLoading = false;
     notifyListeners();
     return true;
   }
 
   void deleteTaskLocal(String id) async {
-    await LocalDB.db.deleteTask(id);
+    await LocalDB.db.deleteDeadline(id);
     _tasks.removeWhere((task) {
       return task.id == id;
     });

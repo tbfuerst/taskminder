@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class Block implements Job {
   String id;
   final String name;
-  final type = jobType.block;
+  final String type = JobTypeName[JobType.block];
   String deadline;
 
   Block({
@@ -23,6 +23,7 @@ class Block implements Job {
     return {
       "id": id,
       "name": name,
+      "type": type,
       "deadline": deadline,
     };
   }

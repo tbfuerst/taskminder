@@ -1,11 +1,17 @@
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 
-enum jobType {
+enum JobType {
   deadline,
   task,
   block,
 }
+
+const Map<JobType, String> JobTypeName = {
+  JobType.deadline: "deadline",
+  JobType.task: "task",
+  JobType.block: "block",
+};
 
 /// The id will be a unique id.
 /// The name has no requirements (except being String).
@@ -16,7 +22,7 @@ enum jobType {
 abstract class Job {
   String id;
   final String name;
-  final type;
+  final String type;
 
   Job({
     @required this.name,

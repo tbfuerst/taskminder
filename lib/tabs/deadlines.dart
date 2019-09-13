@@ -24,7 +24,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
   @override
   void initState() {
     widget.model.setActiveTab(calendar: false, deadlines: true, tasks: false);
-    widget.model.getLocalTasksByDeadline();
+    widget.model.getLocalDeadlinesByDeadline();
     super.initState();
   }
 
@@ -61,7 +61,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     List<ExpansionTile> panelList = [];
     final GlobalKey expansionTileKey = GlobalKey();
 
-    model.tasksByDeadline.forEach((deadline, taskList) {
+    model.deadlinesByDeadline.forEach((deadline, taskList) {
       panelList.add(ExpansionTile(
         key: expansionTileKey,
         title: Text(
@@ -86,14 +86,14 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
       return RefreshIndicator(
-        onRefresh: () => model.getLocalTasksByDeadline(),
+        onRefresh: () => model.getLocalDeadlinesByDeadline(),
         child: Container(
           child: model.areTasksLoading
               ? Center(
                   child: CircularProgressIndicator(),
                 )
               : ListView.builder(
-                  itemCount: model.tasksByDeadline.length,
+                  itemCount: model.deadlinesByDeadline.length,
                   shrinkWrap: true,
                   itemBuilder: (BuildContext context, int index) {
                     return _buildDeadlineTiles(model, index);

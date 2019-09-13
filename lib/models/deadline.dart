@@ -7,11 +7,10 @@ import 'dart:math';
 class Deadline implements Job {
   String id;
   final String name;
-  final type = jobType.deadline;
+  final String type = JobTypeName[JobType.deadline];
   final String description;
   final int timeInvestment;
   final int priority;
-  final bool hasDeadline;
   String deadline;
   String deadlineTime;
   bool isCompleted;
@@ -35,7 +34,6 @@ class Deadline implements Job {
     @required this.description,
     @required this.timeInvestment,
     @required this.priority,
-    @required this.hasDeadline,
     @required this.deadline,
     @required this.deadlineTime,
     this.isCompleted,
@@ -74,12 +72,12 @@ class Deadline implements Job {
     return {
       "id": id,
       "name": name,
+      "type": type,
       "description": description,
       "priority": priority,
       "deadlineTime": deadlineTime,
       "timeInvestment": timeInvestment,
       "deadline": deadline,
-      "hasDeadline": hasDeadline,
       'isCompleted': isCompleted,
     };
   }

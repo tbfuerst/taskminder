@@ -21,7 +21,7 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
   final Settings settings = Settings();
   @override
   void initState() {
-    widget.model.getAllTasksLocal(showCompleted: true);
+    widget.model.getAllDeadlinesLocal(showCompleted: true);
     super.initState();
   }
 
@@ -44,7 +44,7 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
         ),
         body: JobslistDeadline(
           model: widget.model,
-          deadlines: widget.model.tasks,
+          deadlines: widget.model.deadlines,
           showCompletedOnly: true,
         ),
       );

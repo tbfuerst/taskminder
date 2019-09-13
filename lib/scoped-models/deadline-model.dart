@@ -4,96 +4,97 @@ import '../models/deadline.dart';
 import '../database/local-db.dart';
 
 mixin DeadlineModel on Model {
-  List<Deadline> _tasks = [];
+  List<Deadline> _deadlines = [];
 
   // SplayTreeMap to provide a sorted Map
-  SplayTreeMap<String, List<Deadline>> _tasksByDeadline = SplayTreeMap.from({});
+  SplayTreeMap<String, List<Deadline>> _deadlinesByDeadline =
+      SplayTreeMap.from({});
   bool _areTasksLoading = false;
-  int _tasksCount;
+  int _deadlinesCount;
 
-  List<Deadline> get tasks {
-    return _tasks;
+  List<Deadline> get deadlines {
+    return _deadlines;
   }
 
-  Map<String, List<Deadline>> get tasksByDeadline {
-    return _tasksByDeadline;
+  Map<String, List<Deadline>> get deadlinesByDeadline {
+    return _deadlinesByDeadline;
   }
 
   bool get areTasksLoading {
     return _areTasksLoading;
   }
 
-  int get tasksCount {
-    return _tasksCount;
+  int get deadlinesCount {
+    return _deadlinesCount;
   }
 
   int get differentDeadlineCount {
-    return _tasksByDeadline.length;
+    return _deadlinesByDeadline.length;
   }
 
-  Deadline taskById(String id) {
-    Deadline task = _tasks.firstWhere((element) {
+  Deadline deadlineById(String id) {
+    Deadline deadline = _deadlines.firstWhere((element) {
       return element.id == id;
     });
-    return task;
+    return deadline;
   }
 
-  getAllTasksLocal({bool showIncompleted, bool showCompleted}) async {
+  getAllDeadlinesLocal({bool showIncompleted, bool showCompleted}) async {
     _areTasksLoading = true;
     notifyListeners();
-    _tasks = [];
-    List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
-    rawTasksData.forEach((task) {
-      if (showIncompleted == true && task['isCompleted'] == 0) {
-        _tasks.add(Deadline(
-          id: task['id'],
-          name: task["name"],
-          description: task["description"],
-          priority: task['priority'],
-          deadline: task['deadline'],
-          deadlineTime: task['deadlineTime'],
-          timeInvestment: task['timeInvestment'],
-          hasDeadline: task['hasDeadline'] == 1 ? true : false,
-          isCompleted: task['isCompleted'] == 1 ? true : false,
+    _deadlines = [];
+    List<Map<String, dynamic>> rawTasksData =
+        await LocalDB.db.fetchAllDeadlines();
+    rawTasksData.forEach((deadline) {
+      if (showIncompleted == true && deadline['isCompleted'] == 0) {
+        _deadlines.add(Deadline(
+          id: deadline['id'],
+          name: deadline["name"],
+          description: deadline["description"],
+          priority: deadline['priority'],
+          deadline: deadline['deadline'],
+          deadlineTime: deadline['deadlineTime'],
+          timeInvestment: deadline['timeInvestment'],
+          isCompleted: deadline['isCompleted'] == 1 ? true : false,
         ));
       }
-      if (showCompleted == true && task['isCompleted'] == 1) {
-        _tasks.add(Deadline(
-          id: task['id'],
-          name: task["name"],
-          description: task["description"],
-          priority: task['priority'],
-          deadline: task['deadline'],
-          deadlineTime: task['deadlineTime'],
-          timeInvestment: task['timeInvestment'],
-          hasDeadline: task['hasDeadline'] == 1 ? true : false,
-          isCompleted: task['isCompleted'] == 1 ? true : false,
+      if (showCompleted == true && deadline['isCompleted'] == 1) {
+        _deadlines.add(Deadline(
+          id: deadline['id'],
+          name: deadline["name"],
+          description: deadline["description"],
+          priority: deadline['priority'],
+          deadline: deadline['deadline'],
+          deadlineTime: deadline['deadlineTime'],
+          timeInvestment: deadline['timeInvestment'],
+          isCompleted: deadline['isCompleted'] == 1 ? true : false,
         ));
       }
     });
-    if (_tasks.length != 0) {
-      _tasks.sort((Deadline a, Deadline b) {
+    if (_deadlines.length != 0) {
+      _deadlines.sort((Deadline a, Deadline b) {
         return b.calculatedPriority - a.calculatedPriority;
       });
     }
-    _tasksCount = _tasks.length;
+    _deadlinesCount = _deadlines.length;
     _areTasksLoading = false;
     notifyListeners();
   }
 
-  getLocalTasksByDeadline() async {
+  getLocalDeadlinesByDeadline() async {
     _areTasksLoading = true;
     notifyListeners();
-    _tasksByDeadline = SplayTreeMap.from({});
-    List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
+    _deadlinesByDeadline = SplayTreeMap.from({});
+    List<Map<String, dynamic>> rawTasksData =
+        await LocalDB.db.fetchAllDeadlines();
 
     rawTasksData.forEach((rawTask) {
       if (rawTask['isCompleted'] == 0) {
-        if (_tasksByDeadline[rawTask["deadline"]] == null) {
-          _tasksByDeadline[rawTask["deadline"]] = [];
+        if (_deadlinesByDeadline[rawTask["deadline"]] == null) {
+          _deadlinesByDeadline[rawTask["deadline"]] = [];
         }
 
-        _tasksByDeadline[rawTask["deadline"]].add(Deadline(
+        _deadlinesByDeadline[rawTask["deadline"]].add(Deadline(
           id: rawTask['id'],
           name: rawTask["name"],
           description: rawTask["description"],
@@ -101,7 +102,6 @@ mixin DeadlineModel on Model {
           deadline: rawTask['deadline'],
           deadlineTime: rawTask['deadlineTime'],
           timeInvestment: rawTask['timeInvestment'],
-          hasDeadline: rawTask['hasDeadline'] == 1 ? true : false,
           isCompleted: false,
         ));
       }
@@ -111,32 +111,32 @@ mixin DeadlineModel on Model {
     notifyListeners();
   }
 
-  Future<Null> updateTask(String _taskId, Deadline newTask) async {
+  Future<Null> updateDeadline(String _deadlineId, Deadline newDeadline) async {
     _areTasksLoading = true;
     notifyListeners();
-    await LocalDB.db.updateTask(_taskId, newTask);
+    await LocalDB.db.updateDeadline(_deadlineId, newDeadline);
     _areTasksLoading = false;
 
     notifyListeners();
   }
 
-  Future<bool> insertTask(Deadline task) async {
+  Future<bool> insertDeadline(Deadline deadline) async {
     _areTasksLoading = true;
     notifyListeners();
-    await LocalDB.db.insertTask(task);
+    await LocalDB.db.insertDeadline(deadline);
     _areTasksLoading = false;
     notifyListeners();
     return true;
   }
 
-  void deleteTaskLocal(String id) async {
+  void deleteDeadlineLocal(String id) async {
     _areTasksLoading = true;
     notifyListeners();
-    await LocalDB.db.deleteTask(id);
-    _tasks.removeWhere((task) {
-      return task.id == id;
+    await LocalDB.db.deleteDeadline(id);
+    _deadlines.removeWhere((deadline) {
+      return deadline.id == id;
     });
-    _tasksCount = _tasks.length;
+    _deadlinesCount = _deadlines.length;
     _areTasksLoading = false;
     notifyListeners();
   }

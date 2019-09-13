@@ -2,6 +2,8 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import '../models/deadline.dart';
+import '../models/task.dart';
+import '../models/block.dart';
 
 class LocalDB {
   //TODO 1) rename Deadlines and add Tasks to database Structure
@@ -26,10 +28,10 @@ class LocalDB {
       path,
       onCreate: (Database db, int version) async {
         await db.execute(
-          "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, priority INTEGER, timeInvestment INTEGER, hasDeadline BOOLEAN, deadline TEXT, deadlineTime TEXT, isCompleted BOOLEAN)",
+          "CREATE TABLE deadlines(id TEXT PRIMARY KEY, name TEXT, type TEXT, description TEXT, priority INTEGER, timeInvestment INTEGER, deadline TEXT, deadlineTime TEXT, isCompleted BOOLEAN)",
         );
         await db.execute(
-          "CREATE TABLE simpletasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, isCompleted BOOLEAN)",
+          "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, isCompleted BOOLEAN)",
         );
         await db.execute(
           "CREATE TABLE blocks(id TEXT PRIMARY KEY, name TEXT, deadline TEXT)",
@@ -44,13 +46,37 @@ class LocalDB {
     await deleteDatabase(path);
   }
 
-  Future<Deadline> insertTask(Deadline task) async {
+  Future<Deadline> insertDeadline(Deadline deadline) async {
+    final db = await database;
+    await db.insert("deadlines", deadline.toMap());
+    return deadline;
+  }
+
+  Future<Null> updateDeadline(String id, Deadline newDeadline) async {
+    final db = await database;
+    await db.update("deadlines", newDeadline.toMap(),
+        where: "id = ?", whereArgs: [id]);
+  }
+
+  Future<int> deleteDeadline(String id) async {
+    final db = await database;
+    return await db.delete("deadlines", where: 'id = ?', whereArgs: ["$id"]);
+  }
+
+  Future<List<Map<String, dynamic>>> fetchAllDeadlines() async {
+    final db = await database;
+    var blocks = await db.query("deadlines", orderBy: 'priority');
+    // print(blocks);
+    return await db.query("deadlines", orderBy: 'priority');
+  }
+
+  Future<Task> insertTask(Task task) async {
     final db = await database;
     await db.insert("tasks", task.toMap());
     return task;
   }
 
-  Future<Null> updateTask(String id, Deadline newTask) async {
+  Future<Null> updateTask(String id, Task newTask) async {
     final db = await database;
     await db.update("tasks", newTask.toMap(), where: "id = ?", whereArgs: [id]);
   }
@@ -63,5 +89,26 @@ class LocalDB {
   Future<List<Map<String, dynamic>>> fetchAllTasks() async {
     final db = await database;
     return await db.query("tasks", orderBy: 'priority');
+  }
+
+  Future<Block> insertBlock(Block block) async {
+    final db = await database;
+    await db.insert("tasks", block.toMap());
+    return block;
+  }
+
+  Future<int> deleteBlock(String id) async {
+    final db = await database;
+    return await db.delete("blocks", where: 'id = ?', whereArgs: ["$id"]);
+  }
+
+  Future<List<Map<String, dynamic>>> fetchAllBlocks() async {
+    final db = await database;
+    return await db.query("blocks");
+  }
+
+  Future<List<Map<String, dynamic>>> fetchAllJobs() async {
+    final db = await database;
+    return await db.query("blocks");
   }
 }

@@ -57,7 +57,7 @@ class _CalendarTabState extends State<CalendarTab> {
   }
 
   List<Deadline> _getTasksOfCurrentMonth() {
-    List<Deadline> _tasks = widget.model.tasks;
+    List<Deadline> _tasks = widget.model.deadlines;
     List<Deadline> _monthlyTasks = _tasks.where((taskelement) {
       DateTime deadline = DateTime.parse(taskelement.deadline);
       int month = deadline.month;
@@ -190,7 +190,8 @@ class _CalendarTabState extends State<CalendarTab> {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: () => widget.model.getAllTasksLocal(showIncompleted: true),
+        onRefresh: () =>
+            widget.model.getAllDeadlinesLocal(showIncompleted: true),
         child: GridView.count(
           crossAxisCount: 7,
           children: dayTiles,

@@ -64,7 +64,7 @@ class DismissibleJob extends StatelessWidget {
           confirmDismiss: (direction) => _confirmationDialog(context),
           direction: DismissDirection.startToEnd,
           key: Key(task.id),
-          onDismissed: (direction) => model.deleteTaskLocal(task.id),
+          onDismissed: (direction) => model.deleteDeadlineLocal(task.id),
           child: listTileBuildFunction(task, model),
         ),
       );

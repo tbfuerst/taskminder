@@ -8,7 +8,8 @@ import './pages/task-details.dart';
 import './pages/task-edit.dart';
 import './pages/block-edit.dart';
 import './pages/completed-tasks.dart';
-// import './database/local-db.dart';
+import './testclass.dart';
+import './database/local-db.dart';
 
 void main() => runApp(Taskminder());
 
@@ -17,8 +18,10 @@ class Taskminder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Sqflite.devSetDebugModeOn(true);
-    // LocalDB.db.deleteDB();
+    // Sqflite.devSetDebugModeOn(true);
+    TestClass test = TestClass();
+    test.test();
+    LocalDB.db.deleteDB();
     return ScopedModel<MainModel>(
       model: model,
       child: MaterialApp(

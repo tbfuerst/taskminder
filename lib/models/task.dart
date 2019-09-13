@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class Task implements Job {
   String id;
   final String name;
-  final type = jobType.task;
+  final String type = JobTypeName[JobType.task];
   final String description;
   bool isCompleted;
 
@@ -29,6 +29,7 @@ class Task implements Job {
     return {
       "id": id,
       "name": name,
+      "type": type,
       "description": description,
       'isCompleted': isCompleted,
     };

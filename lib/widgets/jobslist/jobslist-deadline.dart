@@ -31,7 +31,7 @@ class _JobslistDeadlineState extends State<JobslistDeadline> {
   Future<Null> updateCompletionStatus(
       Deadline _task, MainModel model, bool completedStatus) {
     _task.isCompleted = completedStatus;
-    return model.updateTask(_task.id, _task);
+    return model.updateDeadline(_task.id, _task);
   }
 
   Widget _buildListTile(Deadline task, MainModel model) {
