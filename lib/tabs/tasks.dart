@@ -5,6 +5,7 @@ import 'package:taskminder/globalSettings.dart';
 import '../models/deadline.dart';
 import '../scoped-models/mainmodel.dart';
 import '../widgets/jobslist/jobslist-task.dart';
+import '../widgets/priority-picker.dart';
 
 class TasksTab extends StatefulWidget {
   final MainModel model;
@@ -19,6 +20,7 @@ class _TasksTabState extends State<TasksTab> {
   Settings settings = Settings();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey2 = new GlobalKey<FormState>();
   final TextEditingController _textcontroller = new TextEditingController();
 
   String newTaskName;
@@ -50,11 +52,11 @@ class _TasksTabState extends State<TasksTab> {
 
   Widget _addTaskInputField() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.symmetric(vertical: 2.0),
       child: Row(
         children: <Widget>[
           SizedBox(
-            width: 20,
+            width: 15,
           ),
           Expanded(
             child: Form(
@@ -85,12 +87,88 @@ class _TasksTabState extends State<TasksTab> {
             child: IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-                if (_formKey.currentState.validate() == false) {
+                showModalBottomSheet(
+                    builder: (BuildContext context) {
+                      return Card(
+                        child: ListView(
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                Expanded(
+                                  flex: 4,
+                                  child: Form(
+                                    key: _formKey2,
+                                    child: TextFormField(
+                                      autofocus: true,
+                                      controller: _textcontroller,
+                                      onSaved: (String value) {
+                                        newTaskName = value;
+                                      },
+                                      validator: (String value) {
+                                        if (value.length == 0) {
+                                          return dict.displayPhrase(
+                                              'nameFormFieldEmptyError',
+                                              settings.language);
+                                        }
+                                        return null;
+                                      },
+                                      keyboardType: TextInputType.text,
+                                      decoration: InputDecoration(
+                                        labelText: dict.displayWord(
+                                            'addTask', settings.language),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    icon: Icon(Icons.add),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Center(
+                              child: Container(
+                                child: ButtonBar(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: <Widget>[
+                                    FlatButton(
+                                      color: Colors.grey[300],
+                                      onPressed: () {},
+                                      child: Text("--"),
+                                    ),
+                                    FlatButton(
+                                      onPressed: () {},
+                                      child: Text("!"),
+                                    ),
+                                    FlatButton(
+                                      onPressed: () {},
+                                      child: Text("!!!"),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              child: Text(" sfsdfsd"),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    context: context);
+
+/*                 if (_formKey.currentState.validate() == false) {
                   return;
                 }
                 _formKey.currentState.save();
                 _addSimpleTask(newTaskName);
-                _textcontroller.text = "";
+                _textcontroller.text = ""; */
               },
             ),
           ),

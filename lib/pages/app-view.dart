@@ -29,13 +29,15 @@ class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
 
   final Settings settings = Settings();
 
+  final int _tabLength = 4;
+
   TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: 4, initialIndex: widget._activeTab, vsync: this);
+    _tabController = TabController(
+        length: _tabLength, initialIndex: widget._activeTab, vsync: this);
     _tabController.addListener(_handleTabChange);
   }
 
@@ -70,34 +72,97 @@ class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
     ));
   }
 
+  TextStyle _tabTextStyle() {
+    return TextStyle(fontSize: 9);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: _tabLength,
       child: Scaffold(
         drawer: _mainDrawer(context, widget.model),
         floatingActionButton:
-            _tabController.index == 1 ? null : AddTaskButton(widget.model),
+            _tabController.index == 2 ? null : AddTaskButton(widget.model),
         appBar: AppBar(
-          title: Text("Taskminder"),
+          title: Container(
+            margin: EdgeInsets.symmetric(vertical: 10.0),
+            child: Text("Taskminder"),
+          ),
+          centerTitle: true,
           bottom: TabBar(
             controller: _tabController,
-            labelPadding: EdgeInsets.all(15),
             tabs: [
-              Text(dict.displayWord("deadlines", settings.language)),
-              Text(dict.displayWord("tasks", settings.language)),
-              Text(dict.displayWord("calendar", settings.language)),
-              Text(dict.displayWord("schedule", settings.language)),
+              Container(
+                constraints: BoxConstraints.loose(
+                  Size(double.infinity, 40.0),
+                ),
+                child: Tab(
+                  icon: Icon(
+                    Icons.calendar_today,
+                    size: 16,
+                  ),
+                  child: Text(
+                    dict.displayWord("calendar", settings.language),
+                    style: _tabTextStyle(),
+                  ),
+                ),
+              ),
+              Container(
+                constraints: BoxConstraints.loose(
+                  Size(double.infinity, 40.0),
+                ),
+                child: Tab(
+                  icon: Icon(
+                    Icons.assignment_late,
+                    size: 16,
+                  ),
+                  child: Text(
+                    dict.displayWord("deadlines", settings.language),
+                    style: _tabTextStyle(),
+                  ),
+                ),
+              ),
+              Container(
+                constraints: BoxConstraints.loose(
+                  Size(double.infinity, 40.0),
+                ),
+                child: Tab(
+                  icon: Icon(
+                    Icons.assignment,
+                    size: 16,
+                  ),
+                  child: Text(
+                    dict.displayWord("tasks", settings.language),
+                    style: _tabTextStyle(),
+                  ),
+                ),
+              ),
+              Container(
+                constraints: BoxConstraints.loose(
+                  Size(double.infinity, 40.0),
+                ),
+                child: Tab(
+                  icon: Icon(
+                    Icons.device_hub,
+                    size: 16,
+                  ),
+                  child: Text(
+                    dict.displayWord("schedule", settings.language),
+                    style: _tabTextStyle(),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
         body: TabBarView(
           controller: _tabController,
           children: [
+            CalendarTab(widget.model),
             DeadlinesTab(widget.model),
             TasksTab(widget.model),
-            CalendarTab(widget.model),
-            ScheduleTab(),
+            ScheduleTab()
           ],
         ),
       ),

@@ -1,3 +1,5 @@
+import 'package:flutter/rendering.dart';
+
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/scoped-models/mainmodel.dart';
@@ -11,7 +13,10 @@ import './pages/completed-tasks.dart';
 import './testclass.dart';
 import './database/local-db.dart';
 
-void main() => runApp(Taskminder());
+void main() {
+  // debugPaintSizeEnabled = true;
+  runApp(Taskminder());
+}
 
 class Taskminder extends StatelessWidget {
   final MainModel model = MainModel();
@@ -44,7 +49,7 @@ class Taskminder extends StatelessWidget {
         routes: {
           '/': (BuildContext context) => AppView(model, 0),
           '/deadlineedit': (BuildContext context) => TaskEdit.create(model, ""),
-          '/taskedit': (BuildContext context) => AppView(model, 1),
+          '/taskedit': (BuildContext context) => AppView(model, 2),
           '/blockedit': (BuildContext context) => BlockEdit(),
           '/completedtasks': (BuildContext context) =>
               CompletedTasksPage(model),
