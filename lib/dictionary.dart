@@ -63,11 +63,48 @@ class Dictionary {
     }
   };
 
+  Map<String, Map<String, List<String>>> _collections = const {
+    'months': {
+      'de': [
+        "Januar",
+        "Februar",
+        "März",
+        "April",
+        "Mai",
+        "Juni",
+        "Juli",
+        "August",
+        "September",
+        "Oktober",
+        "November",
+        "Dezember",
+      ],
+      'en': [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ]
+    },
+  };
+
   String displayWord(word, language) {
     return _words[word][language];
   }
 
   String displayPhrase(phrase, language) {
     return _phrases[phrase][language];
+  }
+
+  List displayCollection(collection, language) {
+    return _collections[collection][language];
   }
 }

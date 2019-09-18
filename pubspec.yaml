@@ -25,6 +25,7 @@ dependencies:
   random_string: ^0.0.2
   unicorndial: ^1.1.5
   uuid: 2.0.1
+  month_picker_dialog: ^0.2.3
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

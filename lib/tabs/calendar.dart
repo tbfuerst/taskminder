@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:taskminder/dictionary.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 
+import '../globalSettings.dart';
+import '../dictionary.dart';
 import '../scoped-models/mainmodel.dart';
 import '../models/calendarday.dart';
 import '../models/deadline.dart';
@@ -17,6 +21,9 @@ class CalendarTab extends StatefulWidget {
 }
 
 class _CalendarTabState extends State<CalendarTab> {
+  static Dictionary dict = Dictionary();
+  static Settings settings = Settings();
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +38,8 @@ class _CalendarTabState extends State<CalendarTab> {
   int currentDay = DateTime.now().day;
   int dayOne = 1;
   List<Widget> dayTiles = [];
+  List<String> _monthNames =
+      dict.displayCollection('months', settings.language);
 
   List<Widget> _buildWeekdayHeadlines() {
     List<Widget> weekdays = [];
@@ -177,7 +186,25 @@ class _CalendarTabState extends State<CalendarTab> {
             _changeMonth(changeBy: -1);
           }),
         ),
-        title: Text("$currentMonth-$currentYear"),
+        title: GestureDetector(
+          child: Text("${_monthNames[currentMonth - 1]} $currentYear"),
+          onTap: () async {
+            DateTime pickedDateTime = await showMonthPicker(
+              firstDate: DateTime.tryParse("20000101"),
+              lastDate: DateTime.tryParse("29991231"),
+              initialDate: DateTime.now(),
+              context: context,
+            );
+
+            String datestring = dthelper.dateToDatabaseString(pickedDateTime);
+            int month = int.parse(datestring.substring(4, 6));
+            int year = int.parse(datestring.substring(0, 4));
+            setState(() {
+              currentMonth = month;
+              currentYear = year;
+            });
+          },
+        ),
         centerTitle: true,
         actions: <Widget>[
           IconButton(
