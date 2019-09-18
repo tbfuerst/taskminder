@@ -9,8 +9,7 @@ class TestClass {
 
   void doTest() {
     List<Job> jobs = [];
-    Task task =
-        Task(name: "lelelel", description: "dererereer", isCompleted: false);
+    Task task = Task(name: "lelelel", isCompleted: false, priority: 1);
     jobs.add(task);
 
     print(jobs[0].name);

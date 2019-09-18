@@ -49,19 +49,21 @@ class Taskminder extends StatelessWidget {
         routes: {
           '/': (BuildContext context) => AppView(model, 0),
           '/deadlineedit': (BuildContext context) => TaskEdit.create(model, ""),
-          '/taskedit': (BuildContext context) => AppView(model, 2),
+          '/taskedit': (BuildContext context) =>
+              AppView(model, 2, showTaskAddDialog: true),
           '/blockedit': (BuildContext context) => BlockEdit(),
           '/completedtasks': (BuildContext context) =>
               CompletedTasksPage(model),
-          '/deadlines': (BuildContext context) => AppView(model, 0),
-          '/tasks': (BuildContext context) => AppView(model, 1),
-          '/calendar': (BuildContext context) => AppView(model, 2),
+          '/deadlines': (BuildContext context) => AppView(model, 1),
+          '/tasks': (BuildContext context) =>
+              AppView(model, 2, showTaskAddDialog: false),
+          '/calendar': (BuildContext context) => AppView(model, 0),
         },
         onGenerateRoute: (RouteSettings settings) {
           final List<String> pathElements = settings.name.split('/');
           final String id = pathElements[2];
 
-          if (pathElements[1] == "task") {
+          if (pathElements[1] == "deadline") {
             return MaterialPageRoute(
                 builder: (BuildContext context) => TaskDetails(id, model));
           }

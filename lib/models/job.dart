@@ -23,10 +23,12 @@ abstract class Job {
   String id;
   final String name;
   final String type;
+  bool isCompleted;
 
   Job({
     @required this.name,
     @required this.type,
+    @required this.isCompleted,
   }) {
     if (id == null) {
       id = Uuid().v1();

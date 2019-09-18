@@ -8,6 +8,7 @@ class Block implements Job {
   String id;
   final String name;
   final String type = JobTypeName[JobType.block];
+  bool isCompleted = false;
   String deadline;
 
   Block({

@@ -8,13 +8,13 @@ class Task implements Job {
   String id;
   final String name;
   final String type = JobTypeName[JobType.task];
-  final String description;
+  final int priority;
   bool isCompleted;
 
   Task({
     this.id,
     @required this.name,
-    @required this.description,
+    @required this.priority,
     this.isCompleted,
   }) {
     if (id == null) {
@@ -29,8 +29,8 @@ class Task implements Job {
     return {
       "id": id,
       "name": name,
+      "priority": priority,
       "type": type,
-      "description": description,
       'isCompleted': isCompleted,
     };
   }

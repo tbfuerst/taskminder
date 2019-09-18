@@ -129,6 +129,14 @@ mixin DeadlineModel on Model {
     return true;
   }
 
+  Future<bool> deadlineExists(String id) async {
+    List<Map<String, dynamic>> queriedDeadline =
+        await LocalDB.db.checkDeadlineId(id);
+    notifyListeners();
+    if (queriedDeadline.isNotEmpty) return true;
+    return false;
+  }
+
   void deleteDeadlineLocal(String id) async {
     _areTasksLoading = true;
     notifyListeners();

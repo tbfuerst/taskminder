@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:taskminder/models/job.dart';
 import '../../models/deadline.dart';
 import '../../dictionary.dart';
 import '../../globalSettings.dart';
@@ -7,14 +8,14 @@ import '../../scoped-models/mainmodel.dart';
 
 class DismissibleJob extends StatelessWidget {
   final MainModel model;
-  final List<Deadline> deadlines;
+  final List<Job> jobs;
   final dict = Dictionary();
   final settings = Settings();
   final int index;
   final Function listTileBuildFunction;
 
   DismissibleJob(
-      {this.model, this.deadlines, this.index, this.listTileBuildFunction});
+      {this.model, this.jobs, this.index, this.listTileBuildFunction});
 
   Widget _dismissibleBackgroundStyle(BuildContext context) {
     return Container(
@@ -55,7 +56,7 @@ class DismissibleJob extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      Deadline task = deadlines[index];
+      Job job = jobs[index];
       return Card(
         //TODO 8) Dismiss not working on Deadlines (state update not working correctly)
         child: Dismissible(
@@ -63,9 +64,13 @@ class DismissibleJob extends StatelessWidget {
           dismissThresholds: {DismissDirection.startToEnd: 0.8},
           confirmDismiss: (direction) => _confirmationDialog(context),
           direction: DismissDirection.startToEnd,
-          key: Key(task.id),
-          onDismissed: (direction) => model.deleteDeadlineLocal(task.id),
-          child: listTileBuildFunction(task, model),
+          key: Key(job.id),
+          onDismissed: (direction) async {
+            if (await model.deadlineExists(job.id))
+              model.deleteDeadlineLocal(job.id);
+            if (await model.taskExists(job.id)) model.deleteTaskLocal(job.id);
+          },
+          child: listTileBuildFunction(job, model),
         ),
       );
     });

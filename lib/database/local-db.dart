@@ -31,7 +31,7 @@ class LocalDB {
           "CREATE TABLE deadlines(id TEXT PRIMARY KEY, name TEXT, type TEXT, description TEXT, priority INTEGER, timeInvestment INTEGER, deadline TEXT, deadlineTime TEXT, isCompleted BOOLEAN)",
         );
         await db.execute(
-          "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, description TEXT, isCompleted BOOLEAN)",
+          "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, type TEXT, priority INTEGER, description TEXT, isCompleted BOOLEAN)",
         );
         await db.execute(
           "CREATE TABLE blocks(id TEXT PRIMARY KEY, name TEXT, deadline TEXT)",
@@ -110,5 +110,15 @@ class LocalDB {
   Future<List<Map<String, dynamic>>> fetchAllJobs() async {
     final db = await database;
     return await db.query("blocks");
+  }
+
+  Future<List<Map<String, dynamic>>> checkDeadlineId(String id) async {
+    final db = await database;
+    return await db.query("deadlines", where: 'id = ?', whereArgs: ["$id"]);
+  }
+
+  Future<List<Map<String, dynamic>>> checkTaskId(String id) async {
+    final db = await database;
+    return await db.query("tasks", where: 'id = ?', whereArgs: ["$id"]);
   }
 }

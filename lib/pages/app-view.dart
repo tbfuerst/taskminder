@@ -17,8 +17,9 @@ import '../widgets/add-task-button.dart';
 class AppView extends StatefulWidget {
   final MainModel model;
   final _activeTab;
+  final bool showTaskAddDialog;
 
-  AppView(this.model, this._activeTab);
+  AppView(this.model, this._activeTab, {this.showTaskAddDialog});
 
   @override
   _AppViewState createState() => _AppViewState();
@@ -86,10 +87,8 @@ class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
             _tabController.index == 2 ? null : AddTaskButton(widget.model),
         appBar: AppBar(
           title: Container(
-            margin: EdgeInsets.symmetric(vertical: 10.0),
             child: Text("Taskminder"),
           ),
-          centerTitle: true,
           bottom: TabBar(
             controller: _tabController,
             tabs: [
@@ -161,7 +160,7 @@ class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
           children: [
             CalendarTab(widget.model),
             DeadlinesTab(widget.model),
-            TasksTab(widget.model),
+            TasksTab(widget.model, widget.showTaskAddDialog),
             ScheduleTab()
           ],
         ),

@@ -20,19 +20,23 @@ class JobActionButton extends StatelessWidget {
       {this.job, this.model, this.showCompletedOnly, this.isTaskNotDeadline});
 
   Future<Null> updateCompletionStatus(
-      Deadline _job, MainModel model, bool completedStatus) {
+      Job _job, MainModel model, bool completedStatus) async {
     _job.isCompleted = completedStatus;
-    return model.updateDeadline(_job.id, _job);
+    if (await model.deadlineExists(_job.id))
+      return model.updateDeadline(_job.id, _job);
+    if (await model.taskExists(_job.id)) return model.updateTask(_job.id, _job);
   }
 
-  buttonFunction() {
+  buttonFunction() async {
     showCompletedOnly
         ? updateCompletionStatus(job, model, false).then((_) {
             model.getLocalDeadlinesByDeadline();
+            model.getAllTasksLocal(showCompleted: true);
             model.getAllDeadlinesLocal(showCompleted: true);
           })
         : updateCompletionStatus(job, model, true).then((_) {
             model.getLocalDeadlinesByDeadline();
+            model.getAllTasksLocal(showIncompleted: true);
             model.getAllDeadlinesLocal(showIncompleted: true);
           });
   }

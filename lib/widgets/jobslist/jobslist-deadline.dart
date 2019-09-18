@@ -59,7 +59,7 @@ class _JobslistDeadlineState extends State<JobslistDeadline> {
       onTap: () {
         Navigator.pushNamed(
           context,
-          "/task/${task.id}",
+          "/deadline/${task.id}",
         );
       },
     );
@@ -86,7 +86,7 @@ class _JobslistDeadlineState extends State<JobslistDeadline> {
               shrinkWrap: true,
               itemBuilder: (context, index) => DismissibleJob(
                 model: widget.model,
-                deadlines: widget.deadlines,
+                jobs: widget.deadlines,
                 index: index,
                 listTileBuildFunction: _buildListTile,
               ),

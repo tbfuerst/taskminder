@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import './dismissible-job.dart';
 import './job-action-button.dart';
 import '../../scoped-models/mainmodel.dart';
-import '../../models/deadline.dart';
+import '../../models/task.dart';
 import '../../dictionary.dart';
 import '../../globalSettings.dart';
 import '../../widgets/priority-indicator.dart';
 
 class JobslistTask extends StatefulWidget {
   final MainModel model;
-  final List<Deadline> tasks;
+  final List<Task> tasks;
   final bool showCompletedOnly;
 
   JobslistTask({
@@ -30,9 +30,9 @@ class _JobslistTaskState extends State<JobslistTask> {
     super.initState();
   }
 
-  Widget _buildListTile(Deadline task, MainModel model) {
+  Widget _buildListTile(Task task, MainModel model) {
     return ListTile(
-      leading: PriorityIndicator(task.calculatedPriority),
+      leading: PriorityIndicator(task.priority),
       title: Text(task.name),
       trailing: JobActionButton(
         job: task,
@@ -59,7 +59,7 @@ class _JobslistTaskState extends State<JobslistTask> {
      * Otherwise there would be two infinite Widgets nested in each other
      */
     return Expanded(
-        child: widget.model.areTasksLoading
+        child: widget.model.areTasks2Loading
             ? Center(
                 child: CircularProgressIndicator(),
               )
@@ -68,7 +68,7 @@ class _JobslistTaskState extends State<JobslistTask> {
                 shrinkWrap: true,
                 itemBuilder: (context, index) => DismissibleJob(
                   model: widget.model,
-                  deadlines: widget.tasks,
+                  jobs: widget.tasks,
                   index: index,
                   listTileBuildFunction: _buildListTile,
                 ),
