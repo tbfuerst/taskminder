@@ -1,9 +1,6 @@
-import "dart:collection";
 import 'package:scoped_model/scoped_model.dart';
 import '../models/task.dart';
 import '../database/local-db.dart';
-
-//TODO: 2) Implement a Taskmodel
 
 mixin TaskModel on Model {
   List<Task> _tasks = [];
@@ -81,7 +78,7 @@ mixin TaskModel on Model {
     return true;
   }
 
-  void deleteTaskLocal(String id) async {
+  Future<Null> deleteTaskLocal(String id) async {
     await LocalDB.db.deleteTask(id);
     _tasks.removeWhere((task) {
       return task.id == id;
@@ -93,7 +90,7 @@ mixin TaskModel on Model {
   Future<bool> taskExists(String id) async {
     List<Map<String, dynamic>> queriedTask = await LocalDB.db.checkTaskId(id);
     notifyListeners();
-    if (queriedTask[0].isNotEmpty) return true;
+    if (queriedTask.isNotEmpty) return true;
     return false;
   }
 }

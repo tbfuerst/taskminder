@@ -2,8 +2,6 @@ import 'package:taskminder/models/job.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 
-//TODO: 6) implement priority?
-
 class Task implements Job {
   String id;
   final String name;

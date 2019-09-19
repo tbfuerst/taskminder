@@ -137,7 +137,7 @@ mixin DeadlineModel on Model {
     return false;
   }
 
-  void deleteDeadlineLocal(String id) async {
+  Future<Null> deleteDeadlineLocal(String id) async {
     _areTasksLoading = true;
     notifyListeners();
     await LocalDB.db.deleteDeadline(id);

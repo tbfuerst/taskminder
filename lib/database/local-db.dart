@@ -6,8 +6,6 @@ import '../models/task.dart';
 import '../models/block.dart';
 
 class LocalDB {
-  //TODO 1) rename Deadlines and add Tasks to database Structure
-
   Database _database;
 
   LocalDB._();
@@ -81,8 +79,6 @@ class LocalDB {
 
   Future<List<Map<String, dynamic>>> fetchAllDeadlines() async {
     final db = await database;
-    var blocks = await db.query("deadlines", orderBy: 'priority');
-    // print(blocks);
     return await db.query("deadlines", orderBy: 'priority');
   }
 

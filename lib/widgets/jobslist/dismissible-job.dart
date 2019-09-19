@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/models/job.dart';
-import '../../models/deadline.dart';
 import '../../dictionary.dart';
 import '../../globalSettings.dart';
 import '../../scoped-models/mainmodel.dart';
 
-class DismissibleJob extends StatelessWidget {
+class DismissibleJob extends StatefulWidget {
   final MainModel model;
   final List<Job> jobs;
-  final dict = Dictionary();
-  final settings = Settings();
   final int index;
   final Function listTileBuildFunction;
 
   DismissibleJob(
       {this.model, this.jobs, this.index, this.listTileBuildFunction});
+
+  @override
+  _DismissibleJobState createState() => _DismissibleJobState();
+}
+
+class _DismissibleJobState extends State<DismissibleJob> {
+  final dict = Dictionary();
+
+  final settings = Settings();
 
   Widget _dismissibleBackgroundStyle(BuildContext context) {
     return Container(
@@ -56,9 +62,8 @@ class DismissibleJob extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-      Job job = jobs[index];
+      Job job = widget.jobs[widget.index];
       return Card(
-        //TODO 8) Dismiss not working on Deadlines (state update not working correctly)
         child: Dismissible(
           background: _dismissibleBackgroundStyle(context),
           dismissThresholds: {DismissDirection.startToEnd: 0.8},
@@ -67,10 +72,17 @@ class DismissibleJob extends StatelessWidget {
           key: Key(job.id),
           onDismissed: (direction) async {
             if (await model.deadlineExists(job.id))
-              model.deleteDeadlineLocal(job.id);
-            if (await model.taskExists(job.id)) model.deleteTaskLocal(job.id);
+              await model.deleteDeadlineLocal(job.id);
+
+            if (await model.taskExists(job.id))
+              await model.deleteTaskLocal(job.id);
+
+            setState(() {});
+
+            // TODO 8) Fix this dirty solution of state update!
+            Navigator.pushReplacementNamed(context, "/deadlines");
           },
-          child: listTileBuildFunction(job, model),
+          child: widget.listTileBuildFunction(job, model),
         ),
       );
     });

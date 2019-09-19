@@ -34,7 +34,6 @@ class _TasksTabState extends State<TasksTab> {
 
   Future<bool> _addSimpleTask(taskName) {
     Task newTask = Task(
-      //TODO: 4) adjust to new datastructure
       name: taskName,
       priority: _priority,
       isCompleted: false,

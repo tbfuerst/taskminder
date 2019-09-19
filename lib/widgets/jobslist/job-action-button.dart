@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../models/job.dart';
-import '../../models/deadline.dart';
 
 import '../../scoped-models/mainmodel.dart';
 

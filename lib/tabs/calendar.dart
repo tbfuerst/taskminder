@@ -8,7 +8,6 @@ import '../dictionary.dart';
 import '../scoped-models/mainmodel.dart';
 import '../models/calendarday.dart';
 import '../models/deadline.dart';
-import '../widgets/jobslist/jobslist-deadline.dart';
 
 import '../helpers/date-time-helper.dart';
 
