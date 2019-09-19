@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+/// date: Database String: YYYYMMDD as String
+/// date: Readable String: DD.MM.YYYY as String
+/// date: DateTime Object
+///
+/// time: DatabaseString: HHMM as String
+/// time: ReadableString: HH:MM as String
+/// time: TimeOfDay Object
+///
+
 class DateTimeHelper {
   String makeDatabaseString(int day, int month, int year) {
     return year.toString() +
@@ -59,6 +68,10 @@ class DateTimeHelper {
     if (inWeeks == null) inWeeks = false;
 
     if (inDays == false && inHours == false && inWeeks == false) {
+      throw new Exception();
+    }
+
+    if ((inDays ? 1 : 0) + (inHours ? 1 : 0) + (inWeeks ? 1 : 0) > 1) {
       throw new Exception();
     }
 

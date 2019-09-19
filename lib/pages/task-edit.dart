@@ -30,14 +30,17 @@ class _TaskEditState extends State<TaskEdit> {
   final _dateController = TextEditingController();
   final _timeController = TextEditingController();
 
+  /// true, if an existing deadline should be edited
   bool get isEditMode {
     return widget._deadlineId != "";
   }
 
+  /// true, if the edit page is brought up by tapping on a day in calendar page
   bool get isCalendarMode {
     return widget._dateFromCalendar != "";
   }
 
+  /// get Deadline Object provided by the calling parent widget
   Deadline get editableTask {
     return widget._model.deadlineById(widget._deadlineId);
   }
@@ -46,11 +49,14 @@ class _TaskEditState extends State<TaskEdit> {
   String _name;
   String _description;
   int _prioValue = 3;
-  String _pickedDate = DateTimeHelper().dateToDatabaseString(DateTime.now());
-  String _displayedDate = DateTimeHelper().dateToReadableString(DateTime.now());
-  String _pickedTime = DateTimeHelper().timeToDatabaseString(TimeOfDay.now());
-  String _displayedTime =
-      DateTimeHelper().timeToReadableString(TimeOfDay.now());
+  String _pickedDate = DateTimeHelper()
+      .dateToDatabaseString(DateTime.now()); // Date as database String
+  String _displayedDate = DateTimeHelper()
+      .dateToReadableString(DateTime.now()); // Date as displayed in app
+  String _pickedTime = DateTimeHelper()
+      .timeToDatabaseString(TimeOfDay.now()); // Time as database String
+  String _displayedTime = DateTimeHelper()
+      .timeToReadableString(TimeOfDay.now()); // Time as displayed in app
   int get priority {
     return (_sliderPriority / 10).round();
   }
@@ -60,8 +66,6 @@ class _TaskEditState extends State<TaskEdit> {
   int get _timeInvestment {
     return _timeInvestmentSlider.round();
   }
-
-  bool _cbIsScheduled = false;
 
   int currentYear = DateTime.now().year;
 
@@ -418,6 +422,13 @@ class _TaskEditState extends State<TaskEdit> {
               _buildDescrField(),
               _buildTimeInvestmentSlider(),
               _buildDeadlineRow(),
+              ExpansionTile(
+                title: Text("hallo"),
+                children: <Widget>[
+                  Text("lol"),
+                  Text("lol"),
+                ],
+              ),
               ScopedModelDescendant<MainModel>(builder:
                   (BuildContext context, Widget child, MainModel model) {
                 return _buildSubmitButton(model);

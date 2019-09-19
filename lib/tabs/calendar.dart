@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:taskminder/widgets/priority-indicator.dart';
@@ -26,9 +27,11 @@ class _CalendarTabState extends State<CalendarTab> {
 
   @override
   void initState() {
-    super.initState();
-    print(widget.blockMode);
+    // print(widget.blockMode);
+    widget.model
+        .getAllDeadlinesLocal(showIncompleted: true, showCompleted: true);
     widget.model.setActiveTab(calendar: true, deadlines: false, tasks: false);
+    super.initState();
   }
 
   DateTimeHelper dthelper = new DateTimeHelper();
@@ -254,13 +257,21 @@ class _CalendarTabState extends State<CalendarTab> {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () =>
-            widget.model.getAllDeadlinesLocal(showIncompleted: true),
-        child: GridView.count(
-          crossAxisCount: 7,
-          children: dayTiles,
-        ),
+      body: ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
+          return widget.model.areTasksLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : RefreshIndicator(
+                  onRefresh: () =>
+                      widget.model.getAllDeadlinesLocal(showIncompleted: true),
+                  child: GridView.count(
+                    crossAxisCount: 7,
+                    children: dayTiles,
+                  ),
+                );
+        },
       ),
     );
   }

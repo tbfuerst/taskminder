@@ -59,7 +59,7 @@ class _JobslistDeadlineState extends State<JobslistDeadline> {
       onTap: () {
         Navigator.pushNamed(
           context,
-          "/deadline/${task.id}",
+          "/deadlineedit/${task.id}",
         );
       },
     );

@@ -25,6 +25,8 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
   void initState() {
     widget.model.setActiveTab(calendar: false, deadlines: true, tasks: false);
     widget.model.getLocalDeadlinesByDeadline();
+    widget.model
+        .getAllDeadlinesLocal(showIncompleted: true, showCompleted: true);
     super.initState();
   }
 
