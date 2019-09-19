@@ -13,9 +13,11 @@ import '../globalSettings.dart';
 class TaskEdit extends StatefulWidget {
   final MainModel _model;
   final String _deadlineId;
+  final String _dateFromCalendar;
 
-  TaskEdit.create(this._model, this._deadlineId);
-  TaskEdit.edit(this._model, this._deadlineId);
+  TaskEdit.create(this._model, this._deadlineId, this._dateFromCalendar);
+  TaskEdit.edit(this._model, this._deadlineId, this._dateFromCalendar);
+  TaskEdit.fromCalendar(this._model, this._deadlineId, this._dateFromCalendar);
 
   _TaskEditState createState() => _TaskEditState();
 }
@@ -30,6 +32,10 @@ class _TaskEditState extends State<TaskEdit> {
 
   bool get isEditMode {
     return widget._deadlineId != "";
+  }
+
+  bool get isCalendarMode {
+    return widget._dateFromCalendar != "";
   }
 
   Deadline get editableTask {
@@ -92,11 +98,16 @@ class _TaskEditState extends State<TaskEdit> {
   initState() {
     _pickedDate = isEditMode
         ? editableTask.deadline
-        : DateTimeHelper().dateToDatabaseString(DateTime.now());
+        : isCalendarMode
+            ? widget._dateFromCalendar
+            : DateTimeHelper().dateToDatabaseString(DateTime.now());
 
     _displayedDate = isEditMode
         ? DateTimeHelper().databaseDateStringToReadable(editableTask.deadline)
-        : DateTimeHelper().dateToReadableString(DateTime.now());
+        : isCalendarMode
+            ? DateTimeHelper()
+                .databaseDateStringToReadable(widget._dateFromCalendar)
+            : DateTimeHelper().dateToReadableString(DateTime.now());
 
     _pickedTime = isEditMode
         ? editableTask.deadlineTime

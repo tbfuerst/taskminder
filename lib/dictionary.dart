@@ -94,6 +94,10 @@ class Dictionary {
         "December"
       ]
     },
+    'shortDays': {
+      'de': ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+      'en': ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    }
   };
 
   String displayWord(word, language) {

@@ -48,7 +48,8 @@ class Taskminder extends StatelessWidget {
         ),
         routes: {
           '/': (BuildContext context) => AppView(model, 0),
-          '/deadlineedit': (BuildContext context) => TaskEdit.create(model, ""),
+          '/deadlineedit': (BuildContext context) =>
+              TaskEdit.create(model, "", ""),
           '/taskedit': (BuildContext context) =>
               AppView(model, 2, showTaskAddDialog: true),
           '/blockedit': (BuildContext context) => BlockEdit(),
@@ -69,7 +70,13 @@ class Taskminder extends StatelessWidget {
           }
           if (pathElements[1] == "taskedit") {
             return MaterialPageRoute(
-                builder: (BuildContext context) => TaskEdit.edit(model, id));
+                builder: (BuildContext context) =>
+                    TaskEdit.edit(model, id, ""));
+          }
+          if (pathElements[1] == "deadlineCalendar") {
+            return MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    TaskEdit.fromCalendar(model, "", pathElements[2]));
           }
           return MaterialPageRoute(
               builder: (BuildContext context) => AppView(model, 1));

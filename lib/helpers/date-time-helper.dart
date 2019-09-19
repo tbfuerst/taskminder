@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
 class DateTimeHelper {
+  String makeDatabaseString(int day, int month, int year) {
+    return year.toString() +
+        month.toString().padLeft(2, "0") +
+        day.toString().padLeft(2, "0");
+  }
+
   String dateToReadableString(DateTime datetime) {
     return datetime.day.toString().padLeft(2, "0") +
         "." +

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:taskminder/dictionary.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:taskminder/widgets/priority-indicator.dart';
 
 import '../globalSettings.dart';
 import '../dictionary.dart';
@@ -43,12 +44,16 @@ class _CalendarTabState extends State<CalendarTab> {
 
   List<Widget> _buildWeekdayHeadlines() {
     List<Widget> weekdays = [];
-    List<String> dayTiles = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+    List<String> dayTiles =
+        dict.displayCollection('shortDays', settings.language);
     dayTiles.forEach((day) => weekdays.add(
           Container(
             child: Text(
               day,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
             ),
             alignment: Alignment.center,
           ),
@@ -113,7 +118,7 @@ class _CalendarTabState extends State<CalendarTab> {
       _daysData.forEach((_dayElement) {
         dayTiles.add(
           Container(
-            padding: EdgeInsets.all(2.0),
+            padding: EdgeInsets.all(0.0),
             decoration: BoxDecoration(
               border: Border.all(
                   width: 2.0,
@@ -122,7 +127,10 @@ class _CalendarTabState extends State<CalendarTab> {
                       : Colors.white),
             ),
             child: FlatButton(
-              child: Text(_dayElement.day.toString()),
+              child: Text(
+                _dayElement.day.toString(),
+                style: TextStyle(fontSize: 7),
+              ),
               color: _dayElement.hasTasks
                   ? Theme.of(context).accentColor
                   : Colors.white,
@@ -133,17 +141,48 @@ class _CalendarTabState extends State<CalendarTab> {
                     builder: (BuildContext context) {
                       return AlertDialog(
                         content: Container(
-                          width: double
-                              .maxFinite, // Dialog needs a max width, which is the max 64bit number here
-                          child: JobslistDeadline(
-                            deadlines: _dayElement.tasks,
-                            model: widget.model,
-                          ),
-                        ),
+                            //width: double.maxFinite, // Dialog needs a max width, which is the max 64bit number here
+                            child: ListView.builder(
+                          itemCount: _dayElement.tasks.length,
+                          itemBuilder: (context, index) {
+                            Deadline deadline = _dayElement.tasks[index];
+                            return ListTile(
+                              leading: PriorityIndicator(
+                                  deadline.calculatedPriority),
+                              title: Text(deadline.name),
+                              subtitle: Text(deadline
+                                      .getFormattedDeadline()[0]
+                                      .toString() +
+                                  " " +
+                                  dict.displayWord('days', settings.language) +
+                                  ", " +
+                                  deadline
+                                      .getFormattedDeadline()[1]
+                                      .toString() +
+                                  " " +
+                                  dict.displayWord('hours', settings.language) +
+                                  " " +
+                                  dict.displayWord(
+                                      'remaining', settings.language) +
+                                  "\n" +
+                                  deadline.description),
+                              isThreeLine: true,
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  "/deadline/${deadline.id}",
+                                );
+                              },
+                            );
+                          },
+                        )),
                       );
                     },
                   );
-                } else {}
+                } else {
+                  Navigator.pushNamed(context,
+                      "/deadlineCalendar/${dthelper.makeDatabaseString(_dayElement.day, currentMonth, currentYear)}");
+                }
               },
             ),
           ),
@@ -157,16 +196,16 @@ class _CalendarTabState extends State<CalendarTab> {
     setState(() {
       if (changeBy >= 0) {
         if ((currentMonth + changeBy % 12) > 12) {
+          currentYear += ((currentMonth + changeBy) ~/ 12);
           currentMonth = (currentMonth + changeBy) % 12;
-          currentYear += 1;
         } else {
           currentMonth += changeBy;
         }
       } else {
         changeBy = -changeBy;
         if ((currentMonth - changeBy % 12) <= 0) {
+          currentYear -= ((currentMonth - changeBy) ~/ 12) + 1;
           currentMonth = 12 - changeBy + 1;
-          currentYear -= 1;
         } else {
           currentMonth -= changeBy;
         }
