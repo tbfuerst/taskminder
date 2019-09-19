@@ -35,21 +35,25 @@ class LocalDB {
           "CREATE TABLE blocks(id TEXT PRIMARY KEY, name TEXT, deadline TEXT)",
         );
         await db.execute(
-          "CREATE TABLE settings(identifier PRIMARY KEY, value TEXT)",
+          "CREATE TABLE settings(id TEXT PRIMARY KEY, language TEXT)",
         );
+        await insertSetting({
+          'id': '1',
+          'language': 'de',
+        });
       },
       version: 1,
     );
   }
 
-  Future<Null> insertSetting(Map setting) async {
+  Future<Null> insertSetting(Map<String, dynamic> setting) async {
     final db = await database;
-    await db.insert("deadlines", setting);
+    await db.insert("settings", setting);
   }
 
   Future<List<Map<String, dynamic>>> querySettings() async {
     final db = await database;
-    return await db.query("settings");
+    return await db.query("settings", where: "id = ?", whereArgs: ['1']);
   }
 
   deleteDB() async {

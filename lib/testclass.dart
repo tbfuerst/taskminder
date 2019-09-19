@@ -15,11 +15,4 @@ class TestClass {
 
     print(jobs[0].name);
   }
-
-  void dbSetup() {
-    LocalDB.db.insertSetting({
-      'language': 'en',
-      'firstStartup': 'false',
-    });
-  }
 }

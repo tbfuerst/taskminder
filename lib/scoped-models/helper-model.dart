@@ -24,11 +24,9 @@ mixin HelperModel on Model {
     notifyListeners();
   }
 
-  void querySettings() async {
+  Future querySettings() async {
     List<Map<String, dynamic>> sQuery = await LocalDB.db.querySettings();
-    Map languageSetting = sQuery.firstWhere((setting) {
-      return setting['identifier'] == 'language';
-    });
-    settings.language = languageSetting['identifier'];
+    print(sQuery);
+    settings.language = sQuery[0]['language'];
   }
 }

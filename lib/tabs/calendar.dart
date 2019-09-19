@@ -259,6 +259,10 @@ class _CalendarTabState extends State<CalendarTab> {
       ),
       body: ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
+          model.querySettings().then((e) {
+            print(model.settings.language);
+          });
+
           return widget.model.areTasksLoading
               ? Center(
                   child: CircularProgressIndicator(),
