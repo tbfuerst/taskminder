@@ -75,7 +75,7 @@ class _TaskDetailsState extends State<TaskDetails> {
                     child: Text(dict.displayWord('edit', settings.language)),
                     onPressed: () {
                       Navigator.pushNamed(
-                          context, "/taskedit/${widget._deadlineId}");
+                          context, "/deadlineedit/${widget._deadlineId}");
                     },
                   ),
                 ),

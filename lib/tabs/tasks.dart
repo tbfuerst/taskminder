@@ -91,7 +91,7 @@ class _TasksTabState extends State<TasksTab> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    "Priority",
+                    dict.displayWord('priority', settings.language),
                     style: TextStyle(fontSize: 9),
                   ),
                 ),

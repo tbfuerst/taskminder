@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:taskminder/widgets/priority-picker.dart';
 
 import '../scoped-models/mainmodel.dart';
 import '../helpers/date-time-helper.dart';
@@ -48,7 +49,7 @@ class _TaskEditState extends State<TaskEdit> {
   // Form Data
   String _name;
   String _description;
-  int _prioValue = 3;
+  int _prioValue = 1;
   String _pickedDate = DateTimeHelper()
       .dateToDatabaseString(DateTime.now()); // Date as database String
   String _displayedDate = DateTimeHelper()
@@ -58,7 +59,7 @@ class _TaskEditState extends State<TaskEdit> {
   String _displayedTime = DateTimeHelper()
       .timeToReadableString(TimeOfDay.now()); // Time as displayed in app
   int get priority {
-    return (_sliderPriority / 10).round();
+    return _prioValue;
   }
 
   double _timeInvestmentSlider;
@@ -125,28 +126,12 @@ class _TaskEditState extends State<TaskEdit> {
     _dateController.text = _displayedDate;
     _timeController.text = _displayedTime;
 
-    _prioValue = isEditMode ? (editableTask.priority / 2).round() : 3;
+    _prioValue = isEditMode ? editableTask.priority : 1;
     _timeInvestmentSlider =
         isEditMode ? editableTask.timeInvestment.toDouble() : 100;
     // _cbIsScheduled = isEditMode ? editableTask.hasDeadline : false;
     _textTimeInvestment = _calculateTextTimeInvest();
     super.initState();
-  }
-
-  _buildFirstRow() {
-    return Row(
-      children: <Widget>[
-        Flexible(
-          flex: 3,
-          child: _buildNameField(),
-        ),
-        SizedBox(width: 100.0),
-        Flexible(
-          flex: 2,
-          child: _buildPrioDropdown(),
-        )
-      ],
-    );
   }
 
   Widget _buildNameField() {
@@ -168,8 +153,14 @@ class _TaskEditState extends State<TaskEdit> {
     );
   }
 
-  Widget _buildPrioDropdown() {
-    return DropdownButtonFormField(
+  void _changePriority(int to) {
+    _prioValue = to;
+  }
+
+  Widget _buildPrioBar() {
+    return PriorityPicker(_changePriority);
+
+/*     DropdownButtonFormField(
       decoration: InputDecoration(
           labelText: dict.displayWord('priority', settings.language)),
       value: _prioValue,
@@ -204,7 +195,7 @@ class _TaskEditState extends State<TaskEdit> {
           value: 5,
         ),
       ],
-    );
+    ); */
   }
 
   Widget _buildDescrField() {
@@ -398,7 +389,7 @@ class _TaskEditState extends State<TaskEdit> {
       deadline: _pickedDate,
       deadlineTime: _pickedTime,
       timeInvestment: _timeInvestment,
-      priority: _prioValue * 2,
+      priority: _prioValue,
     );
     return deadline;
   }
@@ -418,15 +409,21 @@ class _TaskEditState extends State<TaskEdit> {
                     Text(dict.displayPhrase('createTask', settings.language)),
                 margin: EdgeInsets.all(10.0),
               ),
-              _buildFirstRow(),
+              _buildNameField(),
               _buildDescrField(),
-              _buildTimeInvestmentSlider(),
               _buildDeadlineRow(),
               ExpansionTile(
-                title: Text("hallo"),
+                title: Text(dict.displayWord("more", settings.language)),
                 children: <Widget>[
-                  Text("lol"),
-                  Text("lol"),
+                  _buildPrioBar(),
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      dict.displayWord('priority', settings.language),
+                      style: TextStyle(fontSize: 9),
+                    ),
+                  ),
+                  _buildTimeInvestmentSlider(),
                 ],
               ),
               ScopedModelDescendant<MainModel>(builder:

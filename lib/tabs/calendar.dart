@@ -172,7 +172,7 @@ class _CalendarTabState extends State<CalendarTab> {
                               onTap: () {
                                 Navigator.pushNamed(
                                   context,
-                                  "/deadline/${deadline.id}",
+                                  "/deadlinedetail/${deadline.id}",
                                 );
                               },
                             );

@@ -13,6 +13,7 @@ class Dictionary {
     'addTask': {'de': 'Neue Aufgabe', 'en': 'Add Task'},
     'task': {'de': 'Aufgabe', 'en': 'Task'},
     'edit': {'de': 'Bearbeiten', 'en': 'Edit'},
+    'more': {'de': 'Mehr', 'en': 'More'},
     'language': {'de': 'Sprache', 'en': 'Language'},
     'block': {'de': 'Sperrtag', 'en': 'Block'},
     'list': {'de': 'Liste', 'en': 'List'},

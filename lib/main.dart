@@ -64,11 +64,11 @@ class Taskminder extends StatelessWidget {
           final List<String> pathElements = settings.name.split('/');
           final String id = pathElements[2];
 
-          if (pathElements[1] == "deadlineedit") {
+          if (pathElements[1] == "deadlinedetail") {
             return MaterialPageRoute(
                 builder: (BuildContext context) => TaskDetails(id, model));
           }
-          if (pathElements[1] == "taskedit") {
+          if (pathElements[1] == "deadlineedit") {
             return MaterialPageRoute(
                 builder: (BuildContext context) =>
                     TaskEdit.edit(model, id, ""));
