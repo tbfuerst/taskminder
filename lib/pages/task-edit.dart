@@ -77,9 +77,9 @@ class _TaskEditState extends State<TaskEdit> {
     if (_timeInvestmentSlider < 10) {
       return dict.displayWord('minutes', settings.language);
     } else if (_timeInvestmentSlider < 25) {
-      return dict.displayWord('few', settings.language) +
-          " " +
-          dict.displayWord('hours', settings.language);
+      return dict.displayWord('circashort', settings.language) +
+          " 1 " +
+          dict.displayWord('hour', settings.language);
     } else if (_timeInvestmentSlider < 40) {
       return dict.displayWord('some', settings.language) +
           " " +
@@ -128,7 +128,7 @@ class _TaskEditState extends State<TaskEdit> {
 
     _prioValue = isEditMode ? editableTask.priority : 1;
     _timeInvestmentSlider =
-        isEditMode ? editableTask.timeInvestment.toDouble() : 100;
+        isEditMode ? editableTask.timeInvestment.toDouble() : 17;
     // _cbIsScheduled = isEditMode ? editableTask.hasDeadline : false;
     _textTimeInvestment = _calculateTextTimeInvest();
     super.initState();
@@ -153,49 +153,12 @@ class _TaskEditState extends State<TaskEdit> {
     );
   }
 
-  void _changePriority(int to) {
-    _prioValue = to;
-  }
-
   Widget _buildPrioBar() {
-    return PriorityPicker(_changePriority);
+    void _changePriority(int to) {
+      _prioValue = to;
+    }
 
-/*     DropdownButtonFormField(
-      decoration: InputDecoration(
-          labelText: dict.displayWord('priority', settings.language)),
-      value: _prioValue,
-      onChanged: (newValue) {
-        setState(() {
-          _prioValue = newValue;
-        });
-      },
-      items: [
-        DropdownMenuItem(
-          child: Text(dict.displayWord('very', settings.language) +
-              " " +
-              dict.displayWord('low', settings.language)),
-          value: 1,
-        ),
-        DropdownMenuItem(
-          child: Text(dict.displayWord('low', settings.language)),
-          value: 2,
-        ),
-        DropdownMenuItem(
-          child: Text(dict.displayWord('standard', settings.language)),
-          value: 3,
-        ),
-        DropdownMenuItem(
-          child: Text(dict.displayWord('high', settings.language)),
-          value: 4,
-        ),
-        DropdownMenuItem(
-          child: Text(dict.displayWord('very', settings.language) +
-              " " +
-              dict.displayWord('high', settings.language)),
-          value: 5,
-        ),
-      ],
-    ); */
+    return PriorityPicker(_changePriority);
   }
 
   Widget _buildDescrField() {

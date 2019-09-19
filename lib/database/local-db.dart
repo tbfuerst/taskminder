@@ -34,9 +34,22 @@ class LocalDB {
         await db.execute(
           "CREATE TABLE blocks(id TEXT PRIMARY KEY, name TEXT, deadline TEXT)",
         );
+        await db.execute(
+          "CREATE TABLE settings(identifier PRIMARY KEY, value TEXT)",
+        );
       },
       version: 1,
     );
+  }
+
+  Future<Null> insertSetting(Map setting) async {
+    final db = await database;
+    await db.insert("deadlines", setting);
+  }
+
+  Future<List<Map<String, dynamic>>> querySettings() async {
+    final db = await database;
+    return await db.query("settings");
   }
 
   deleteDB() async {

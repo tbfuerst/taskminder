@@ -1,6 +1,7 @@
 import 'package:taskminder/models/task.dart';
 
 import './models/job.dart';
+import 'database/local-db.dart';
 
 class TestClass {
   void test() {
@@ -13,5 +14,12 @@ class TestClass {
     jobs.add(task);
 
     print(jobs[0].name);
+  }
+
+  void dbSetup() {
+    LocalDB.db.insertSetting({
+      'language': 'en',
+      'firstStartup': 'false',
+    });
   }
 }

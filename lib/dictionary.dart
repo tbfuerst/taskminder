@@ -17,6 +17,8 @@ class Dictionary {
     'language': {'de': 'Sprache', 'en': 'Language'},
     'block': {'de': 'Sperrtag', 'en': 'Block'},
     'list': {'de': 'Liste', 'en': 'List'},
+    'circa': {'de': 'Circa', 'en': 'circa'},
+    'circashort': {'de': 'ca.', 'en': 'approx.'},
     'deadline': {'de': 'Termin', 'en': 'Deadline'},
     'deadlines': {'de': 'Termine', 'en': 'Deadlines'},
     'calendar': {'de': 'Kalender', 'en': 'Calendar'},

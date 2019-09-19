@@ -27,6 +27,7 @@ class Taskminder extends StatelessWidget {
     TestClass test = TestClass();
     test.test();
     LocalDB.db.deleteDB();
+    test.dbSetup();
     return ScopedModel<MainModel>(
       model: model,
       child: MaterialApp(
