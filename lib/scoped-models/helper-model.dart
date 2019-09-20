@@ -1,8 +1,5 @@
 import 'package:scoped_model/scoped_model.dart';
 
-import '../database/local-db.dart';
-import '../globalSettings.dart';
-
 mixin HelperModel on Model {
   String _activeTabRoute = "";
   String get activeTabRoute {

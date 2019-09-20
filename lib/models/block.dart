@@ -2,7 +2,7 @@ import 'package:taskminder/models/job.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 
-//TODO: 5) implement Blocks model
+//TODO: 1: implement Blocks model
 
 class Block implements Job {
   String id;

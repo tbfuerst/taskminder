@@ -63,6 +63,9 @@ class Dictionary {
       'en': 'Please shorten decription'
     },
     'createTask': {'de': 'Aufgabe erstellen', 'en': 'Create Task'},
+    'createDeadline': {'de': 'Termin eintragen', 'en': 'Create Deadline'},
+    'editTask': {'de': 'Aufgabe bearbeiten', 'en': 'Edit Task'},
+    'editDeadline': {'de': 'Termin bearbeiten', 'en': 'Edit Deadline'},
     'completedTasks': {'de': 'Erledigte Aufgaben', 'en': 'Completed Tasks'},
     'discardTaskTitle': {'de': 'Aufgabe verwerfen', 'en': 'Discard Task'},
     'discardTaskPrompt': {

@@ -14,6 +14,7 @@ class TaskDetails extends StatefulWidget {
   _TaskDetailsState createState() => _TaskDetailsState();
 }
 
+// TODO 2: make Details Page abstract for use with both Tasks and Deadlines
 class _TaskDetailsState extends State<TaskDetails> {
   final Dictionary dict = Dictionary();
   final Settings settings = Settings();

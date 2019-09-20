@@ -1,7 +1,6 @@
 import 'package:taskminder/models/task.dart';
 
 import './models/job.dart';
-import 'database/local-db.dart';
 
 class TestClass {
   void test() {

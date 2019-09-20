@@ -14,7 +14,7 @@ import '../tabs/tasks.dart';
 
 import '../widgets/add-task-button.dart';
 
-//TODO 8) other features
+//TODO 4: other features
 
 class AppView extends StatefulWidget {
   final MainModel model;

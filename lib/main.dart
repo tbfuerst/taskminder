@@ -1,14 +1,14 @@
-import 'package:flutter/rendering.dart';
+// import 'package:flutter/rendering.dart';
 
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/pages/settings.dart';
 import 'package:taskminder/scoped-models/mainmodel.dart';
-import 'package:sqflite/sqflite.dart';
+// import 'package:sqflite/sqflite.dart';
 
 import './pages/app-view.dart';
-import './pages/task-details.dart';
-import './pages/task-edit.dart';
+import './pages/job-details.dart';
+import './pages/deadline-edit.dart';
 import './pages/block-edit.dart';
 import './pages/completed-tasks.dart';
 import './testclass.dart';
@@ -40,7 +40,7 @@ class Taskminder extends StatelessWidget {
         routes: {
           '/': (BuildContext context) => AppView(model, 0),
           '/deadlineedit': (BuildContext context) =>
-              TaskEdit.create(model, "", ""),
+              DeadlineEdit.create(model, "", ""),
           '/taskedit': (BuildContext context) =>
               AppView(model, 2, showTaskAddDialog: true),
           '/blockedit': (BuildContext context) => BlockEdit(),
@@ -63,12 +63,12 @@ class Taskminder extends StatelessWidget {
           if (pathElements[1] == "deadlineedit") {
             return MaterialPageRoute(
                 builder: (BuildContext context) =>
-                    TaskEdit.edit(model, id, ""));
+                    DeadlineEdit.edit(model, id, ""));
           }
           if (pathElements[1] == "deadlineCalendar") {
             return MaterialPageRoute(
                 builder: (BuildContext context) =>
-                    TaskEdit.fromCalendar(model, "", pathElements[2]));
+                    DeadlineEdit.fromCalendar(model, "", pathElements[2]));
           }
           return MaterialPageRoute(
               builder: (BuildContext context) => AppView(model, 1));

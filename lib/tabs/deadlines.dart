@@ -81,7 +81,10 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
         ],
       ));
     });
-    return panelList[index];
+    if (panelList.isNotEmpty)
+      return panelList[index];
+    else
+      return [Container()];
   }
 
   @override

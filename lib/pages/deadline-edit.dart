@@ -9,21 +9,20 @@ import '../models/deadline.dart';
 import '../dictionary.dart';
 import '../globalSettings.dart';
 
-//TODO 7) fix and refactor edit page!!
-
-class TaskEdit extends StatefulWidget {
+class DeadlineEdit extends StatefulWidget {
   final MainModel _model;
   final String _deadlineId;
   final String _dateFromCalendar;
 
-  TaskEdit.create(this._model, this._deadlineId, this._dateFromCalendar);
-  TaskEdit.edit(this._model, this._deadlineId, this._dateFromCalendar);
-  TaskEdit.fromCalendar(this._model, this._deadlineId, this._dateFromCalendar);
+  DeadlineEdit.create(this._model, this._deadlineId, this._dateFromCalendar);
+  DeadlineEdit.edit(this._model, this._deadlineId, this._dateFromCalendar);
+  DeadlineEdit.fromCalendar(
+      this._model, this._deadlineId, this._dateFromCalendar);
 
-  _TaskEditState createState() => _TaskEditState();
+  _DeadlineEditState createState() => _DeadlineEditState();
 }
 
-class _TaskEditState extends State<TaskEdit> {
+class _DeadlineEditState extends State<DeadlineEdit> {
   final Dictionary dict = Dictionary();
   final Settings settings = Settings();
 
@@ -42,7 +41,7 @@ class _TaskEditState extends State<TaskEdit> {
   }
 
   /// get Deadline Object provided by the calling parent widget
-  Deadline get editableTask {
+  Deadline get editableDeadline {
     return widget._model.deadlineById(widget._deadlineId);
   }
 
@@ -69,8 +68,6 @@ class _TaskEditState extends State<TaskEdit> {
   }
 
   int currentYear = DateTime.now().year;
-
-  double _sliderPriority;
 
   String _textTimeInvestment;
   String _calculateTextTimeInvest() {
@@ -102,41 +99,42 @@ class _TaskEditState extends State<TaskEdit> {
   @override
   initState() {
     _pickedDate = isEditMode
-        ? editableTask.deadline
+        ? editableDeadline.deadline
         : isCalendarMode
             ? widget._dateFromCalendar
             : DateTimeHelper().dateToDatabaseString(DateTime.now());
 
     _displayedDate = isEditMode
-        ? DateTimeHelper().databaseDateStringToReadable(editableTask.deadline)
+        ? DateTimeHelper()
+            .databaseDateStringToReadable(editableDeadline.deadline)
         : isCalendarMode
             ? DateTimeHelper()
                 .databaseDateStringToReadable(widget._dateFromCalendar)
             : DateTimeHelper().dateToReadableString(DateTime.now());
 
     _pickedTime = isEditMode
-        ? editableTask.deadlineTime
+        ? editableDeadline.deadlineTime
         : DateTimeHelper().timeToDatabaseString(TimeOfDay.now());
 
     _displayedTime = isEditMode
         ? DateTimeHelper()
-            .databaseTimeStringToReadable(editableTask.deadlineTime)
+            .databaseTimeStringToReadable(editableDeadline.deadlineTime)
         : DateTimeHelper().timeToReadableString(TimeOfDay.now());
 
     _dateController.text = _displayedDate;
     _timeController.text = _displayedTime;
 
-    _prioValue = isEditMode ? editableTask.priority : 1;
+    _prioValue = isEditMode ? editableDeadline.priority : 1;
     _timeInvestmentSlider =
-        isEditMode ? editableTask.timeInvestment.toDouble() : 17;
-    // _cbIsScheduled = isEditMode ? editableTask.hasDeadline : false;
+        isEditMode ? editableDeadline.timeInvestment.toDouble() : 17;
+    // _cbIsScheduled = isEditMode ? editableDeadline.hasDeadline : false;
     _textTimeInvestment = _calculateTextTimeInvest();
     super.initState();
   }
 
   Widget _buildNameField() {
     return TextFormField(
-      initialValue: isEditMode ? editableTask.name : "",
+      initialValue: isEditMode ? editableDeadline.name : "",
       onSaved: (String value) {
         _name = value;
       },
@@ -163,7 +161,7 @@ class _TaskEditState extends State<TaskEdit> {
 
   Widget _buildDescrField() {
     return TextFormField(
-      initialValue: isEditMode ? editableTask.description : "",
+      initialValue: isEditMode ? editableDeadline.description : "",
       onSaved: (String value) {
         _description = value;
       },
@@ -184,7 +182,7 @@ class _TaskEditState extends State<TaskEdit> {
     showDatePicker(
       context: context,
       initialDate: isEditMode
-          ? DateTime.tryParse(editableTask.deadline)
+          ? DateTime.tryParse(editableDeadline.deadline)
           : DateTime.now(),
       firstDate: DateTime(currentYear),
       lastDate: DateTime(currentYear + 12),
@@ -209,7 +207,7 @@ class _TaskEditState extends State<TaskEdit> {
     showTimePicker(
       context: context,
       initialTime: isEditMode
-          ? TimeOfDay.fromDateTime(DateTime.tryParse(editableTask.deadline))
+          ? TimeOfDay.fromDateTime(DateTime.tryParse(editableDeadline.deadline))
           : TimeOfDay.now(),
       builder: (BuildContext context, Widget child) {
         return SingleChildScrollView(
@@ -335,10 +333,10 @@ class _TaskEditState extends State<TaskEdit> {
             return;
           }
           _formKey.currentState.save();
-          Deadline task = _buildDeadline();
+          Deadline deadline = _buildDeadline();
           isEditMode
-              ? await model.updateDeadline(widget._deadlineId, task)
-              : await model.insertDeadline(task);
+              ? await model.updateDeadline(widget._deadlineId, deadline)
+              : await model.insertDeadline(deadline);
           model.getAllDeadlinesLocal(showIncompleted: true);
           model.getLocalDeadlinesByDeadline().then((_) {
             Navigator.pushReplacementNamed(context, model.activeTabRoute);
@@ -349,7 +347,6 @@ class _TaskEditState extends State<TaskEdit> {
   }
 
   Deadline _buildDeadline() {
-    //TODO: 3) adjust variable names to new datastructure
     Deadline deadline = Deadline(
       name: _name,
       description: _description,
@@ -372,8 +369,11 @@ class _TaskEditState extends State<TaskEdit> {
             children: <Widget>[
               Container(
                 alignment: Alignment.topCenter,
-                child: Text(dict.displayPhrase(
-                    'createTask', widget._model.settings.language)),
+                child: isEditMode
+                    ? Text(dict.displayPhrase(
+                        'editDeadline', widget._model.settings.language))
+                    : Text(dict.displayPhrase(
+                        'createDeadline', widget._model.settings.language)),
                 margin: EdgeInsets.all(10.0),
               ),
               _buildNameField(),
