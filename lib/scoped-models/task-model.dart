@@ -6,15 +6,15 @@ mixin TaskModel on Model {
   List<Task> _tasks = [];
 
   // SplayTreeMap to provide a sorted Map
-  bool _areTasks2Loading = false;
+  bool _areTasksLoading = false;
   int _tasksCount;
 
   List<Task> get tasks {
     return _tasks;
   }
 
-  bool get areTasks2Loading {
-    return _areTasks2Loading;
+  bool get areTasksLoading {
+    return _areTasksLoading;
   }
 
   int get tasksCount {
@@ -29,7 +29,7 @@ mixin TaskModel on Model {
   }
 
   getAllTasksLocal({bool showIncompleted, bool showCompleted}) async {
-    _areTasks2Loading = true;
+    _areTasksLoading = true;
     notifyListeners();
     _tasks = [];
     List<Map<String, dynamic>> rawTasksData = await LocalDB.db.fetchAllTasks();
@@ -57,23 +57,23 @@ mixin TaskModel on Model {
       });
     }
     _tasksCount = _tasks.length;
-    _areTasks2Loading = false;
+    _areTasksLoading = false;
     notifyListeners();
   }
 
   Future<Null> updateTask(String _taskId, Task newTask) async {
-    _areTasks2Loading = true;
+    _areTasksLoading = true;
     notifyListeners();
     await LocalDB.db.updateTask(_taskId, newTask);
-    _areTasks2Loading = false;
+    _areTasksLoading = false;
     notifyListeners();
   }
 
   Future<bool> insertTask(Task task) async {
-    _areTasks2Loading = true;
+    _areTasksLoading = true;
     notifyListeners();
     await LocalDB.db.insertTask(task);
-    _areTasks2Loading = false;
+    _areTasksLoading = false;
     notifyListeners();
     return true;
   }

@@ -40,7 +40,8 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
               color: Colors.white,
             ),
           ),
-          title: Text(dict.displayPhrase('completedTasks', settings.language)),
+          title: Text(
+              dict.displayPhrase('completedTasks', model.settings.language)),
         ),
         body: JobslistDeadline(
           model: widget.model,

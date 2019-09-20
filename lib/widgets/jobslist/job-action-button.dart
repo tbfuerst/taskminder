@@ -58,8 +58,9 @@ class JobActionButton extends StatelessWidget {
                     ? Icon(Icons.undo)
                     : Icon(Icons.check_circle_outline)),
                 (showCompletedOnly
-                    ? Text(dict.displayWord('reassign', settings.language))
-                    : Text(dict.displayWord('done', settings.language))),
+                    ? Text(
+                        dict.displayWord('reassign', model.settings.language))
+                    : Text(dict.displayWord('done', model.settings.language))),
               ],
             ),
           );

@@ -1,6 +1,10 @@
 class Dictionary {
   Map _words = const {
     'discard': {'de': 'Verwerfen', 'en': 'Discard'},
+    'chooseImperative': {'de': 'Wähle', 'en': 'Choose'},
+    'a-male': {'de': 'einen', 'en': 'a'},
+    'a-female': {'de': 'eine', 'en': 'a'},
+    'a-neutral': {'de': 'ein', 'en': 'a'},
     'yes': {'de': 'Ja', 'en': 'Yes'},
     'no': {'de': 'Nein', 'en': 'No'},
     'few': {'de': 'wenige', 'en': 'few'},
@@ -44,6 +48,8 @@ class Dictionary {
     'standard': {'de': 'Standard', 'en': 'Standard'},
     'high': {'de': 'Hoch', 'en': 'high'},
     'very': {'de': 'sehr', 'en': 'very'},
+    'welcome': {'de': 'Willkommen', 'en': 'Welcome'},
+    'settings': {'de': 'Einstellungen', 'en': 'Settings'},
   };
 
   Map _phrases = const {

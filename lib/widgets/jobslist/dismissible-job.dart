@@ -29,7 +29,7 @@ class _DismissibleJobState extends State<DismissibleJob> {
       child: Padding(
         padding: EdgeInsets.only(left: 10.0),
         child: Text(
-          dict.displayWord('discard', settings.language),
+          dict.displayWord('discard', widget.model.settings.language),
           style: TextStyle(fontSize: 14, color: Colors.white),
         ),
       ),
@@ -41,17 +41,19 @@ class _DismissibleJobState extends State<DismissibleJob> {
     return showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              title: Text(
-                  dict.displayPhrase("discardTaskTitle", settings.language)),
-              content: Text(
-                  dict.displayPhrase("discardTaskPrompt", settings.language)),
+              title: Text(dict.displayPhrase(
+                  "discardTaskTitle", widget.model.settings.language)),
+              content: Text(dict.displayPhrase(
+                  "discardTaskPrompt", widget.model.settings.language)),
               actions: <Widget>[
                 FlatButton(
-                  child: Text(dict.displayWord('yes', settings.language)),
+                  child: Text(
+                      dict.displayWord('yes', widget.model.settings.language)),
                   onPressed: () => Navigator.pop(context, true),
                 ),
                 FlatButton(
-                  child: Text(dict.displayWord('no', settings.language)),
+                  child: Text(
+                      dict.displayWord('no', widget.model.settings.language)),
                   onPressed: () => Navigator.pop(context, false),
                 )
               ],

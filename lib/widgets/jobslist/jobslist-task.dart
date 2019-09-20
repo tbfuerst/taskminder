@@ -59,7 +59,7 @@ class _JobslistTaskState extends State<JobslistTask> {
      * Otherwise there would be two infinite Widgets nested in each other
      */
     return Expanded(
-        child: widget.model.areTasks2Loading
+        child: widget.model.areTasksLoading
             ? Center(
                 child: CircularProgressIndicator(),
               )

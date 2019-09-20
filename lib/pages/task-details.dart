@@ -30,7 +30,7 @@ class _TaskDetailsState extends State<TaskDetails> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-              "${dict.displayWord('task', settings.language)}: ${_deadline.name}"),
+              "${dict.displayWord('task', widget.model.settings.language)}: ${_deadline.name}"),
         ),
         body: Container(
           alignment: Alignment.center,
@@ -49,7 +49,8 @@ class _TaskDetailsState extends State<TaskDetails> {
                 Container(
                   alignment: Alignment.center,
                   padding: EdgeInsets.only(bottom: 48.0),
-                  child: Text(dict.displayWord('deadline', settings.language) +
+                  child: Text(dict.displayWord(
+                          'deadline', widget.model.settings.language) +
                       ": " +
                       DateTimeHelper()
                           .databaseDateStringToReadable(_deadline.deadline) +
@@ -72,7 +73,8 @@ class _TaskDetailsState extends State<TaskDetails> {
                 Container(
                   alignment: Alignment.center,
                   child: RaisedButton(
-                    child: Text(dict.displayWord('edit', settings.language)),
+                    child: Text(dict.displayWord(
+                        'edit', widget.model.settings.language)),
                     onPressed: () {
                       Navigator.pushNamed(
                           context, "/deadlineedit/${widget._deadlineId}");

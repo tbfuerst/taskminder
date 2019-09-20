@@ -18,7 +18,7 @@ class AddTaskButton extends StatelessWidget {
       childButtons: <UnicornButton>[
         UnicornButton(
           hasLabel: true,
-          labelText: dict.displayWord("block", settings.language),
+          labelText: dict.displayWord("block", model.settings.language),
           currentButton: FloatingActionButton(
             onPressed: () async {
               await Navigator.pushNamed(context, '/blockedit');
@@ -30,7 +30,7 @@ class AddTaskButton extends StatelessWidget {
         ),
         UnicornButton(
           hasLabel: true,
-          labelText: dict.displayWord("deadline", settings.language),
+          labelText: dict.displayWord("deadline", model.settings.language),
           currentButton: FloatingActionButton(
             mini: true,
             heroTag: "deadline",
@@ -42,7 +42,7 @@ class AddTaskButton extends StatelessWidget {
         ),
         UnicornButton(
           hasLabel: true,
-          labelText: dict.displayWord("task", settings.language),
+          labelText: dict.displayWord("task", model.settings.language),
           currentButton: FloatingActionButton(
             onPressed: () async {
               await Navigator.pushReplacementNamed(context, '/taskedit');

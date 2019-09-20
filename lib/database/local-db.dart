@@ -22,7 +22,7 @@ class LocalDB {
     String path = await getDatabasesPath();
     path = join(path, 'taskminder.db');
 
-    return await openDatabase(
+    var database = await openDatabase(
       path,
       onCreate: (Database db, int version) async {
         await db.execute(
@@ -35,20 +35,26 @@ class LocalDB {
           "CREATE TABLE blocks(id TEXT PRIMARY KEY, name TEXT, deadline TEXT)",
         );
         await db.execute(
-          "CREATE TABLE settings(id TEXT PRIMARY KEY, language TEXT)",
+          "CREATE TABLE settings(id TEXT PRIMARY KEY, language TEXT, firstStartup TEXT)",
         );
-        await insertSetting({
-          'id': '1',
-          'language': 'de',
-        });
       },
       version: 1,
     );
+/*     await insertSetting({
+      'id': '1',
+      'language': 'de',
+    }); */
+    return database;
   }
 
   Future<Null> insertSetting(Map<String, dynamic> setting) async {
     final db = await database;
     await db.insert("settings", setting);
+  }
+
+  Future<Null> updateSetting(Map<String, dynamic> setting) async {
+    final db = await database;
+    await db.update("settings", setting, where: "id = ?", whereArgs: ['1']);
   }
 
   Future<List<Map<String, dynamic>>> querySettings() async {

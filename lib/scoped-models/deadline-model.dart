@@ -9,7 +9,7 @@ mixin DeadlineModel on Model {
   // SplayTreeMap to provide a sorted Map
   SplayTreeMap<String, List<Deadline>> _deadlinesByDeadline =
       SplayTreeMap.from({});
-  bool _areTasksLoading = false;
+  bool _areDeadlinesLoading = false;
   int _deadlinesCount;
 
   List<Deadline> get deadlines {
@@ -20,8 +20,8 @@ mixin DeadlineModel on Model {
     return _deadlinesByDeadline;
   }
 
-  bool get areTasksLoading {
-    return _areTasksLoading;
+  bool get areDeadlinesLoading {
+    return _areDeadlinesLoading;
   }
 
   int get deadlinesCount {
@@ -40,7 +40,7 @@ mixin DeadlineModel on Model {
   }
 
   getAllDeadlinesLocal({bool showIncompleted, bool showCompleted}) async {
-    _areTasksLoading = true;
+    _areDeadlinesLoading = true;
     notifyListeners();
     _deadlines = [];
     List<Map<String, dynamic>> rawTasksData =
@@ -77,12 +77,12 @@ mixin DeadlineModel on Model {
       });
     }
     _deadlinesCount = _deadlines.length;
-    _areTasksLoading = false;
+    _areDeadlinesLoading = false;
     notifyListeners();
   }
 
   getLocalDeadlinesByDeadline() async {
-    _areTasksLoading = true;
+    _areDeadlinesLoading = true;
     notifyListeners();
     _deadlinesByDeadline = SplayTreeMap.from({});
     List<Map<String, dynamic>> rawTasksData =
@@ -107,24 +107,24 @@ mixin DeadlineModel on Model {
       }
     });
 
-    _areTasksLoading = false;
+    _areDeadlinesLoading = false;
     notifyListeners();
   }
 
   Future<Null> updateDeadline(String _deadlineId, Deadline newDeadline) async {
-    _areTasksLoading = true;
+    _areDeadlinesLoading = true;
     notifyListeners();
     await LocalDB.db.updateDeadline(_deadlineId, newDeadline);
-    _areTasksLoading = false;
+    _areDeadlinesLoading = false;
 
     notifyListeners();
   }
 
   Future<bool> insertDeadline(Deadline deadline) async {
-    _areTasksLoading = true;
+    _areDeadlinesLoading = true;
     notifyListeners();
     await LocalDB.db.insertDeadline(deadline);
-    _areTasksLoading = false;
+    _areDeadlinesLoading = false;
     notifyListeners();
     return true;
   }
@@ -138,14 +138,14 @@ mixin DeadlineModel on Model {
   }
 
   Future<Null> deleteDeadlineLocal(String id) async {
-    _areTasksLoading = true;
+    _areDeadlinesLoading = true;
     notifyListeners();
     await LocalDB.db.deleteDeadline(id);
     _deadlines.removeWhere((deadline) {
       return deadline.id == id;
     });
     _deadlinesCount = _deadlines.length;
-    _areTasksLoading = false;
+    _areDeadlinesLoading = false;
     notifyListeners();
   }
 }

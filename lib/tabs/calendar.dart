@@ -24,10 +24,13 @@ class CalendarTab extends StatefulWidget {
 class _CalendarTabState extends State<CalendarTab> {
   static Dictionary dict = Dictionary();
   static Settings settings = Settings();
+  List<String> _monthNames;
 
   @override
   void initState() {
-    // print(widget.blockMode);
+    _monthNames =
+        dict.displayCollection('months', widget.model.settings.language);
+
     widget.model
         .getAllDeadlinesLocal(showIncompleted: true, showCompleted: true);
     widget.model.setActiveTab(calendar: true, deadlines: false, tasks: false);
@@ -41,13 +44,11 @@ class _CalendarTabState extends State<CalendarTab> {
   int currentDay = DateTime.now().day;
   int dayOne = 1;
   List<Widget> dayTiles = [];
-  List<String> _monthNames =
-      dict.displayCollection('months', settings.language);
 
   List<Widget> _buildWeekdayHeadlines() {
     List<Widget> weekdays = [];
     List<String> dayTiles =
-        dict.displayCollection('shortDays', settings.language);
+        dict.displayCollection('shortDays', widget.model.settings.language);
     dayTiles.forEach((day) => weekdays.add(
           Container(
             child: Text(
@@ -156,16 +157,18 @@ class _CalendarTabState extends State<CalendarTab> {
                                       .getFormattedDeadline()[0]
                                       .toString() +
                                   " " +
-                                  dict.displayWord('days', settings.language) +
+                                  dict.displayWord(
+                                      'days', widget.model.settings.language) +
                                   ", " +
                                   deadline
                                       .getFormattedDeadline()[1]
                                       .toString() +
                                   " " +
-                                  dict.displayWord('hours', settings.language) +
-                                  " " +
                                   dict.displayWord(
-                                      'remaining', settings.language) +
+                                      'hours', widget.model.settings.language) +
+                                  " " +
+                                  dict.displayWord('remaining',
+                                      widget.model.settings.language) +
                                   "\n" +
                                   deadline.description),
                               isThreeLine: true,
@@ -193,7 +196,6 @@ class _CalendarTabState extends State<CalendarTab> {
     });
   }
 
-  // rework!
   _changeMonth({@required int changeBy}) {
     setState(() {
       if (changeBy >= 0) {
@@ -259,11 +261,7 @@ class _CalendarTabState extends State<CalendarTab> {
       ),
       body: ScopedModelDescendant<MainModel>(
         builder: (BuildContext context, Widget child, MainModel model) {
-          model.querySettings().then((e) {
-            print(model.settings.language);
-          });
-
-          return widget.model.areTasksLoading
+          return widget.model.areDeadlinesLoading
               ? Center(
                   child: CircularProgressIndicator(),
                 )

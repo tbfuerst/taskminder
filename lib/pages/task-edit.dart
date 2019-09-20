@@ -75,27 +75,27 @@ class _TaskEditState extends State<TaskEdit> {
   String _textTimeInvestment;
   String _calculateTextTimeInvest() {
     if (_timeInvestmentSlider < 10) {
-      return dict.displayWord('minutes', settings.language);
+      return dict.displayWord('minutes', widget._model.settings.language);
     } else if (_timeInvestmentSlider < 25) {
-      return dict.displayWord('circashort', settings.language) +
+      return dict.displayWord('circashort', widget._model.settings.language) +
           " 1 " +
-          dict.displayWord('hour', settings.language);
+          dict.displayWord('hour', widget._model.settings.language);
     } else if (_timeInvestmentSlider < 40) {
-      return dict.displayWord('some', settings.language) +
+      return dict.displayWord('some', widget._model.settings.language) +
           " " +
-          dict.displayWord('hours', settings.language);
+          dict.displayWord('hours', widget._model.settings.language);
     } else if (_timeInvestmentSlider < 60) {
-      return dict.displayWord('many', settings.language) +
+      return dict.displayWord('many', widget._model.settings.language) +
           " " +
-          dict.displayWord('hours', settings.language);
+          dict.displayWord('hours', widget._model.settings.language);
     } else if (_timeInvestmentSlider < 75) {
-      return dict.displayWord('few', settings.language) +
+      return dict.displayWord('few', widget._model.settings.language) +
           " " +
-          dict.displayWord('days', settings.language);
+          dict.displayWord('days', widget._model.settings.language);
     } else if (_timeInvestmentSlider < 95) {
-      return dict.displayWord('weeks', settings.language);
+      return dict.displayWord('weeks', widget._model.settings.language);
     } else {
-      return dict.displayWord('month-s', settings.language);
+      return dict.displayWord('month-s', widget._model.settings.language);
     }
   }
 
@@ -143,13 +143,13 @@ class _TaskEditState extends State<TaskEdit> {
       validator: (String value) {
         if (value.length == 0) {
           return dict.displayPhrase(
-              'nameFormFieldEmptyError', settings.language);
+              'nameFormFieldEmptyError', widget._model.settings.language);
         }
         return null;
       },
       autofocus: true,
       decoration: InputDecoration(
-          labelText: dict.displayWord('name', settings.language)),
+          labelText: dict.displayWord('name', widget._model.settings.language)),
     );
   }
 
@@ -168,11 +168,12 @@ class _TaskEditState extends State<TaskEdit> {
         _description = value;
       },
       decoration: InputDecoration(
-          labelText: dict.displayWord('description', settings.language)),
+          labelText:
+              dict.displayWord('description', widget._model.settings.language)),
       validator: (String value) {
         if (value.length > 128) {
           return dict.displayPhrase(
-              'descrFormFieldEmptyError', settings.language);
+              'descrFormFieldEmptyError', widget._model.settings.language);
         }
         return null;
       },
@@ -238,7 +239,8 @@ class _TaskEditState extends State<TaskEdit> {
           //initialValue: _displayedDate,
 
           decoration: InputDecoration(
-            labelText: dict.displayWord('deadline', settings.language),
+            labelText:
+                dict.displayWord('deadline', widget._model.settings.language),
           ),
         ),
       ),
@@ -256,7 +258,8 @@ class _TaskEditState extends State<TaskEdit> {
           //initialValue: _displayedDate,
 
           decoration: InputDecoration(
-            labelText: dict.displayWord('time', settings.language),
+            labelText:
+                dict.displayWord('time', widget._model.settings.language),
           ),
         ),
       ),
@@ -289,7 +292,8 @@ class _TaskEditState extends State<TaskEdit> {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                dict.displayWord('timeInvestment', settings.language),
+                dict.displayWord(
+                    'timeInvestment', widget._model.settings.language),
                 style: TextStyle(fontSize: 14.0),
               ),
             ),
@@ -323,9 +327,9 @@ class _TaskEditState extends State<TaskEdit> {
   Widget _buildSubmitButton(MainModel model) {
     return Container(
       child: RaisedButton(
-        child: model.areTasksLoading
+        child: model.areDeadlinesLoading
             ? Center(child: CircularProgressIndicator())
-            : Text(dict.displayWord('save', settings.language)),
+            : Text(dict.displayWord('save', model.settings.language)),
         onPressed: () async {
           if (_formKey.currentState.validate() == false) {
             return;
@@ -368,21 +372,23 @@ class _TaskEditState extends State<TaskEdit> {
             children: <Widget>[
               Container(
                 alignment: Alignment.topCenter,
-                child:
-                    Text(dict.displayPhrase('createTask', settings.language)),
+                child: Text(dict.displayPhrase(
+                    'createTask', widget._model.settings.language)),
                 margin: EdgeInsets.all(10.0),
               ),
               _buildNameField(),
               _buildDescrField(),
               _buildDeadlineRow(),
               ExpansionTile(
-                title: Text(dict.displayWord("more", settings.language)),
+                title: Text(
+                    dict.displayWord("more", widget._model.settings.language)),
                 children: <Widget>[
                   _buildPrioBar(),
                   Container(
                     alignment: Alignment.center,
                     child: Text(
-                      dict.displayWord('priority', settings.language),
+                      dict.displayWord(
+                          'priority', widget._model.settings.language),
                       style: TextStyle(fontSize: 9),
                     ),
                   ),

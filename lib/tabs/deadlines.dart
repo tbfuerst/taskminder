@@ -42,19 +42,20 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
     int moduloDays = differenceInDays % 7;
 
     if (differenceInDays < 0) {
-      return dict.displayPhrase('deadlineMissed', settings.language);
+      return dict.displayPhrase(
+          'deadlineMissed', widget.model.settings.language);
     }
     if (differenceInDays == 0) {
-      return dict.displayWord('today', settings.language);
+      return dict.displayWord('today', widget.model.settings.language);
     }
     if (differenceInDays == 1) {
-      return dict.displayWord('tomorrow', settings.language);
+      return dict.displayWord('tomorrow', widget.model.settings.language);
     }
     if (differenceInDays < 7) {
-      return "In $differenceInDays ${dict.displayWord('days', settings.language)}";
+      return "In $differenceInDays ${dict.displayWord('days', widget.model.settings.language)}";
     }
     if (differenceInDays >= 7) {
-      return "In $differenceInWeeks ${dict.displayWord('weeks', settings.language)} ${dict.displayWord('and', settings.language)} $moduloDays ${dict.displayWord('days', settings.language)}";
+      return "In $differenceInWeeks ${dict.displayWord('weeks', widget.model.settings.language)} ${dict.displayWord('and', widget.model.settings.language)} $moduloDays ${dict.displayWord('days', widget.model.settings.language)}";
     }
     return "error";
   }
@@ -90,7 +91,7 @@ class _DeadlinesTabState extends State<DeadlinesTab> {
       return RefreshIndicator(
         onRefresh: () => model.getLocalDeadlinesByDeadline(),
         child: Container(
-          child: model.areTasksLoading
+          child: model.areDeadlinesLoading
               ? Center(
                   child: CircularProgressIndicator(),
                 )

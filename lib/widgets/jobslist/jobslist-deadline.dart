@@ -40,13 +40,13 @@ class _JobslistDeadlineState extends State<JobslistDeadline> {
       title: Text(task.name),
       subtitle: Text(task.getFormattedDeadline()[0].toString() +
           " " +
-          dict.displayWord('days', settings.language) +
+          dict.displayWord('days', model.settings.language) +
           ", " +
           task.getFormattedDeadline()[1].toString() +
           " " +
-          dict.displayWord('hours', settings.language) +
+          dict.displayWord('hours', model.settings.language) +
           " " +
-          dict.displayWord('remaining', settings.language) +
+          dict.displayWord('remaining', model.settings.language) +
           "\n" +
           task.description),
       isThreeLine: true,
@@ -76,7 +76,7 @@ class _JobslistDeadlineState extends State<JobslistDeadline> {
      */
     return SingleChildScrollView(
       controller: _scroll2Controller,
-      child: widget.model.areTasksLoading
+      child: widget.model.areDeadlinesLoading
           ? Center(
               child: CircularProgressIndicator(),
             )

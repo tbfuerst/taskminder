@@ -71,15 +71,15 @@ class _TasksTabState extends State<TasksTab> {
                       },
                       validator: (String value) {
                         if (value.length == 0) {
-                          return dict.displayPhrase(
-                              'nameFormFieldEmptyError', settings.language);
+                          return dict.displayPhrase('nameFormFieldEmptyError',
+                              widget.model.settings.language);
                         }
                         return null;
                       },
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        labelText:
-                            dict.displayWord('addTask', settings.language),
+                        labelText: dict.displayWord(
+                            'addTask', widget.model.settings.language),
                       ),
                     ),
                   ),
@@ -91,7 +91,8 @@ class _TasksTabState extends State<TasksTab> {
                 Container(
                   alignment: Alignment.center,
                   child: Text(
-                    dict.displayWord('priority', settings.language),
+                    dict.displayWord(
+                        'priority', widget.model.settings.language),
                     style: TextStyle(fontSize: 9),
                   ),
                 ),
@@ -151,7 +152,7 @@ class _TasksTabState extends State<TasksTab> {
           child: Column(
             children: <Widget>[
               _addTaskInputField(),
-              model.areTasks2Loading
+              model.areTasksLoading
                   ? Center(
                       child: CircularProgressIndicator(),
                     )

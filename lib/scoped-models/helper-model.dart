@@ -9,8 +9,6 @@ mixin HelperModel on Model {
     return _activeTabRoute;
   }
 
-  Settings settings = Settings();
-
   void setActiveTab({bool calendar, bool deadlines, bool tasks}) {
     if (calendar) {
       _activeTabRoute = "/calendar";
@@ -22,11 +20,5 @@ mixin HelperModel on Model {
       _activeTabRoute = "/tasks";
     }
     notifyListeners();
-  }
-
-  Future querySettings() async {
-    List<Map<String, dynamic>> sQuery = await LocalDB.db.querySettings();
-    print(sQuery);
-    settings.language = sQuery[0]['language'];
   }
 }
