@@ -11,7 +11,6 @@ class BlockEdit extends StatefulWidget {
 
 class _BlockEditState extends State<BlockEdit> {
   bool cbMultiDate = false;
-  int _numberOfDays = 1;
   Dictionary dict = Dictionary();
   int currentYear = DateTime.now().year;
   int currentMonth = DateTime.now().month;

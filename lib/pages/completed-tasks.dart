@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../dictionary.dart';
-import '../globalSettings.dart';
 import '../scoped-models/mainmodel.dart';
 
 import '../widgets/jobslist/jobslist-deadline.dart';
@@ -18,7 +17,6 @@ class CompletedTasksPage extends StatefulWidget {
 
 class _CompletedTasksPageState extends State<CompletedTasksPage> {
   final Dictionary dict = Dictionary();
-  final Settings settings = Settings();
   @override
   void initState() {
     widget.model.getAllDeadlinesLocal(showCompleted: true);

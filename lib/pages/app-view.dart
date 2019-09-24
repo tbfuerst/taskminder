@@ -14,7 +14,8 @@ import '../tabs/tasks.dart';
 
 import '../widgets/add-task-button.dart';
 
-//TODO 4: other features
+//TODO 4: remove all local Settings() instances
+//TODO 5: other features
 
 class AppView extends StatefulWidget {
   final MainModel model;
