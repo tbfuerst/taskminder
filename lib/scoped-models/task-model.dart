@@ -5,7 +5,6 @@ import '../database/local-db.dart';
 mixin TaskModel on Model {
   List<Task> _tasks = [];
 
-  // SplayTreeMap to provide a sorted Map
   bool _areTasksLoading = false;
   int _tasksCount;
 

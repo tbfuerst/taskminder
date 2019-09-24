@@ -14,6 +14,7 @@ class Block implements Job {
   Block({
     this.id,
     @required this.name,
+    @required this.deadline,
   }) {
     if (id == null) {
       id = Uuid().v1();

@@ -132,7 +132,7 @@ class _CalendarTabState extends State<CalendarTab> {
             child: FlatButton(
               child: Text(
                 _dayElement.day.toString(),
-                style: TextStyle(fontSize: 7),
+                style: TextStyle(fontSize: 12),
               ),
               color: _dayElement.hasTasks
                   ? Theme.of(context).accentColor

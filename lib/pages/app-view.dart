@@ -42,6 +42,12 @@ class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   void _handleTabChange() {
     // updating app state on tab change
     setState(() {});

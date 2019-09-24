@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:taskminder/pages/block-edit.dart';
 import 'package:unicorndial/unicorndial.dart';
 import '../scoped-models/mainmodel.dart';
 import '../dictionary.dart';
@@ -21,7 +22,11 @@ class AddTaskButton extends StatelessWidget {
           labelText: dict.displayWord("block", model.settings.language),
           currentButton: FloatingActionButton(
             onPressed: () async {
-              await Navigator.pushNamed(context, '/blockedit');
+              await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return BlockEdit();
+                  });
             },
             mini: true,
             heroTag: "block",

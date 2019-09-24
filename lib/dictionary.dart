@@ -20,15 +20,19 @@ class Dictionary {
     'more': {'de': 'Mehr', 'en': 'More'},
     'language': {'de': 'Sprache', 'en': 'Language'},
     'block': {'de': 'Sperrtag', 'en': 'Block'},
+    'addBlock': {'de': 'Sperrtag(e) hinzufügen', 'en': 'Add Block(s)'},
     'list': {'de': 'Liste', 'en': 'List'},
     'circa': {'de': 'Circa', 'en': 'circa'},
     'circashort': {'de': 'ca.', 'en': 'approx.'},
     'deadline': {'de': 'Termin', 'en': 'Deadline'},
     'deadlines': {'de': 'Termine', 'en': 'Deadlines'},
+    'date': {'de': 'Datum', 'en': 'Date'},
     'calendar': {'de': 'Kalender', 'en': 'Calendar'},
     'schedule': {'de': 'Planung', 'en': 'Schedule'},
     'mainmenu': {'de': 'Hauptmenü', 'en': 'Main Menu'},
     'today': {'de': 'Heute', 'en': 'Today'},
+    'from': {'de': 'Von', 'en': 'From'},
+    'to': {'de': 'Bis', 'en': 'To'},
     'tomorrow': {'de': 'Morgen', 'en': 'Tomorrow'},
     'day': {'de': 'Tag', 'en': 'day'},
     'days': {'de': 'Tage', 'en': 'days'},
@@ -61,6 +65,10 @@ class Dictionary {
     'descrFormFieldEmptyError': {
       'de': 'Bitte Beschreibung kürzen',
       'en': 'Please shorten decription'
+    },
+    'blockMorePrompt': {
+      'de': 'Mehr als ein Sperrtag?',
+      'en': 'Block more than one day?'
     },
     'createTask': {'de': 'Aufgabe erstellen', 'en': 'Create Task'},
     'createDeadline': {'de': 'Termin eintragen', 'en': 'Create Deadline'},

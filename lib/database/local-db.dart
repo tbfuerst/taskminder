@@ -32,7 +32,7 @@ class LocalDB {
           "CREATE TABLE tasks(id TEXT PRIMARY KEY, name TEXT, type TEXT, priority INTEGER, description TEXT, isCompleted BOOLEAN)",
         );
         await db.execute(
-          "CREATE TABLE blocks(id TEXT PRIMARY KEY, name TEXT, deadline TEXT)",
+          "CREATE TABLE blocks(id TEXT PRIMARY KEY, name TEXT, type TEXT, deadline TEXT)",
         );
         await db.execute(
           "CREATE TABLE settings(id TEXT PRIMARY KEY, language TEXT, firstStartup TEXT)",
@@ -112,7 +112,7 @@ class LocalDB {
 
   Future<Block> insertBlock(Block block) async {
     final db = await database;
-    await db.insert("tasks", block.toMap());
+    await db.insert("blocks", block.toMap());
     return block;
   }
 
@@ -126,9 +126,15 @@ class LocalDB {
     return await db.query("blocks");
   }
 
-  Future<List<Map<String, dynamic>>> fetchAllJobs() async {
-    final db = await database;
-    return await db.query("blocks");
+  Future<Map<String, List<Map<String, dynamic>>>> fetchAllJobs() async {
+    List<Map<String, dynamic>> blocks = await fetchAllBlocks();
+    List<Map<String, dynamic>> deadlines = await fetchAllDeadlines();
+    List<Map<String, dynamic>> tasks = await fetchAllTasks();
+    return {
+      'tasks': tasks,
+      'deadlines': deadlines,
+      'blocks': blocks,
+    };
   }
 
   Future<List<Map<String, dynamic>>> checkDeadlineId(String id) async {
