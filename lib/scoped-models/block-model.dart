@@ -48,6 +48,11 @@ mixin BlockModel on Model {
         deadline: block['deadline'],
       ));
     });
+    _blocks.sort((blockOne, blockTwo) {
+      DateTime dateOne = DateTime.parse(blockOne.deadline);
+      DateTime dateTwo = DateTime.parse(blockTwo.deadline);
+      return dateOne.compareTo(dateTwo);
+    });
     _blocksCount = _blocks.length;
     _areBlocksLoading = false;
     notifyListeners();

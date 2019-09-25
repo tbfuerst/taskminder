@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:taskminder/models/block.dart';
 import 'package:taskminder/widgets/priority-indicator.dart';
 
 import '../globalSettings.dart';
@@ -83,8 +84,20 @@ class _CalendarTabState extends State<CalendarTab> {
     return _monthlyTasks;
   }
 
+  List<Block> getBlocksOfCurrentMonth() {
+    List<Block> _blocks = widget.model.blocks;
+    List<Block> _monthlyBlocks = _blocks.where((block) {
+      DateTime date = DateTime.parse(block.deadline);
+      int month = date.month;
+      return month == currentMonth;
+    }).toList();
+    return _monthlyBlocks;
+  }
+
+  ///TODO 1.1: add Blocks to the day object
   List<CalendarDay> _calendarDays() {
     List<Deadline> _monthlyTasks = _getTasksOfCurrentMonth();
+    List<Block> _monthlyBlocks = getBlocksOfCurrentMonth();
     List<CalendarDay> _dayTilesData = [];
     for (var i = 0; i < lastDayOfMonth(); i++) {
       _dayTilesData.add(CalendarDay(day: i + 1));
