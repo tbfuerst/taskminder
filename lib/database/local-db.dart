@@ -116,6 +116,12 @@ class LocalDB {
     return block;
   }
 
+  Future<Null> updateBlock(String deadline, Block newBlock) async {
+    final db = await database;
+    await db.update("blocks", newBlock.toMap(),
+        where: "deadline = ?", whereArgs: [deadline]);
+  }
+
   Future<int> deleteBlock(String id) async {
     final db = await database;
     return await db.delete("blocks", where: 'id = ?', whereArgs: ["$id"]);

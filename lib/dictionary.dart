@@ -21,6 +21,7 @@ class Dictionary {
     'language': {'de': 'Sprache', 'en': 'Language'},
     'block': {'de': 'Sperrtag', 'en': 'Block'},
     'addBlock': {'de': 'Sperrtag(e) hinzufügen', 'en': 'Add Block(s)'},
+    'blockImperative': {'de': 'Sperre', 'en': 'Block'},
     'list': {'de': 'Liste', 'en': 'List'},
     'circa': {'de': 'Circa', 'en': 'circa'},
     'circashort': {'de': 'ca.', 'en': 'approx.'},

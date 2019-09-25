@@ -10,6 +10,8 @@ class BlockEdit extends StatefulWidget {
 }
 
 class _BlockEditState extends State<BlockEdit> {
+  var mode;
+  List<Block> dbBlocks;
   bool cbMultiDate = false;
   Dictionary dict = Dictionary();
   int currentYear = DateTime.now().year;
@@ -104,7 +106,7 @@ class _BlockEditState extends State<BlockEdit> {
   }
 
   List<Block> _createBlocks() {
-    List<Block> _blocks;
+    List<Block> _blocks = [];
     DateTime firstDate = DateTime.tryParse(_pickedDateFirst);
     DateTime secondDate = DateTime.tryParse(_pickedDateSecond);
     int timeDifference;
@@ -117,20 +119,161 @@ class _BlockEditState extends State<BlockEdit> {
     }
 
     timeDifference = secondDate.difference(firstDate).inDays;
-    print(timeDifference);
     assert(timeDifference >= 0);
-    for (var i = 0; i < timeDifference; i++) {
+
+    int blockDays = timeDifference + 1;
+    // print(blockDays);
+    for (var i = 0; i < blockDays; i++) {
       DateTime _date = firstDate.add(
         Duration(days: i),
       );
       String _databaseDate = DateTimeHelper().dateToDatabaseString(_date);
       _blocks.add(Block(name: _name, deadline: _databaseDate));
     }
-    print(_blocks);
+    _blocks.forEach((block) {
+      // print(block.deadline);
+    });
+
     return _blocks;
   }
 
-  _saveBlocks(List<Block> blocks) {}
+  Future<Map<String, dynamic>> _validateBlocks(
+      MainModel model, List<Block> blocks) async {
+    await model.getAllBlocksLocal();
+    dbBlocks = model.blocks;
+    print(dbBlocks);
+    List<Block> removedBlocks = [];
+    List<Block> doubleBlocks = [];
+    List<Block> filteredBlocks = blocks.where((block) {
+      bool isNewInDB = true;
+      dbBlocks.forEach((dbBlock) {
+        if (dbBlock.deadline == block.deadline) {
+          isNewInDB = false;
+          removedBlocks.add(block);
+          doubleBlocks.add(dbBlock);
+        }
+      });
+      return isNewInDB;
+    }).toList();
+    print("Filtered:");
+    filteredBlocks.forEach((block) => print(block.deadline));
+    print("Removed:");
+    removedBlocks.forEach((block) => print(block.deadline));
+    print("Double:");
+    doubleBlocks.forEach((block) => print(block.name));
+
+    if (removedBlocks.isNotEmpty) {
+      await showDialog(
+          context: context,
+          builder: (context) {
+            mode = "abort";
+            List<TableRow> _tableRows = [];
+            _tableRows.add(
+              TableRow(
+                children: [
+                  Text("Date"),
+                  Text("New"),
+                  Text("Old"),
+                ],
+              ),
+            );
+            int indexCount = 0;
+            removedBlocks.forEach((removedBlock) {
+              _tableRows.add(
+                TableRow(
+                  children: [
+                    Text(DateTimeHelper()
+                        .databaseDateStringToReadable(removedBlock.deadline)),
+                    Text(removedBlock.name),
+                    Text(doubleBlocks[indexCount].name)
+                  ],
+                ),
+              );
+              indexCount++;
+            });
+            return AlertDialog(
+              title: Text("Overwrite existing Blocks?"),
+              content: Table(
+                children: _tableRows,
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Save New"),
+                  onPressed: () {
+                    setState(() {
+                      mode = "overwrite";
+                      Navigator.pop(context);
+                    });
+                  },
+                ),
+                FlatButton(
+                  child: Text("Keep Old"),
+                  onPressed: () {
+                    setState(() {
+                      mode = "keepOld";
+                      Navigator.pop(context);
+                    });
+                  },
+                ),
+                FlatButton(
+                  child: Text("Combine Names"),
+                  onPressed: () {
+                    setState(() {
+                      mode = "combine";
+                      Navigator.pop(context);
+                    });
+                  },
+                ),
+              ],
+            );
+          });
+    }
+
+    return {
+      'filteredBlocks': filteredBlocks,
+      'removedBlocksNew': removedBlocks,
+      'doubleBlocksOld': doubleBlocks,
+      'mode': mode,
+    };
+  }
+
+  _saveBlocks(MainModel model, Map<String, dynamic> validatedBlocks) async {
+    /// KeepOld mode:
+    /// only save the blocks which are unique
+    ///
+    /// Overwrite mode
+    /// update the blocks which arent unique with the new name
+    ///
+    /// Combine mode
+    /// Combine the 2 names of the non unique block into one unique block
+    ///
+
+    if (mode == "abort") return;
+    List<Block> _blocksToSave = validatedBlocks['filteredBlocks'];
+    List<Block> _blocksToUpdate = [];
+
+    if (validatedBlocks['mode'] == "combine") {
+      int indexCount = 0;
+      validatedBlocks['removedBlocksNew'].forEach((newBlock) {
+        Block combinedBlock = Block(
+          deadline: newBlock.deadline,
+          name: newBlock.name +
+              "+" +
+              validatedBlocks['doubleBlocksOld'][indexCount].name,
+        );
+        _blocksToUpdate.add(combinedBlock);
+        indexCount++;
+      });
+    }
+    if (validatedBlocks['mode'] == "overwrite") {
+      _blocksToSave = validatedBlocks['filteredBlocks'];
+      _blocksToUpdate = validatedBlocks['removedBlocksNew'];
+    }
+
+    _blocksToSave.forEach((block) async => await model.insertBlock(block));
+    _blocksToUpdate.forEach(
+        (block) async => await model.updateBlock(block.deadline, block));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +287,7 @@ class _BlockEditState extends State<BlockEdit> {
                 children: <Widget>[
                   Container(
                     child: Text(
-                        dict.displayWord('addBlocks', model.settings.language)),
+                        dict.displayWord('addBlock', model.settings.language)),
                   ),
                   Container(
                     child: _buildDateField(model, isSecond: false),
@@ -171,6 +314,11 @@ class _BlockEditState extends State<BlockEdit> {
                       ],
                     ),
                   ),
+                  cbMultiDate
+                      ? Container(
+                          child: _buildDateField(model, isSecond: true),
+                        )
+                      : Container(),
                   Container(
                     child: TextFormField(
                       controller: _nameController,
@@ -182,24 +330,24 @@ class _BlockEditState extends State<BlockEdit> {
                         });
                       },
                       onSaved: (name) {
-                        _name = name;
+                        setState(() {
+                          _name = name;
+                        });
                       },
                     ),
                   ),
-                  cbMultiDate
-                      ? Container(
-                          child: _buildDateField(model, isSecond: true),
-                        )
-                      : Container(),
                   RaisedButton(
-                    child: Text("Block $numberOfDays ${dayWord(model)}"),
-                    onPressed: () {
+                    child: Text(
+                        "${dict.displayWord('blockImperative', model.settings.language)} $numberOfDays ${dayWord(model)}"),
+                    onPressed: () async {
                       if (_formKey.currentState.validate() == false) {
                         return;
                       }
                       _formKey.currentState.save();
                       List<Block> _blocks = _createBlocks();
-                      _saveBlocks(_blocks);
+                      Map<String, dynamic> _validatedBlocks =
+                          await _validateBlocks(model, _blocks);
+                      _saveBlocks(model, _validatedBlocks);
                       print("add to database");
                     },
                   ),

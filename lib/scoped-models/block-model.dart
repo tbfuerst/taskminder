@@ -27,6 +27,14 @@ mixin BlockModel on Model {
     return block;
   }
 
+  Future<Null> updateBlock(String _blockDate, Block newBlock) async {
+    _areBlocksLoading = true;
+    notifyListeners();
+    await LocalDB.db.updateBlock(_blockDate, newBlock);
+    _areBlocksLoading = false;
+    notifyListeners();
+  }
+
   getAllBlocksLocal() async {
     _areBlocksLoading = true;
     notifyListeners();
