@@ -25,7 +25,7 @@ class AddTaskButton extends StatelessWidget {
               await showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return BlockEdit();
+                    return BlockEdit(model);
                   });
             },
             mini: true,

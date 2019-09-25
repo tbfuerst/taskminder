@@ -12,7 +12,10 @@ class Dictionary {
     'many': {'de': 'viele', 'en': 'many'},
     'done': {'de': 'Erledigt', 'en': 'Done'},
     'save': {'de': 'Speichern', 'en': 'Save'},
+    'new': {'de': 'Neu', 'en': 'New'},
+    'old': {'de': 'Alt', 'en': 'Old'},
     'reassign': {'de': 'Reaktivieren', 'en': 'Reassign'},
+    'reason': {'de': 'Grund', 'en': 'Reason'},
     'tasks': {'de': 'Aufgaben', 'en': 'Tasks'},
     'addTask': {'de': 'Neue Aufgabe', 'en': 'Add Task'},
     'task': {'de': 'Aufgabe', 'en': 'Task'},
@@ -55,9 +58,16 @@ class Dictionary {
     'very': {'de': 'sehr', 'en': 'very'},
     'welcome': {'de': 'Willkommen', 'en': 'Welcome'},
     'settings': {'de': 'Einstellungen', 'en': 'Settings'},
+    'combine': {'de': 'Kombinieren', 'en': 'Combine'},
   };
 
   Map _phrases = const {
+    'overwriteTitle': {
+      'de': 'Bestehende Sperrtage überschreiben?',
+      'en': 'Overwrite existing Blocks?'
+    },
+    'saveNew': {'de': 'Neue Speichern', 'en': 'Save New'},
+    'keepOld': {'de': 'Bisheriges behalten', 'en': 'Keep Old'},
     'deadlineMissed': {'de': 'Termin verpasst', 'en': 'Deadline exceeded'},
     'nameFormFieldEmptyError': {
       'de': 'Bitte Namen eingeben',

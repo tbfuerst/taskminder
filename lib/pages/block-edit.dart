@@ -6,6 +6,9 @@ import 'package:taskminder/dictionary.dart';
 import 'package:taskminder/helpers/date-time-helper.dart';
 
 class BlockEdit extends StatefulWidget {
+  final MainModel model;
+
+  BlockEdit(this.model);
   _BlockEditState createState() => _BlockEditState();
 }
 
@@ -13,13 +16,14 @@ class _BlockEditState extends State<BlockEdit> {
   var mode;
   List<Block> dbBlocks;
   bool cbMultiDate = false;
-  Dictionary dict = Dictionary();
+  static Dictionary dict = Dictionary();
   int currentYear = DateTime.now().year;
   int currentMonth = DateTime.now().month;
   String _name;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   bool _nameControllerFirstTap = false;
-  TextEditingController _nameController = TextEditingController(text: "Reason");
+  TextEditingController _nameController = TextEditingController();
+
   TextEditingController _dateControllerFirst = TextEditingController(
       text: DateTimeHelper().dateToReadableString(DateTime.now()));
 
@@ -156,11 +160,11 @@ class _BlockEditState extends State<BlockEdit> {
       return isNewInDB;
     }).toList();
     print("Filtered:");
-    filteredBlocks.forEach((block) => print(block.deadline));
+/*     filteredBlocks.forEach((block) => print(block.deadline));
     print("Removed:");
     removedBlocks.forEach((block) => print(block.deadline));
     print("Double:");
-    doubleBlocks.forEach((block) => print(block.name));
+    doubleBlocks.forEach((block) => print(block.name)); */
 
     if (removedBlocks.isNotEmpty) {
       await showDialog(
@@ -171,9 +175,15 @@ class _BlockEditState extends State<BlockEdit> {
             _tableRows.add(
               TableRow(
                 children: [
-                  Text("Date"),
-                  Text("New"),
-                  Text("Old"),
+                  Text(
+                    dict.displayWord('date', widget.model.settings.language),
+                  ),
+                  Text(
+                    dict.displayWord('new', widget.model.settings.language),
+                  ),
+                  Text(
+                    dict.displayWord('old', widget.model.settings.language),
+                  ),
                 ],
               ),
             );
@@ -192,13 +202,15 @@ class _BlockEditState extends State<BlockEdit> {
               indexCount++;
             });
             return AlertDialog(
-              title: Text("Overwrite existing Blocks?"),
+              title: Text(dict.displayPhrase(
+                  'overwriteTitle', widget.model.settings.language)),
               content: Table(
                 children: _tableRows,
               ),
               actions: <Widget>[
                 FlatButton(
-                  child: Text("Save New"),
+                  child: Text(dict.displayPhrase(
+                      'saveNew', widget.model.settings.language)),
                   onPressed: () {
                     setState(() {
                       mode = "overwrite";
@@ -207,7 +219,8 @@ class _BlockEditState extends State<BlockEdit> {
                   },
                 ),
                 FlatButton(
-                  child: Text("Keep Old"),
+                  child: Text(dict.displayPhrase(
+                      'keepOld', widget.model.settings.language)),
                   onPressed: () {
                     setState(() {
                       mode = "keepOld";
@@ -216,7 +229,8 @@ class _BlockEditState extends State<BlockEdit> {
                   },
                 ),
                 FlatButton(
-                  child: Text("Combine Names"),
+                  child: Text(dict.displayWord(
+                      'combine', widget.model.settings.language)),
                   onPressed: () {
                     setState(() {
                       mode = "combine";
@@ -277,6 +291,8 @@ class _BlockEditState extends State<BlockEdit> {
 
   @override
   Widget build(BuildContext context) {
+    _nameController.text =
+        dict.displayWord('reason', widget.model.settings.language);
     return ScopedModelDescendant<MainModel>(
       builder: (BuildContext context, Widget child, MainModel model) {
         return Dialog(

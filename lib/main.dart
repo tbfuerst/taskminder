@@ -43,7 +43,7 @@ class Taskminder extends StatelessWidget {
               DeadlineEdit.create(model, "", ""),
           '/taskedit': (BuildContext context) =>
               AppView(model, 2, showTaskAddDialog: true),
-          '/blockedit': (BuildContext context) => BlockEdit(),
+          '/blockedit': (BuildContext context) => BlockEdit(model),
           '/completedtasks': (BuildContext context) =>
               CompletedTasksPage(model),
           '/deadlines': (BuildContext context) => AppView(model, 1),

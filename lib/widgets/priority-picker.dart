@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PriorityPicker extends StatefulWidget {
-  final Function callback;
+  final Function parentsPriorityChangerCallback;
 
-  PriorityPicker(this.callback);
+  PriorityPicker(this.parentsPriorityChangerCallback);
   _PriorityPickerState createState() => _PriorityPickerState();
 }
 
@@ -22,7 +22,7 @@ class _PriorityPickerState extends State<PriorityPicker> {
             onPressed: () {
               setState(() {
                 _priorityIndex = 0;
-                widget.callback(_priorityIndex);
+                widget.parentsPriorityChangerCallback(_priorityIndex);
               });
             },
             child: Text("--"),
@@ -34,7 +34,7 @@ class _PriorityPickerState extends State<PriorityPicker> {
             onPressed: () {
               setState(() {
                 _priorityIndex = 1;
-                widget.callback(_priorityIndex);
+                widget.parentsPriorityChangerCallback(_priorityIndex);
               });
             },
             child: Text("!"),
@@ -46,7 +46,7 @@ class _PriorityPickerState extends State<PriorityPicker> {
             onPressed: () {
               setState(() {
                 _priorityIndex = 2;
-                widget.callback(_priorityIndex);
+                widget.parentsPriorityChangerCallback(_priorityIndex);
               });
             },
             child: Text("!!!"),
