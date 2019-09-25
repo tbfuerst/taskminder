@@ -347,8 +347,9 @@ class _BlockEditState extends State<BlockEdit> {
                       List<Block> _blocks = _createBlocks();
                       Map<String, dynamic> _validatedBlocks =
                           await _validateBlocks(model, _blocks);
-                      _saveBlocks(model, _validatedBlocks);
+                      await _saveBlocks(model, _validatedBlocks);
                       print("add to database");
+                      Navigator.pop(context);
                     },
                   ),
                 ],
