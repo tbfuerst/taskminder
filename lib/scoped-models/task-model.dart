@@ -77,13 +77,14 @@ mixin TaskModel on Model {
     return true;
   }
 
-  Future<Null> deleteTaskLocal(String id) async {
+  Future<bool> deleteTaskLocal(String id) async {
     await LocalDB.db.deleteTask(id);
     _tasks.removeWhere((task) {
       return task.id == id;
     });
     _tasksCount = _tasks.length;
     notifyListeners();
+    return true;
   }
 
   Future<bool> taskExists(String id) async {

@@ -67,12 +67,18 @@ mixin BlockModel on Model {
     return true;
   }
 
-  Future<Null> deleteBlockLocal(String id) async {
-    await LocalDB.db.deleteTask(id);
-    _blocks.removeWhere((block) {
-      return block.id == id;
+  Future<bool> deleteBlockLocal(String id) {
+    return LocalDB.db.deleteTask(id).then((a) {
+      print(a);
+      _blocks.removeWhere((block) {
+        print(block.name);
+        print(block.id == id);
+        return block.id == id;
+      });
+      print(_blocks);
+      _blocksCount = _blocks.length;
+      notifyListeners();
+      return true;
     });
-    _blocksCount = _blocks.length;
-    notifyListeners();
   }
 }

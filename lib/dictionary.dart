@@ -14,6 +14,7 @@ class Dictionary {
     'save': {'de': 'Speichern', 'en': 'Save'},
     'new': {'de': 'Neu', 'en': 'New'},
     'old': {'de': 'Alt', 'en': 'Old'},
+    'delete': {'de': 'Löschen', 'en': 'Delete'},
     'reassign': {'de': 'Reaktivieren', 'en': 'Reassign'},
     'reason': {'de': 'Grund', 'en': 'Reason'},
     'tasks': {'de': 'Aufgaben', 'en': 'Tasks'},

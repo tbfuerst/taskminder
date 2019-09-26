@@ -6,9 +6,9 @@ import 'block.dart';
 class CalendarDay {
   int day;
   bool isToday = false;
-  bool hasTasks = false;
+  bool hasDeadlines = false;
   bool hasBlocks = false;
-  final List<Deadline> tasks = [];
+  final List<Deadline> deadlines = [];
   final List<Block> blocks = [];
 
   CalendarDay({@required this.day});

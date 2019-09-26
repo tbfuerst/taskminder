@@ -22,6 +22,7 @@ class CalendarTab extends StatefulWidget {
   _CalendarTabState createState() => _CalendarTabState();
 }
 
+//TODO 0.5: Clean up Component
 class _CalendarTabState extends State<CalendarTab> {
   static Dictionary dict = Dictionary();
   static Settings settings = Settings();
@@ -34,6 +35,7 @@ class _CalendarTabState extends State<CalendarTab> {
 
     widget.model
         .getAllDeadlinesLocal(showIncompleted: true, showCompleted: true);
+    widget.model.getAllBlocksLocal();
     widget.model.setActiveTab(calendar: true, deadlines: false, tasks: false);
     super.initState();
   }
@@ -76,12 +78,12 @@ class _CalendarTabState extends State<CalendarTab> {
 
   List<Deadline> _getTasksOfCurrentMonth() {
     List<Deadline> _tasks = widget.model.deadlines;
-    List<Deadline> _monthlyTasks = _tasks.where((taskelement) {
+    List<Deadline> _monthlyDeadlines = _tasks.where((taskelement) {
       DateTime deadline = DateTime.parse(taskelement.deadline);
       int month = deadline.month;
       return month == currentMonth;
     }).toList();
-    return _monthlyTasks;
+    return _monthlyDeadlines;
   }
 
   List<Block> getBlocksOfCurrentMonth() {
@@ -96,18 +98,26 @@ class _CalendarTabState extends State<CalendarTab> {
 
   ///TODO 1.1: add Blocks to the day object
   List<CalendarDay> _calendarDays() {
-    List<Deadline> _monthlyTasks = _getTasksOfCurrentMonth();
+    List<Deadline> _monthlyDeadlines = _getTasksOfCurrentMonth();
     List<Block> _monthlyBlocks = getBlocksOfCurrentMonth();
     List<CalendarDay> _dayTilesData = [];
     for (var i = 0; i < lastDayOfMonth(); i++) {
       _dayTilesData.add(CalendarDay(day: i + 1));
     }
 
-    _monthlyTasks.forEach((task) {
-      int day = DateTime.parse(task.deadline).day;
+    _monthlyDeadlines.forEach((deadline) {
+      int day = DateTime.parse(deadline.deadline).day;
       if (currentYear == DateTime.now().year) {
-        _dayTilesData[day - 1].hasTasks = true;
-        _dayTilesData[day - 1].tasks.add(task);
+        _dayTilesData[day - 1].hasDeadlines = true;
+        _dayTilesData[day - 1].deadlines.add(deadline);
+      }
+    });
+
+    _monthlyBlocks.forEach((block) {
+      int day = DateTime.parse(block.deadline).day;
+      if (currentYear == DateTime.now().year) {
+        _dayTilesData[day - 1].hasBlocks = true;
+        _dayTilesData[day - 1].blocks.add(block);
       }
     });
 
@@ -124,88 +134,117 @@ class _CalendarTabState extends State<CalendarTab> {
     return date.day;
   }
 
-  void _buildDays() {
-    setState(() {
-      dayTiles = [];
-      dayTiles.addAll(_buildWeekdayHeadlines());
-      dayTiles.addAll(_determineWeekDayPlaceholders());
-      List<CalendarDay> _daysData = _calendarDays();
+  Future<void> _buildDays() async {
+    dayTiles = [];
+    dayTiles.addAll(_buildWeekdayHeadlines());
+    dayTiles.addAll(_determineWeekDayPlaceholders());
+    List<CalendarDay> _daysData = _calendarDays();
 
-      _daysData.forEach((_dayElement) {
-        dayTiles.add(
-          Container(
-            padding: EdgeInsets.all(0.0),
-            decoration: BoxDecoration(
-              border: Border.all(
-                  width: 2.0,
-                  color: _dayElement.isToday
-                      ? Theme.of(context).errorColor
-                      : Colors.white),
+    _daysData.forEach((_dayElement) {
+      dayTiles.add(
+        Container(
+          padding: EdgeInsets.all(0.0),
+          decoration: BoxDecoration(
+            border: Border.all(
+                width: 2.0,
+                color: _dayElement.isToday
+                    ? Theme.of(context).errorColor
+                    : Colors.white),
+          ),
+          child: FlatButton(
+            child: Text(
+              _dayElement.day.toString(),
+              style: TextStyle(fontSize: 12),
             ),
-            child: FlatButton(
-              child: Text(
-                _dayElement.day.toString(),
-                style: TextStyle(fontSize: 12),
-              ),
-              color: _dayElement.hasTasks
-                  ? Theme.of(context).accentColor
-                  : Colors.white,
-              onPressed: () {
-                if (_dayElement.hasTasks) {
-                  showDialog(
+            color: _dayElement.hasDeadlines
+                ? Theme.of(context).accentColor
+                : _dayElement.hasBlocks ? Colors.red : Colors.white,
+            onPressed: () {
+              if (_dayElement.hasDeadlines) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: Container(
+                          //width: double.maxFinite, // Dialog needs a max width, which is the max 64bit number here
+                          child: ListView.builder(
+                        itemCount: _dayElement.deadlines.length,
+                        itemBuilder: (context, index) {
+                          Deadline deadline = _dayElement.deadlines[index];
+                          return ListTile(
+                            leading:
+                                PriorityIndicator(deadline.calculatedPriority),
+                            title: Text(deadline.name),
+                            subtitle: Text(deadline
+                                    .getFormattedDeadline()[0]
+                                    .toString() +
+                                " " +
+                                dict.displayWord(
+                                    'days', widget.model.settings.language) +
+                                ", " +
+                                deadline.getFormattedDeadline()[1].toString() +
+                                " " +
+                                dict.displayWord(
+                                    'hours', widget.model.settings.language) +
+                                " " +
+                                dict.displayWord('remaining',
+                                    widget.model.settings.language) +
+                                "\n" +
+                                deadline.description),
+                            isThreeLine: true,
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                "/deadlinedetail/${deadline.id}",
+                              );
+                            },
+                          );
+                        },
+                      )),
+                    );
+                  },
+                );
+              } else if (_dayElement.hasBlocks) {
+                //TODO resolve Future problem
+                showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        content: Container(
-                            //width: double.maxFinite, // Dialog needs a max width, which is the max 64bit number here
-                            child: ListView.builder(
-                          itemCount: _dayElement.tasks.length,
-                          itemBuilder: (context, index) {
-                            Deadline deadline = _dayElement.tasks[index];
-                            return ListTile(
-                              leading: PriorityIndicator(
-                                  deadline.calculatedPriority),
-                              title: Text(deadline.name),
-                              subtitle: Text(deadline
-                                      .getFormattedDeadline()[0]
-                                      .toString() +
-                                  " " +
-                                  dict.displayWord(
-                                      'days', widget.model.settings.language) +
-                                  ", " +
-                                  deadline
-                                      .getFormattedDeadline()[1]
-                                      .toString() +
-                                  " " +
-                                  dict.displayWord(
-                                      'hours', widget.model.settings.language) +
-                                  " " +
-                                  dict.displayWord('remaining',
-                                      widget.model.settings.language) +
-                                  "\n" +
-                                  deadline.description),
-                              isThreeLine: true,
-                              onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  "/deadlinedetail/${deadline.id}",
-                                );
-                              },
-                            );
-                          },
-                        )),
+                        content: Text(_dayElement.blocks[0].name),
+                        actions: <Widget>[
+                          FlatButton(
+                            onPressed: () {
+                              print(widget.model.blocks);
+                              print(_dayElement.blocks[0].id);
+                              widget.model
+                                  .deleteBlockLocal(_dayElement.blocks[0].id)
+                                  .then((e) {
+                                print(widget.model.blocks);
+                                setState(() {
+                                  initState();
+                                  return;
+                                });
+                              });
+                              //await widget.model.getAllBlocksLocal();
+
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              dict.displayWord(
+                                  'delete', widget.model.settings.language),
+                            ),
+                          )
+                        ],
                       );
-                    },
-                  );
-                } else {
-                  Navigator.pushNamed(context,
-                      "/deadlineCalendar/${dthelper.makeDatabaseString(_dayElement.day, currentMonth, currentYear)}");
-                }
-              },
-            ),
+                    });
+              } else {
+                Navigator.pushNamed(context,
+                    "/deadlineCalendar/${dthelper.makeDatabaseString(_dayElement.day, currentMonth, currentYear)}");
+              }
+            },
           ),
-        );
-      });
+        ),
+      );
     });
   }
 
@@ -233,6 +272,9 @@ class _CalendarTabState extends State<CalendarTab> {
   @override
   Widget build(BuildContext context) {
     _buildDays();
+    setState(() {
+      return;
+    });
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

@@ -8,6 +8,7 @@ import '../scoped-models/mainmodel.dart';
 
 import '../widgets/jobslist/jobslist-deadline.dart';
 
+//TODO 1.2: No Deadline in a Block Day
 class DeadlinesTab extends StatefulWidget {
   final MainModel model;
   DeadlinesTab(this.model);

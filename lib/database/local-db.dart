@@ -122,9 +122,12 @@ class LocalDB {
         where: "deadline = ?", whereArgs: [deadline]);
   }
 
-  Future<int> deleteBlock(String id) async {
+  Future<bool> deleteBlock(String id) async {
     final db = await database;
-    return await db.delete("blocks", where: 'id = ?', whereArgs: ["$id"]);
+    await db.delete("blocks", where: 'id = ?', whereArgs: [id]);
+    var lol = await fetchAllBlocks();
+    print(lol);
+    return true;
   }
 
   Future<List<Map<String, dynamic>>> fetchAllBlocks() async {
