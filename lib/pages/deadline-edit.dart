@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:taskminder/models/block.dart';
+import 'package:taskminder/widgets/blocked-deadline-dialog.dart';
 import 'package:taskminder/widgets/priority-picker.dart';
 
 import '../scoped-models/mainmodel.dart';
@@ -195,11 +197,35 @@ class _DeadlineEditState extends State<DeadlineEdit> {
         );
       },
     ).then((_date) {
-      setState(() {
-        _pickedDate = DateTimeHelper().dateToDatabaseString(_date);
-        _displayedDate = DateTimeHelper().dateToReadableString(_date);
-        _dateController.text = _displayedDate;
-      });
+      List<Block> _blocks = widget._model.blocks;
+      List<Block> _blocked = _blocks.where((block) {
+        return DateTime.parse(block.deadline).difference(_date).inDays == 0;
+      }).toList();
+      if (_blocked.length > 0) {
+        showDialog<bool>(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) {
+              return BlockedDeadlineDialog(widget._model, pickedDate: _date);
+            }).then((result) {
+          print(result);
+          if (result == false)
+            _datePicker();
+          else {
+            setState(() {
+              _pickedDate = DateTimeHelper().dateToDatabaseString(_date);
+              _displayedDate = DateTimeHelper().dateToReadableString(_date);
+              _dateController.text = _displayedDate;
+            });
+          }
+        });
+      } else {
+        setState(() {
+          _pickedDate = DateTimeHelper().dateToDatabaseString(_date);
+          _displayedDate = DateTimeHelper().dateToReadableString(_date);
+          _dateController.text = _displayedDate;
+        });
+      }
     });
   }
 

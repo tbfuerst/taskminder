@@ -1,4 +1,5 @@
 import 'package:scoped_model/scoped_model.dart';
+import 'package:taskminder/helpers/date-time-helper.dart';
 import '../models/block.dart';
 import '../database/local-db.dart';
 
@@ -65,6 +66,14 @@ mixin BlockModel on Model {
     _areBlocksLoading = false;
     notifyListeners();
     return true;
+  }
+
+  Future<String> getBlockIDByDate(DateTime date) async {
+    DateTimeHelper dthelper = DateTimeHelper();
+    String queriedDate = dthelper.dateToDatabaseString(date);
+    List<Map<String, dynamic>> block =
+        await LocalDB.db.fetchBlockByDate(queriedDate);
+    return block[0]['id'];
   }
 
   Future<bool> deleteBlockLocal(String id) {

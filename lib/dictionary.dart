@@ -63,6 +63,17 @@ class Dictionary {
   };
 
   Map _phrases = const {
+    'dateIsBlocked': {
+      'de': 'Dieser Tag wurde für Termine gesperrt!',
+      'en': 'This date is blocked!'
+    },
+    'deleteBlock': {'de': 'Sperre aufheben', 'en': 'Delete Block'},
+    'changeDate': {'de': 'Termin ändern', 'en': 'Change date'},
+    'deleteBlockOrChangeDeadline': {
+      'de':
+          'Du kannst entweder die Sperre entfernen, oder ein anderes Datum wählen',
+      'en': "You can either delete the block or change the Deadline"
+    },
     'overwriteTitle': {
       'de': 'Bestehende Sperrtage überschreiben?',
       'en': 'Overwrite existing Blocks?'

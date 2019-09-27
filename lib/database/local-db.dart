@@ -127,6 +127,12 @@ class LocalDB {
     await db.delete("blocks", where: 'id = ?', whereArgs: ["$id"]);
   }
 
+  Future<List<Map<String, dynamic>>> fetchBlockByDate(String date) async {
+    final db = await database;
+    return await db
+        .query("blocks", where: 'deadline = ?', whereArgs: ["$date"]);
+  }
+
   Future<List<Map<String, dynamic>>> fetchAllBlocks() async {
     final db = await database;
     return await db.query("blocks");
