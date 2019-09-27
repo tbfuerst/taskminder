@@ -2,8 +2,6 @@ import 'package:taskminder/models/job.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter/material.dart';
 
-//TODO: 1: Get Blocks into calendar
-
 class Block implements Job {
   String id;
   final String name;

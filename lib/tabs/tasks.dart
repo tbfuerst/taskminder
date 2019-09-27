@@ -6,7 +6,6 @@ import 'package:taskminder/widgets/task-create-dialog.dart';
 import '../models/task.dart';
 import '../scoped-models/mainmodel.dart';
 import '../widgets/jobslist/jobslist-task.dart';
-import '../widgets/priority-picker.dart';
 
 class TasksTab extends StatefulWidget {
   final MainModel model;
@@ -19,12 +18,6 @@ class TasksTab extends StatefulWidget {
 class _TasksTabState extends State<TasksTab> {
   Dictionary dict = Dictionary();
   Settings settings = Settings();
-
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  final TextEditingController _textcontroller = new TextEditingController();
-
-  String newTaskName;
-  int _priority = 0;
 
   @override
   void initState() {

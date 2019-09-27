@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:taskminder/models/block.dart';
 import 'package:taskminder/widgets/calendar/block-dialog.dart';
 import 'package:taskminder/widgets/calendar/calendar-grid.dart';
 import 'package:taskminder/widgets/calendar/deadline-dialog.dart';
 import 'package:taskminder/widgets/calendar/month-display.dart';
-import 'package:taskminder/widgets/priority-indicator.dart';
 
 import '../globalSettings.dart';
 import '../dictionary.dart';
@@ -26,17 +24,12 @@ class CalendarTab extends StatefulWidget {
   _CalendarTabState createState() => _CalendarTabState();
 }
 
-//TODO 0.5: Clean up Component
 class _CalendarTabState extends State<CalendarTab> {
   static Dictionary dict = Dictionary();
   static Settings settings = Settings();
-  List<String> _monthNames;
 
   @override
   void initState() {
-    _monthNames =
-        dict.displayCollection('months', widget.model.settings.language);
-
     widget.model
         .getAllDeadlinesLocal(showIncompleted: true, showCompleted: true);
     widget.model.getAllBlocksLocal();
@@ -100,7 +93,6 @@ class _CalendarTabState extends State<CalendarTab> {
     return _monthlyBlocks;
   }
 
-  ///TODO 1.1: add Blocks to the day object
   List<CalendarDay> _calendarDays() {
     List<Deadline> _monthlyDeadlines = _getTasksOfCurrentMonth();
     List<Block> _monthlyBlocks = getBlocksOfCurrentMonth();

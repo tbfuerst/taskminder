@@ -32,8 +32,6 @@ class MonthDisplay extends StatelessWidget {
               monthChangerCallback(changeTo: pickedDateTime);
           },
         );
-
-        ;
       },
     );
   }

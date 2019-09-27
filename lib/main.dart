@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/pages/settings.dart';
 import 'package:taskminder/scoped-models/mainmodel.dart';
-import 'package:sqflite/sqflite.dart';
+// import 'package:sqflite/sqflite.dart';
 
 import './pages/app-view.dart';
 import './pages/job-details.dart';
@@ -24,7 +24,7 @@ class Taskminder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Sqflite.devSetDebugModeOn(true);
+    // Sqflite.devSetDebugModeOn(true);
     //TestClass test = TestClass();
     //test.test();
     LocalDB.db.deleteDB();
