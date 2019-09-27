@@ -272,7 +272,7 @@ class _BlockEditState extends State<BlockEdit> {
         Block combinedBlock = Block(
           deadline: newBlock.deadline,
           name: newBlock.name +
-              "+" +
+              " & " +
               validatedBlocks['doubleBlocksOld'][indexCount].name,
         );
         _blocksToUpdate.add(combinedBlock);
@@ -365,7 +365,8 @@ class _BlockEditState extends State<BlockEdit> {
                           await _validateBlocks(model, _blocks);
                       await _saveBlocks(model, _validatedBlocks);
                       print("add to database");
-                      Navigator.pop(context);
+                      Navigator.pushReplacementNamed(
+                          context, model.activeTabRoute);
                     },
                   ),
                 ],

@@ -3,6 +3,10 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:taskminder/models/block.dart';
+import 'package:taskminder/widgets/calendar/block-dialog.dart';
+import 'package:taskminder/widgets/calendar/calendar-grid.dart';
+import 'package:taskminder/widgets/calendar/deadline-dialog.dart';
+import 'package:taskminder/widgets/calendar/month-display.dart';
 import 'package:taskminder/widgets/priority-indicator.dart';
 
 import '../globalSettings.dart';
@@ -164,77 +168,17 @@ class _CalendarTabState extends State<CalendarTab> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Container(
-                          //width: double.maxFinite, // Dialog needs a max width, which is the max 64bit number here
-                          child: ListView.builder(
-                        itemCount: _dayElement.deadlines.length,
-                        itemBuilder: (context, index) {
-                          Deadline deadline = _dayElement.deadlines[index];
-                          return ListTile(
-                            leading:
-                                PriorityIndicator(deadline.calculatedPriority),
-                            title: Text(deadline.name),
-                            subtitle: Text(deadline
-                                    .getFormattedDeadline()[0]
-                                    .toString() +
-                                " " +
-                                dict.displayWord(
-                                    'days', widget.model.settings.language) +
-                                ", " +
-                                deadline.getFormattedDeadline()[1].toString() +
-                                " " +
-                                dict.displayWord(
-                                    'hours', widget.model.settings.language) +
-                                " " +
-                                dict.displayWord('remaining',
-                                    widget.model.settings.language) +
-                                "\n" +
-                                deadline.description),
-                            isThreeLine: true,
-                            onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                "/deadlinedetail/${deadline.id}",
-                              );
-                            },
-                          );
-                        },
-                      )),
-                    );
+                    return DeadlineDialog(widget.model,
+                        dayElement: _dayElement);
                   },
                 );
               } else if (_dayElement.hasBlocks) {
-                //TODO resolve Future problem
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: Text(_dayElement.blocks[0].name),
-                        actions: <Widget>[
-                          FlatButton(
-                            onPressed: () {
-                              print(widget.model.blocks);
-                              print(_dayElement.blocks[0].id);
-                              widget.model
-                                  .deleteBlockLocal(_dayElement.blocks[0].id)
-                                  .then((e) {
-                                print(widget.model.blocks);
-                                setState(() {
-                                  initState();
-                                  return;
-                                });
-                              });
-                              //await widget.model.getAllBlocksLocal();
-
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              dict.displayWord(
-                                  'delete', widget.model.settings.language),
-                            ),
-                          )
-                        ],
+                      return BlockDialog(
+                        widget.model,
+                        dayElement: _dayElement,
                       );
                     });
               } else {
@@ -248,7 +192,7 @@ class _CalendarTabState extends State<CalendarTab> {
     });
   }
 
-  _changeMonth({@required int changeBy}) {
+  _changeMonthByArrow({@required int changeBy}) {
     setState(() {
       if (changeBy >= 0) {
         if ((currentMonth + changeBy % 12) > 12) {
@@ -269,47 +213,39 @@ class _CalendarTabState extends State<CalendarTab> {
     });
   }
 
+  void _monthChangerCallback({DateTime changeTo}) {
+    String datestring = dthelper.dateToDatabaseString(changeTo);
+    setState(() {
+      currentMonth = int.parse(datestring.substring(4, 6));
+      currentYear = int.parse(datestring.substring(0, 4));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _buildDays();
-    setState(() {
-      return;
-    });
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         leading: IconButton(
           color: Colors.white,
           icon: Icon(Icons.chevron_left),
           onPressed: () => setState(() {
-            _changeMonth(changeBy: -1);
+            _changeMonthByArrow(changeBy: -1);
           }),
         ),
-        title: GestureDetector(
-          child: Text("${_monthNames[currentMonth - 1]} $currentYear"),
-          onTap: () async {
-            DateTime pickedDateTime = await showMonthPicker(
-              firstDate: DateTime.tryParse("20000101"),
-              lastDate: DateTime.tryParse("29991231"),
-              initialDate: DateTime.now(),
-              context: context,
-            );
-
-            String datestring = dthelper.dateToDatabaseString(pickedDateTime);
-            int month = int.parse(datestring.substring(4, 6));
-            int year = int.parse(datestring.substring(0, 4));
-            setState(() {
-              currentMonth = month;
-              currentYear = year;
-            });
-          },
+        title: MonthDisplay(
+          widget.model,
+          month: currentMonth,
+          year: currentYear,
+          monthChangerCallback: _monthChangerCallback,
         ),
-        centerTitle: true,
         actions: <Widget>[
           IconButton(
             color: Colors.white,
             icon: Icon(Icons.chevron_right),
             onPressed: () => setState(() {
-              _changeMonth(changeBy: 1);
+              _changeMonthByArrow(changeBy: 1);
             }),
           ),
         ],
@@ -323,11 +259,9 @@ class _CalendarTabState extends State<CalendarTab> {
               : RefreshIndicator(
                   onRefresh: () =>
                       widget.model.getAllDeadlinesLocal(showIncompleted: true),
-                  child: GridView.count(
-                    crossAxisCount: 7,
-                    children: dayTiles,
-                  ),
-                );
+                  child: CalendarGrid(
+                    dayTiles: dayTiles,
+                  ));
         },
       ),
     );

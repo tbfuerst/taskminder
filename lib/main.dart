@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/pages/settings.dart';
 import 'package:taskminder/scoped-models/mainmodel.dart';
-// import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart';
 
 import './pages/app-view.dart';
 import './pages/job-details.dart';
 import './pages/deadline-edit.dart';
 import './pages/block-edit.dart';
 import './pages/completed-tasks.dart';
-import './testclass.dart';
+//import './testclass.dart';
 import './database/local-db.dart';
 
 void main() {
@@ -24,9 +24,9 @@ class Taskminder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sqflite.devSetDebugModeOn(true);
-    TestClass test = TestClass();
-    test.test();
+    Sqflite.devSetDebugModeOn(true);
+    //TestClass test = TestClass();
+    //test.test();
     LocalDB.db.deleteDB();
     return ScopedModel<MainModel>(
       model: model,
