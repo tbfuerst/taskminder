@@ -5,26 +5,41 @@ class PriorityIndicator extends StatelessWidget {
 
   const PriorityIndicator(this.priority);
 
-  // TODO 2: Rework priority indicator
-
   Color _determinePrioColor() {
-    if (priority < 2) {
-      return Colors.blueGrey;
-    } else if (priority < 6) {
-      return Colors.yellowAccent;
-    } else if (priority < 9) {
-      return Colors.orangeAccent;
-    } else if (priority < 10) {
-      return Colors.redAccent;
-    } else {
-      return Colors.black;
+    switch (priority) {
+      case 0:
+        return Colors.blueGrey;
+      case 1:
+        return Colors.yellow;
+      case 2:
+        return Colors.redAccent;
+        break;
+      default:
+        return Colors.blueGrey;
+    }
+  }
+
+  String _determinePrioText() {
+    switch (priority) {
+      case 0:
+        return "--";
+      case 1:
+        return "!";
+      case 2:
+        return "!!!";
+        break;
+      default:
+        return "";
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: CircleAvatar(backgroundColor: _determinePrioColor()),
+      child: CircleAvatar(
+        backgroundColor: _determinePrioColor(),
+        child: Text(_determinePrioText()),
+      ),
     );
   }
 }

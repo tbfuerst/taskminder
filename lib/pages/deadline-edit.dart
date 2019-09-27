@@ -48,7 +48,7 @@ class _DeadlineEditState extends State<DeadlineEdit> {
   // Form Data
   String _name;
   String _description;
-  int _prioValue = 1;
+  int _prioValue = 0;
   String _pickedDate = DateTimeHelper()
       .dateToDatabaseString(DateTime.now()); // Date as database String
   String _displayedDate = DateTimeHelper()
@@ -378,7 +378,7 @@ class _DeadlineEditState extends State<DeadlineEdit> {
       deadline: _pickedDate,
       deadlineTime: _pickedTime,
       timeInvestment: _timeInvestment,
-      priority: _prioValue,
+      priority: priority,
     );
     return deadline;
   }

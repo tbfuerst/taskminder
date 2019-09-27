@@ -13,7 +13,15 @@ import '../tabs/tasks.dart';
 
 import '../widgets/add-task-button.dart';
 
-//TODO 5: other features
+///TODO 5: other features -
+///rework of completed tasks / deadlines -
+///better first startup page -
+///ui optimizations -
+///settings page -
+///more settings -
+///export and import -
+///pictures and geodata -
+///scheduler
 
 class AppView extends StatefulWidget {
   final MainModel model;

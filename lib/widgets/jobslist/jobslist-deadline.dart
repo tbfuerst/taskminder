@@ -29,29 +29,29 @@ class _JobslistDeadlineState extends State<JobslistDeadline> {
   }
 
   Future<Null> updateCompletionStatus(
-      Deadline _task, MainModel model, bool completedStatus) {
-    _task.isCompleted = completedStatus;
-    return model.updateDeadline(_task.id, _task);
+      Deadline _deadline, MainModel model, bool completedStatus) {
+    _deadline.isCompleted = completedStatus;
+    return model.updateDeadline(_deadline.id, _deadline);
   }
 
-  Widget _buildListTile(Deadline task, MainModel model) {
+  Widget _buildListTile(Deadline deadline, MainModel model) {
     return ListTile(
-      leading: PriorityIndicator(task.calculatedPriority),
-      title: Text(task.name),
-      subtitle: Text(task.getFormattedDeadline()[0].toString() +
+      leading: PriorityIndicator(deadline.priority),
+      title: Text(deadline.name),
+      subtitle: Text(deadline.getFormattedDeadline()[0].toString() +
           " " +
           dict.displayWord('days', model.settings.language) +
           ", " +
-          task.getFormattedDeadline()[1].toString() +
+          deadline.getFormattedDeadline()[1].toString() +
           " " +
           dict.displayWord('hours', model.settings.language) +
           " " +
           dict.displayWord('remaining', model.settings.language) +
           "\n" +
-          task.description),
+          deadline.description),
       isThreeLine: true,
       trailing: JobActionButton(
-        job: task,
+        job: deadline,
         model: model,
         showCompletedOnly: widget.showCompletedOnly,
         isTaskNotDeadline: false,
@@ -59,7 +59,7 @@ class _JobslistDeadlineState extends State<JobslistDeadline> {
       onTap: () {
         Navigator.pushNamed(
           context,
-          "/deadlinedetail/${task.id}",
+          "/deadlinedetail/${deadline.id}",
         );
       },
     );
