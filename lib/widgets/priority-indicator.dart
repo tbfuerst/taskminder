@@ -5,6 +5,8 @@ class PriorityIndicator extends StatelessWidget {
 
   const PriorityIndicator(this.priority);
 
+  // TODO 2: Rework priority indicator
+
   Color _determinePrioColor() {
     if (priority < 2) {
       return Colors.blueGrey;

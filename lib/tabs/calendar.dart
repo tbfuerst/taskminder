@@ -7,7 +7,6 @@ import 'package:taskminder/widgets/calendar/calendar-grid.dart';
 import 'package:taskminder/widgets/calendar/deadline-dialog.dart';
 import 'package:taskminder/widgets/calendar/month-display.dart';
 
-import '../globalSettings.dart';
 import '../dictionary.dart';
 import '../scoped-models/mainmodel.dart';
 import '../models/calendarday.dart';
@@ -26,7 +25,6 @@ class CalendarTab extends StatefulWidget {
 
 class _CalendarTabState extends State<CalendarTab> {
   static Dictionary dict = Dictionary();
-  static Settings settings = Settings();
 
   @override
   void initState() {

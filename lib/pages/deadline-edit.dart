@@ -9,7 +9,6 @@ import '../helpers/date-time-helper.dart';
 import '../models/deadline.dart';
 
 import '../dictionary.dart';
-import '../globalSettings.dart';
 
 class DeadlineEdit extends StatefulWidget {
   final MainModel _model;
@@ -26,7 +25,6 @@ class DeadlineEdit extends StatefulWidget {
 
 class _DeadlineEditState extends State<DeadlineEdit> {
   final Dictionary dict = Dictionary();
-  final Settings settings = Settings();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final _dateController = TextEditingController();
@@ -183,6 +181,7 @@ class _DeadlineEditState extends State<DeadlineEdit> {
   Future _datePicker() async {
     showDatePicker(
       context: context,
+      //TODO minor: check if initialDate is a Block
       initialDate: isEditMode
           ? DateTime.tryParse(editableDeadline.deadline)
           : DateTime.now(),

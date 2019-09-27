@@ -5,7 +5,6 @@ import 'package:taskminder/pages/first-startup.dart';
 import '../scoped-models/mainmodel.dart';
 
 import '../dictionary.dart';
-import '../globalSettings.dart';
 
 import '../tabs/calendar.dart';
 import '../tabs/deadlines.dart';
@@ -14,11 +13,11 @@ import '../tabs/tasks.dart';
 
 import '../widgets/add-task-button.dart';
 
-//TODO 4: remove all local Settings() instances
 //TODO 5: other features
 
 class AppView extends StatefulWidget {
   final MainModel model;
+
   final _activeTab;
   final bool showTaskAddDialog;
 
@@ -30,7 +29,7 @@ class AppView extends StatefulWidget {
 
 class _AppViewState extends State<AppView> with SingleTickerProviderStateMixin {
   final Dictionary dict = Dictionary();
-  final Settings settings = Settings();
+
   final int _tabLength = 4;
   TabController _tabController;
 

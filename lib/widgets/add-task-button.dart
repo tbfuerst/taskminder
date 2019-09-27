@@ -5,11 +5,9 @@ import 'package:taskminder/widgets/task-create-dialog.dart';
 import 'package:unicorndial/unicorndial.dart';
 import '../scoped-models/mainmodel.dart';
 import '../dictionary.dart';
-import '../globalSettings.dart';
 
 class AddTaskButton extends StatelessWidget {
   final Dictionary dict = Dictionary();
-  final Settings settings = Settings();
   final MainModel model;
   AddTaskButton(this.model);
 

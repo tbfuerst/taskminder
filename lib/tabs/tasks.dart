@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
-import 'package:taskminder/globalSettings.dart';
+
 import 'package:taskminder/widgets/task-create-dialog.dart';
 import '../models/task.dart';
 import '../scoped-models/mainmodel.dart';
@@ -17,7 +17,6 @@ class TasksTab extends StatefulWidget {
 
 class _TasksTabState extends State<TasksTab> {
   Dictionary dict = Dictionary();
-  Settings settings = Settings();
 
   @override
   void initState() {

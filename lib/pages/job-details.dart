@@ -3,7 +3,6 @@ import '../scoped-models/mainmodel.dart';
 import '../models/deadline.dart';
 import '../helpers/date-time-helper.dart';
 import '../dictionary.dart';
-import '../globalSettings.dart';
 
 class TaskDetails extends StatefulWidget {
   final String _deadlineId;
@@ -14,10 +13,8 @@ class TaskDetails extends StatefulWidget {
   _TaskDetailsState createState() => _TaskDetailsState();
 }
 
-// TODO 2: make Details Page abstract for use with both Tasks and Deadlines
 class _TaskDetailsState extends State<TaskDetails> {
   final Dictionary dict = Dictionary();
-  final Settings settings = Settings();
   Deadline _deadline;
 
   @override

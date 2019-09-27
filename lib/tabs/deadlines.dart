@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
-import 'package:taskminder/globalSettings.dart';
+
 import 'package:taskminder/helpers/date-time-helper.dart';
 import '../scoped-models/mainmodel.dart';
 
 import '../widgets/jobslist/jobslist-deadline.dart';
 
-//TODO 1.2: No Deadline in a Block Day
 class DeadlinesTab extends StatefulWidget {
   final MainModel model;
   DeadlinesTab(this.model);
@@ -19,7 +18,7 @@ class DeadlinesTab extends StatefulWidget {
 class _DeadlinesTabState extends State<DeadlinesTab> {
   Dictionary dict = Dictionary();
   DateTimeHelper dthelper = DateTimeHelper();
-  Settings settings = Settings();
+
   Function reference;
 
   @override

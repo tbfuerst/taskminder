@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:taskminder/scoped-models/mainmodel.dart';
 
 import '../dictionary.dart';
-import '../globalSettings.dart';
 import 'priority-picker.dart';
 
 class TaskCreateDialog extends StatefulWidget {
@@ -16,7 +15,6 @@ class TaskCreateDialog extends StatefulWidget {
 
 class _TaskCreateDialogState extends State<TaskCreateDialog> {
   Dictionary dict = Dictionary();
-  Settings settings = Settings();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   final TextEditingController _textcontroller = new TextEditingController();
