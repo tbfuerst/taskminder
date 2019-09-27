@@ -81,9 +81,13 @@ class _TaskCreateDialogState extends State<TaskCreateDialog> {
                       return;
                     }
                     _formKey.currentState.save();
-                    widget.addSimpleTaskCallback(newTaskName);
-                    _textcontroller.text = "";
-                    Navigator.pop(context, true);
+                    widget
+                        .addSimpleTaskCallback(context,
+                            taskName: newTaskName, priority: _priority)
+                        .then((e) {
+                      _textcontroller.text = "";
+                      Navigator.pop(context, true);
+                    });
                   },
                 ),
               ),

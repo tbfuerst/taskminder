@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
 import 'package:taskminder/globalSettings.dart';
+import 'package:taskminder/widgets/task-create-dialog.dart';
 import '../models/task.dart';
 import '../scoped-models/mainmodel.dart';
 import '../widgets/jobslist/jobslist-task.dart';
@@ -32,13 +33,13 @@ class _TasksTabState extends State<TasksTab> {
     super.initState();
   }
 
-  Future<bool> _addSimpleTask(taskName) {
+  Future<bool> _addSimpleTask(BuildContext context, {taskName, priority}) {
     Task newTask = Task(
       name: taskName,
-      priority: _priority,
+      priority: priority,
       isCompleted: false,
     );
-    print(_priority);
+    print(newTask.priority);
     widget.model.insertTask(newTask).then((value) {
       setState(() {
         widget.model.getAllTasksLocal(showIncompleted: true);
@@ -47,75 +48,12 @@ class _TasksTabState extends State<TasksTab> {
     return Future<bool>.value(true);
   }
 
-  void _changePriority(int toPriority) {
-    _priority = toPriority;
-  }
-
   void _addTaskDialogue() {
     showDialog(
       builder: (BuildContext context) {
-        return Dialog(
-          child: Card(
-            child: ListView(
-              shrinkWrap: true,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-                  child: Form(
-                    key: _formKey,
-                    child: TextFormField(
-                      autofocus: true,
-                      controller: _textcontroller,
-                      onSaved: (String value) {
-                        newTaskName = value;
-                      },
-                      validator: (String value) {
-                        if (value.length == 0) {
-                          return dict.displayPhrase('nameFormFieldEmptyError',
-                              widget.model.settings.language);
-                        }
-                        return null;
-                      },
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                        labelText: dict.displayWord(
-                            'addTask', widget.model.settings.language),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: PriorityPicker(_changePriority),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  child: Text(
-                    dict.displayWord(
-                        'priority', widget.model.settings.language),
-                    style: TextStyle(fontSize: 9),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
-                  child: Center(
-                    child: RaisedButton(
-                      child: Text("SAVE"),
-                      onPressed: () {
-                        if (_formKey.currentState.validate() == false) {
-                          return;
-                        }
-                        _formKey.currentState.save();
-                        _addSimpleTask(newTaskName);
-                        _textcontroller.text = "";
-                        Navigator.pop(context, true);
-                      },
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
+        return TaskCreateDialog(
+          widget.model,
+          addSimpleTaskCallback: _addSimpleTask,
         );
       },
       context: context,
@@ -134,7 +72,6 @@ class _TasksTabState extends State<TasksTab> {
           child: IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              _changePriority(0);
               _addTaskDialogue();
             },
           ),
