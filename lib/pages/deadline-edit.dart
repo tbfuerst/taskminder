@@ -49,6 +49,7 @@ class _DeadlineEditState extends State<DeadlineEdit> {
   String _name;
   String _description;
   int _prioValue = 0;
+  DateTime _firstDate = DateTime.now();
   String _pickedDate = DateTimeHelper()
       .dateToDatabaseString(DateTime.now()); // Date as database String
   String _displayedDate = DateTimeHelper()
@@ -98,11 +99,13 @@ class _DeadlineEditState extends State<DeadlineEdit> {
 
   @override
   initState() {
+    _firstDate = _searchFreeDate(widget._model, DateTime.now());
+
     _pickedDate = isEditMode
         ? editableDeadline.deadline
         : isCalendarMode
             ? widget._dateFromCalendar
-            : DateTimeHelper().dateToDatabaseString(DateTime.now());
+            : DateTimeHelper().dateToDatabaseString(_firstDate);
 
     _displayedDate = isEditMode
         ? DateTimeHelper()
@@ -110,7 +113,7 @@ class _DeadlineEditState extends State<DeadlineEdit> {
         : isCalendarMode
             ? DateTimeHelper()
                 .databaseDateStringToReadable(widget._dateFromCalendar)
-            : DateTimeHelper().dateToReadableString(DateTime.now());
+            : DateTimeHelper().dateToReadableString(_firstDate);
 
     _pickedTime = isEditMode
         ? editableDeadline.deadlineTime
@@ -178,13 +181,37 @@ class _DeadlineEditState extends State<DeadlineEdit> {
     );
   }
 
+  bool _isTodayBlocked(MainModel model, DateTime today) {
+    if (model.blocks.length == 0) return false;
+    Block foundBlock = model.blocks.firstWhere(
+      (block) {
+        return block.deadline == DateTimeHelper().dateToDatabaseString(today);
+      },
+      orElse: () {
+        return Block(name: "", deadline: "00000000");
+      },
+    );
+    return foundBlock.deadline != "00000000";
+  }
+
+  DateTime _searchFreeDate(MainModel model, DateTime today) {
+    DateTime freeDate;
+    if (_isTodayBlocked(model, today)) {
+      DateTime nextDay = today.add(Duration(days: 1));
+      freeDate = _searchFreeDate(model, nextDay);
+    } else {
+      return today;
+    }
+    return freeDate;
+  }
+
   Future _datePicker() async {
+    DateTime today = DateTime.now();
     showDatePicker(
       context: context,
-      //TODO minor: check if initialDate is a Block
       initialDate: isEditMode
           ? DateTime.tryParse(editableDeadline.deadline)
-          : DateTime.now(),
+          : _searchFreeDate(widget._model, today),
       firstDate: DateTime(currentYear),
       lastDate: DateTime(currentYear + 12),
       builder: (BuildContext context, Widget child) {
@@ -207,7 +234,6 @@ class _DeadlineEditState extends State<DeadlineEdit> {
             builder: (BuildContext context) {
               return BlockedDeadlineDialog(widget._model, pickedDate: _date);
             }).then((result) {
-          print(result);
           if (result == false)
             _datePicker();
           else {

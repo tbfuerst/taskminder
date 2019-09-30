@@ -31,7 +31,6 @@ class _TasksTabState extends State<TasksTab> {
       priority: priority,
       isCompleted: false,
     );
-    print(newTask.priority);
     widget.model.insertTask(newTask).then((value) {
       setState(() {
         widget.model.getAllTasksLocal(showIncompleted: true);

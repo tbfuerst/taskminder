@@ -19,6 +19,13 @@ class PriorityIndicator extends StatelessWidget {
     }
   }
 
+  Color _determineTextColor() {
+    if (priority == 0)
+      return Colors.white;
+    else
+      return Colors.black;
+  }
+
   String _determinePrioText() {
     switch (priority) {
       case 0:
@@ -38,7 +45,13 @@ class PriorityIndicator extends StatelessWidget {
     return Container(
       child: CircleAvatar(
         backgroundColor: _determinePrioColor(),
-        child: Text(_determinePrioText()),
+        child: Text(
+          _determinePrioText(),
+          style: TextStyle(
+            color: _determineTextColor(),
+            fontSize: 16,
+          ),
+        ),
       ),
     );
   }

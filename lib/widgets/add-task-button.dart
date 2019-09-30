@@ -17,7 +17,7 @@ class AddTaskButton extends StatelessWidget {
       priority: priority,
       isCompleted: false,
     );
-    print(newTask.priority);
+
     model.insertTask(newTask).then((value) {
       Navigator.pushReplacementNamed(context, '/tasks');
     });

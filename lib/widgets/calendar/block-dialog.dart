@@ -21,11 +21,9 @@ class BlockDialog extends StatelessWidget {
           onPressed: () {
             TestClass test = TestClass();
             test.test();
-            print(model.blocks);
-            print(dayElement.blocks[0].id);
+
             model.deleteBlockLocal(dayElement.blocks[0].id).then((e) {
               Navigator.pushReplacementNamed(context, model.activeTabRoute);
-              print(model.blocks);
             });
             //await widget.model.getAllBlocksLocal();
 

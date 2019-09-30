@@ -4,6 +4,7 @@ import 'package:taskminder/models/block.dart';
 import '../scoped-models/mainmodel.dart';
 import 'package:taskminder/dictionary.dart';
 import 'package:taskminder/helpers/date-time-helper.dart';
+//TODO 1: check for deadlines on a day to block
 
 class BlockEdit extends StatefulWidget {
   final MainModel model;
@@ -126,7 +127,7 @@ class _BlockEditState extends State<BlockEdit> {
     assert(timeDifference >= 0);
 
     int blockDays = timeDifference + 1;
-    // print(blockDays);
+
     for (var i = 0; i < blockDays; i++) {
       DateTime _date = firstDate.add(
         Duration(days: i),
@@ -134,9 +135,7 @@ class _BlockEditState extends State<BlockEdit> {
       String _databaseDate = DateTimeHelper().dateToDatabaseString(_date);
       _blocks.add(Block(name: _name, deadline: _databaseDate));
     }
-    _blocks.forEach((block) {
-      // print(block.deadline);
-    });
+    _blocks.forEach((block) {});
 
     return _blocks;
   }
@@ -145,7 +144,7 @@ class _BlockEditState extends State<BlockEdit> {
       MainModel model, List<Block> blocks) async {
     await model.getAllBlocksLocal();
     dbBlocks = model.blocks;
-    print(dbBlocks);
+
     List<Block> removedBlocks = [];
     List<Block> doubleBlocks = [];
     List<Block> filteredBlocks = blocks.where((block) {
@@ -159,12 +158,6 @@ class _BlockEditState extends State<BlockEdit> {
       });
       return isNewInDB;
     }).toList();
-    print("Filtered:");
-/*     filteredBlocks.forEach((block) => print(block.deadline));
-    print("Removed:");
-    removedBlocks.forEach((block) => print(block.deadline));
-    print("Double:");
-    doubleBlocks.forEach((block) => print(block.name)); */
 
     if (removedBlocks.isNotEmpty) {
       await showDialog(
@@ -364,7 +357,6 @@ class _BlockEditState extends State<BlockEdit> {
                       Map<String, dynamic> _validatedBlocks =
                           await _validateBlocks(model, _blocks);
                       await _saveBlocks(model, _validatedBlocks);
-                      print("add to database");
                       Navigator.pushReplacementNamed(
                           context, model.activeTabRoute);
                     },

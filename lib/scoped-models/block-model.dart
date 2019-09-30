@@ -78,13 +78,10 @@ mixin BlockModel on Model {
 
   Future<bool> deleteBlockLocal(String id) {
     return LocalDB.db.deleteBlock(id).then((a) {
-      print(a);
       _blocks.removeWhere((block) {
-        print(block.name);
-        print(block.id == id);
         return block.id == id;
       });
-      print(_blocks);
+
       _blocksCount = _blocks.length;
       notifyListeners();
       return true;
