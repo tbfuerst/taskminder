@@ -60,6 +60,12 @@ class Dictionary {
     'welcome': {'de': 'Willkommen', 'en': 'Welcome'},
     'settings': {'de': 'Einstellungen', 'en': 'Settings'},
     'combine': {'de': 'Kombinieren', 'en': 'Combine'},
+    'blockColor': {'de': 'Farbe Sperrtage', 'en': 'Block Color'},
+    'deadlineColor': {'de': 'Farbe Termine', 'en': 'Deadline Color'},
+    'todayColor': {
+      'de': 'Farbe Tagesindikator',
+      'en': 'Calendar\'s Today Color'
+    },
   };
 
   Map _phrases = const {
