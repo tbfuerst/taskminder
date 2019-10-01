@@ -13,10 +13,9 @@ class SettingsPage extends StatefulWidget {
   _SettingsPageState createState() => _SettingsPageState();
 }
 
-//TODO 2: add database connection for persistence
-
 class _SettingsPageState extends State<SettingsPage> {
   Dictionary dict = Dictionary();
+  bool stateHasChanged = false;
   String chosenLanguageCode;
   String languageWord;
   Color blockColor = Colors.purple;
@@ -50,6 +49,7 @@ class _SettingsPageState extends State<SettingsPage> {
         return "Deutsch";
         break;
       default:
+        return "";
     }
   }
 
@@ -76,6 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       onChanged: (String newValue) {
         setState(() {
+          stateHasChanged = true;
           languageWord = newValue;
           switch (newValue) {
             case 'English':
@@ -136,10 +137,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 selectedColor: initialColor,
                 onMainColorChange: (Color color) {
                   setState(() {
+                    stateHasChanged = true;
                     colorChangeFunction(color);
-                    print("Block: $blockColor");
-                    print("Deadline: $deadlineColor");
-                    print("DayIndicator: $dayIndicatorColor");
+
                     Navigator.pop(context);
                   });
 
@@ -172,44 +172,49 @@ class _SettingsPageState extends State<SettingsPage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text(
-                        dict.displayPhrase(
-                            'saveChanges', model.settings.language),
-                      ),
-                      content: Text(
-                        dict.displayPhrase(
-                            'savePromptLong', model.settings.language),
-                      ),
-                      actions: <Widget>[
-                        FlatButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: Text(
-                            dict.displayWord('cancel', model.settings.language),
+              stateHasChanged
+                  ? showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            dict.displayPhrase(
+                                'saveChanges', model.settings.language),
                           ),
-                        ),
-                        FlatButton(
-                          onPressed: () => Navigator.pushReplacementNamed(
-                              context, model.activeTabRoute),
-                          child: Text(
-                            dict.displayWord(
-                                'discard', model.settings.language),
+                          content: Text(
+                            dict.displayPhrase(
+                                'savePromptLong', model.settings.language),
                           ),
-                        ),
-                        FlatButton(
-                          onPressed: () => _saveToDatabase(model).then((e) =>
-                              Navigator.pushReplacementNamed(
-                                  context, model.activeTabRoute)),
-                          child: Text(
-                            dict.displayWord('save', model.settings.language),
-                          ),
-                        ),
-                      ],
-                    );
-                  });
+                          actions: <Widget>[
+                            FlatButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                dict.displayWord(
+                                    'cancel', model.settings.language),
+                              ),
+                            ),
+                            FlatButton(
+                              onPressed: () => Navigator.pushReplacementNamed(
+                                  context, model.activeTabRoute),
+                              child: Text(
+                                dict.displayWord(
+                                    'discard', model.settings.language),
+                              ),
+                            ),
+                            FlatButton(
+                              onPressed: () => _saveToDatabase(model).then(
+                                  (e) => Navigator.pushReplacementNamed(
+                                      context, model.activeTabRoute)),
+                              child: Text(
+                                dict.displayWord(
+                                    'save', model.settings.language),
+                              ),
+                            ),
+                          ],
+                        );
+                      })
+                  : Navigator.pushReplacementNamed(
+                      context, model.activeTabRoute);
             },
             icon: Icon(
               Icons.arrow_back,

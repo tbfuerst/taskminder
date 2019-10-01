@@ -81,7 +81,7 @@ class _DismissibleJobState extends State<DismissibleJob> {
 
             setState(() {});
 
-            // TODO 3: Fix this dirty solution of state update!
+            // TODO 2: Fix this dirty solution of state update!
             Navigator.pushReplacementNamed(context, model.activeTabRoute);
           },
           child: widget.listTileBuildFunction(job, model),

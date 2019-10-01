@@ -13,12 +13,11 @@ import '../tabs/tasks.dart';
 
 import '../widgets/add-task-button.dart';
 
-///TODO 5: other features -
+///TODO 3: new features -
 ///rework of completed tasks / deadlines -
+///app color theme
 ///better first startup page -
 ///ui optimizations -
-///settings page -
-///more settings -
 ///export and import -
 ///pictures and geodata -
 ///scheduler
