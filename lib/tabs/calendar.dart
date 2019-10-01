@@ -142,7 +142,7 @@ class _CalendarTabState extends State<CalendarTab> {
             border: Border.all(
                 width: 2.0,
                 color: _dayElement.isToday
-                    ? Theme.of(context).errorColor
+                    ? Color(widget.model.settings.dayIndicatorColor)
                     : Colors.white),
           ),
           child: FlatButton(
@@ -151,8 +151,10 @@ class _CalendarTabState extends State<CalendarTab> {
               style: TextStyle(fontSize: 12),
             ),
             color: _dayElement.hasDeadlines
-                ? Theme.of(context).accentColor
-                : _dayElement.hasBlocks ? Colors.red : Colors.white,
+                ? Color(widget.model.settings.deadlineColor)
+                : _dayElement.hasBlocks
+                    ? Color(widget.model.settings.blockColor)
+                    : Colors.white,
             onPressed: () {
               if (_dayElement.hasDeadlines) {
                 showDialog(

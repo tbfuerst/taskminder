@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:taskminder/dictionary.dart';
+import 'package:taskminder/globalSettings.dart';
 import 'package:taskminder/scoped-models/mainmodel.dart';
 import 'package:taskminder/widgets/settings-row.dart';
 import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class SettingsPage extends StatefulWidget {
+  final MainModel model;
+
+  SettingsPage(this.model);
   _SettingsPageState createState() => _SettingsPageState();
 }
 
@@ -33,6 +37,30 @@ class _SettingsPageState extends State<SettingsPage> {
 
   int get dayIndicatorColorRGB {
     return dayIndicatorColor.value;
+  }
+
+  String getLanguageWord(String languageCode) {
+    switch (languageCode) {
+      case "en":
+        return "English";
+
+        break;
+
+      case "de":
+        return "Deutsch";
+        break;
+      default:
+    }
+  }
+
+  @override
+  void initState() {
+    chosenLanguageCode = widget.model.settings.language;
+    languageWord = getLanguageWord(chosenLanguageCode);
+    blockColor = Color(widget.model.settings.blockColor);
+    deadlineColor = Color(widget.model.settings.deadlineColor);
+    dayIndicatorColor = Color(widget.model.settings.dayIndicatorColor);
+    super.initState();
   }
 
   _languageSelector(MainModel model) {
@@ -126,6 +154,16 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  Future<bool> _saveToDatabase(MainModel model) async {
+    Settings settings = Settings();
+    settings.changeLanguage(chosenLanguageCode);
+    settings.changeFirstStartup('false');
+    settings.changeColors(
+        blockColorRGB, deadlineColorRGB, dayIndicatorColorRGB);
+
+    return await model.updateSettings(settings);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScopedModelDescendant<MainModel>(
@@ -134,7 +172,44 @@ class _SettingsPageState extends State<SettingsPage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, model.activeTabRoute);
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(
+                        dict.displayPhrase(
+                            'saveChanges', model.settings.language),
+                      ),
+                      content: Text(
+                        dict.displayPhrase(
+                            'savePromptLong', model.settings.language),
+                      ),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text(
+                            dict.displayWord('cancel', model.settings.language),
+                          ),
+                        ),
+                        FlatButton(
+                          onPressed: () => Navigator.pushReplacementNamed(
+                              context, model.activeTabRoute),
+                          child: Text(
+                            dict.displayWord(
+                                'discard', model.settings.language),
+                          ),
+                        ),
+                        FlatButton(
+                          onPressed: () => _saveToDatabase(model).then((e) =>
+                              Navigator.pushReplacementNamed(
+                                  context, model.activeTabRoute)),
+                          child: Text(
+                            dict.displayWord('save', model.settings.language),
+                          ),
+                        ),
+                      ],
+                    );
+                  });
             },
             icon: Icon(
               Icons.arrow_back,
@@ -173,7 +248,9 @@ class _SettingsPageState extends State<SettingsPage> {
               alignment: Alignment.center,
               margin: EdgeInsets.only(top: 20, bottom: 20),
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: () => _saveToDatabase(model).then((e) =>
+                    Navigator.pushReplacementNamed(
+                        context, model.activeTabRoute)),
                 child: Text(
                   dict.displayWord('save', model.settings.language),
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),

@@ -50,7 +50,7 @@ class Taskminder extends StatelessWidget {
           '/tasks': (BuildContext context) =>
               AppView(model, 2, showTaskAddDialog: false),
           '/calendar': (BuildContext context) => AppView(model, 0),
-          '/settings': (BuildContext context) => SettingsPage(),
+          '/settings': (BuildContext context) => SettingsPage(model),
         },
         onGenerateRoute: (RouteSettings settings) {
           final List<String> pathElements = settings.name.split('/');

@@ -35,7 +35,7 @@ class LocalDB {
           "CREATE TABLE blocks(id TEXT PRIMARY KEY, name TEXT, type TEXT, deadline TEXT)",
         );
         await db.execute(
-          "CREATE TABLE settings(id TEXT PRIMARY KEY, language TEXT, firstStartup TEXT)",
+          "CREATE TABLE settings(id TEXT PRIMARY KEY, language TEXT, firstStartup TEXT, blockColor INTEGER, deadlineColor INTEGER, dayIndicatorColor INTEGER)",
         );
       },
       version: 1,

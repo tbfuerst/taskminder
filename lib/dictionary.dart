@@ -6,6 +6,7 @@ class Dictionary {
     'a-female': {'de': 'eine', 'en': 'a'},
     'a-neutral': {'de': 'ein', 'en': 'a'},
     'yes': {'de': 'Ja', 'en': 'Yes'},
+    'cancel': {'de': 'Abbrechen', 'en': 'Cancel'},
     'no': {'de': 'Nein', 'en': 'No'},
     'few': {'de': 'wenige', 'en': 'few'},
     'some': {'de': 'einige', 'en': 'some'},
@@ -69,6 +70,11 @@ class Dictionary {
   };
 
   Map _phrases = const {
+    'saveChanges': {'de': 'Änderungen speichern', 'en': 'Save Changes'},
+    'savePromptLong': {
+      'de': 'Wollen Sie die vorgenommenen Änderungen Speichern?',
+      'en': 'Would you like to save your changes?'
+    },
     'dateIsBlocked': {
       'de': 'Dieser Tag wurde für Termine gesperrt!',
       'en': 'This date is blocked!'

@@ -32,6 +32,8 @@ mixin AppModel on Model {
     if (sQuery.isNotEmpty) {
       settings.changeLanguage(sQuery[0]['language']);
       settings.changeFirstStartup(sQuery[0]['firstStartup']);
+      settings.changeColors(sQuery[0]['blockColor'], sQuery[0]['deadlineColor'],
+          sQuery[0]['dayIndicatorColor']);
       changeLoadingStateTo(false);
       notifyListeners();
       return true;
@@ -44,9 +46,18 @@ mixin AppModel on Model {
     }
   }
 
+  Future<bool> updateSettings(Settings newSettings) async {
+    await LocalDB.db.updateSetting(newSettings.toMap());
+    return true;
+  }
+
   Future initializeSettings(String languageCode) async {
+    Settings initSettings = Settings();
+    initSettings.changeFirstStartup("false");
     await LocalDB.db.insertSetting(
-        {'id': '1', 'language': languageCode, 'firstStartup': 'false'});
+      initSettings.toMap(),
+    );
+
     _firstStartup = false;
     return;
   }
