@@ -12,4 +12,8 @@ class CalendarDay {
   final List<Block> blocks = [];
 
   CalendarDay({@required this.day});
+
+  hasEvent() {
+    return hasDeadlines || hasBlocks;
+  }
 }

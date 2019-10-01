@@ -4,6 +4,7 @@ import 'package:taskminder/dictionary.dart';
 import 'package:taskminder/models/block.dart';
 import 'package:taskminder/widgets/calendar/block-dialog.dart';
 import 'package:taskminder/widgets/calendar/calendar-grid.dart';
+
 import 'package:taskminder/widgets/calendar/deadline-dialog.dart';
 import 'package:taskminder/widgets/calendar/month-display.dart';
 
@@ -139,45 +140,51 @@ class _CalendarTabState extends State<CalendarTab> {
         Container(
           padding: EdgeInsets.all(0.0),
           decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(
                 width: 2.0,
                 color: _dayElement.isToday
                     ? Color(widget.model.settings.dayIndicatorColor)
                     : Colors.white),
           ),
-          child: FlatButton(
-            child: Text(
-              _dayElement.day.toString(),
-              style: TextStyle(fontSize: 12),
-            ),
-            color: _dayElement.hasDeadlines
-                ? Color(widget.model.settings.deadlineColor)
-                : _dayElement.hasBlocks
-                    ? Color(widget.model.settings.blockColor)
-                    : Colors.white,
-            onPressed: () {
-              if (_dayElement.hasDeadlines) {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return DeadlineDialog(widget.model,
-                        dayElement: _dayElement);
-                  },
-                );
-              } else if (_dayElement.hasBlocks) {
-                showDialog(
+          child: Container(
+            child: RaisedButton(
+              elevation: _dayElement.hasEvent() ? 2 : 0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+              child: Text(
+                _dayElement.day.toString(),
+                style: TextStyle(fontSize: 12),
+              ),
+              color: _dayElement.hasDeadlines
+                  ? Color(widget.model.settings.deadlineColor)
+                  : _dayElement.hasBlocks
+                      ? Color(widget.model.settings.blockColor)
+                      : Colors.white,
+              onPressed: () {
+                if (_dayElement.hasDeadlines) {
+                  showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return BlockDialog(
-                        widget.model,
-                        dayElement: _dayElement,
-                      );
-                    });
-              } else {
-                Navigator.pushNamed(context,
-                    "/deadlineCalendar/${dthelper.makeDatabaseString(_dayElement.day, currentMonth, currentYear)}");
-              }
-            },
+                      return DeadlineDialog(widget.model,
+                          dayElement: _dayElement);
+                    },
+                  );
+                } else if (_dayElement.hasBlocks) {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return BlockDialog(
+                          widget.model,
+                          dayElement: _dayElement,
+                        );
+                      });
+                } else {
+                  Navigator.pushNamed(context,
+                      "/deadlineCalendar/${dthelper.makeDatabaseString(_dayElement.day, currentMonth, currentYear)}");
+                }
+              },
+            ),
           ),
         ),
       );
