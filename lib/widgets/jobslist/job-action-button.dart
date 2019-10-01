@@ -44,7 +44,9 @@ class JobActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return isTaskNotDeadline
         ? IconButton(
-            icon: Icon(Icons.check_circle_outline),
+            icon: showCompletedOnly
+                ? Icon(Icons.undo)
+                : Icon(Icons.check_circle_outline),
             onPressed: () => buttonFunction(),
           )
         : RaisedButton(

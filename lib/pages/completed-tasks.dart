@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:taskminder/widgets/jobslist/jobslist-task.dart';
 import '../dictionary.dart';
 import '../scoped-models/mainmodel.dart';
 
@@ -17,9 +18,12 @@ class CompletedTasksPage extends StatefulWidget {
 
 class _CompletedTasksPageState extends State<CompletedTasksPage> {
   final Dictionary dict = Dictionary();
+  int _navIndex = 0;
   @override
   void initState() {
-    widget.model.getAllDeadlinesLocal(showCompleted: true);
+    widget.model
+        .getAllDeadlinesLocal(showCompleted: true, showIncompleted: false);
+    widget.model.getAllTasksLocal(showCompleted: true);
     super.initState();
   }
 
@@ -41,10 +45,44 @@ class _CompletedTasksPageState extends State<CompletedTasksPage> {
           title: Text(
               dict.displayPhrase('completedTasks', model.settings.language)),
         ),
-        body: JobslistDeadline(
-          model: widget.model,
-          deadlines: widget.model.deadlines,
-          showCompletedOnly: true,
+        body: _navIndex == 0
+            ? widget.model.areDeadlinesLoading
+                ? CircularProgressIndicator()
+                : JobslistDeadline(
+                    deadlines: widget.model.deadlines,
+                    model: model,
+                    showCompletedOnly: true,
+                  )
+            : widget.model.areTasksLoading
+                ? CircularProgressIndicator()
+                : Flex(direction: Axis.vertical, children: <Widget>[
+                    JobslistTask(
+                      tasks: widget.model.tasks,
+                      model: model,
+                      showCompletedOnly: true,
+                    ),
+                  ]),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (newIndex) {
+            setState(() {
+              _navIndex = newIndex;
+            });
+          },
+          currentIndex: _navIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.assignment_late),
+              title: Text(
+                dict.displayWord('deadlines', model.settings.language),
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.assignment),
+              title: Text(
+                dict.displayWord('tasks', model.settings.language),
+              ),
+            ),
+          ],
         ),
       );
     });

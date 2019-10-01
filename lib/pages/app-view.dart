@@ -14,7 +14,6 @@ import '../tabs/tasks.dart';
 import '../widgets/add-task-button.dart';
 
 ///TODO 3: new features -
-///rework of completed tasks / deadlines -
 ///app color theme
 ///better first startup page -
 ///ui optimizations -
